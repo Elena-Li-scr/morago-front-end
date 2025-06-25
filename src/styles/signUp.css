@@ -1,0 +1,112 @@
+.sign-form {
+  width: 375px;
+  margin: auto;
+  padding: 16px 24px;
+  box-sizing: border-box;
+}
+
+.sign-form-header {
+  font-size: 30px;
+  font-weight: 700;
+  line-height: 130%;
+  color: #191d31;
+  margin-top: 30px;
+  margin-bottom: 15px;
+}
+
+.sign-form-text,
+.sign-form-note {
+  font-size: 14px;
+  color: #a7a9b7;
+  margin-bottom: 20px;
+  line-height: 24px;
+}
+
+.sign-form-note {
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+.link-to-sign {
+  text-decoration: none;
+  color: #a7a9b7;
+}
+
+.link-to-sign:hover,
+.link-to-sign:focus,
+.link-to-sign:active,
+.link-to-sign:visited {
+  color: #a7a9b7;
+  text-decoration: none;
+}
+
+.sign-form label {
+  font-weight: 700;
+  display: block;
+  margin-top: 20px;
+}
+.input-wrapper {
+  position: relative;
+  margin: 10px 0px;
+  width: 271px;
+}
+
+.input-wrapper > img {
+  position: absolute;
+  top: 15px;
+  left: 15px;
+}
+
+.sign-form-input {
+  width: 100%;
+  height: 52px;
+  color: #191d31;
+  font-size: 14px;
+  border-radius: 12px;
+  border: 1px solid #f3f3f3;
+  padding-left: 54px;
+  font-family: "Montserrat", sans-serif;
+  font-weight: 400;
+}
+
+.sign-form-input::placeholder {
+  color: #a7a9b7;
+}
+
+.sign-form-input-error,
+.errors {
+  color: #b50000;
+  font-size: 14px;
+}
+
+.password-toggle-button {
+  position: absolute;
+  top: 15px;
+  right: -40px;
+  background-color: inherit;
+  border: none;
+  cursor: pointer;
+}
+.sign-button {
+  width: 327px;
+  height: 56px;
+  border-radius: 30px;
+  background-color: #c1c1c1;
+  color: #ffffff;
+  font-family: "Montserrat", sans-serif;
+  font-weight: 600;
+  font-size: 16px;
+  border: none;
+  margin: 30px 0px;
+  cursor: pointer;
+}
+
+.sign-button-active {
+  background-color: #015f76;
+}
+
+.personal-data-warning {
+  color: #a7a9b7;
+  font-size: 12px;
+  text-align: center;
+}
