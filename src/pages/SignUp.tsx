@@ -50,7 +50,7 @@ export default function SignUp() {
       const response = await newUser({ request });
 
       console.log(response.data);
-      navigate("/");
+      navigate("/code");
     } catch (error) {
       console.log(error);
     }
