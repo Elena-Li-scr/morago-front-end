@@ -22,6 +22,11 @@
   margin-bottom: 15px;
 }
 
+.code-success-header {
+  font-size: 22px;
+  font-weight: 600;
+  text-align: center;
+}
 .back-button {
   border-radius: 50%;
   border: 1px solid #f3f3f3;
@@ -166,4 +171,41 @@
   color: #191d31;
   font-size: 14px;
   cursor: pointer;
+}
+
+.code-success {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 9999;
+
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.code-success-wrapper {
+  width: 375px;
+  margin: auto;
+  height: 547px;
+  background-color: #ffffff;
+  padding: 16px 24px;
+  box-sizing: border-box;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.code-success-text {
+  font-size: 14px;
+  color: #a7a9b7;
+  margin: 20px 0px;
+  line-height: 24px;
+  text-align: center;
 }

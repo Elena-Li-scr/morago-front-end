@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 
 import "../styles/signUp.css";
 
@@ -16,6 +16,7 @@ export default function CodeInput() {
     mode: "onChange",
   });
   const navigate = useNavigate();
+  const [success, setSuccess] = useState(false);
 
   const inputRefs = [
     useRef<HTMLInputElement | null>(null),
@@ -34,6 +35,7 @@ export default function CodeInput() {
 
   const onSubmit = (data: Code) => {
     const code = fieldNames.map((key) => data[key]).join("");
+    setSuccess(true);
     console.log("Verification code:", code);
   };
 
@@ -106,6 +108,26 @@ export default function CodeInput() {
           <button type="button">Ещё раз</button>
         </div>
       </form>
+
+      {success && (
+        <div className="code-success">
+          <div className="code-success-wrapper">
+            <h3 className="code-success-header">
+              Регистрация <br />
+              прошла успешно
+            </h3>
+            <p className="code-success-text">
+              Теперь вы можете полноценно воспользоваться всеми возможностями
+            </p>
+            <button
+              type="button"
+              className="code-submit-button code-submit-button-active"
+            >
+              Здорово!
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
