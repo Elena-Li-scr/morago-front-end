@@ -16,7 +16,7 @@ export default function CodeInput() {
     mode: "onChange",
   });
   const navigate = useNavigate();
-  const [success, setSuccess] = useState(false);
+  const [success, setSuccess] = useState(true);
 
   const inputRefs = [
     useRef<HTMLInputElement | null>(null),
@@ -111,20 +111,22 @@ export default function CodeInput() {
 
       {success && (
         <div className="code-success">
-          <div className="code-success-wrapper">
-            <h3 className="code-success-header">
-              Регистрация <br />
-              прошла успешно
-            </h3>
-            <p className="code-success-text">
-              Теперь вы можете полноценно воспользоваться всеми возможностями
-            </p>
-            <button
-              type="button"
-              className="code-submit-button code-submit-button-active"
-            >
-              Здорово!
-            </button>
+          <div className="code-cover">
+            <div className="code-success-wrapper">
+              <h3 className="code-success-header">
+                Регистрация <br />
+                прошла успешно
+              </h3>
+              <p className="code-success-text">
+                Теперь вы можете полноценно воспользоваться всеми возможностями
+              </p>
+              <button
+                type="button"
+                className="code-submit-button code-submit-button-active"
+              >
+                Здорово!
+              </button>
+            </div>
           </div>
         </div>
       )}

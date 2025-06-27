@@ -1,0 +1,92 @@
+.home-page-wrapper {
+  width: 375px;
+  margin: auto;
+}
+
+.home-header-wrapper {
+  background-image: url("/assets/home/background.png");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  padding: 16px 24px;
+  height: 330px;
+}
+
+.home-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 54px;
+}
+
+.home-header h2 {
+  margin-left: 120px;
+}
+
+.home-notification-bell {
+  background-color: inherit;
+  border-radius: 50%;
+  border: 1px solid #ffffff33;
+  padding: 9px;
+  width: 44px;
+  height: 44px;
+  cursor: pointer;
+}
+
+.home-balance {
+  background-color: #ffffff;
+  width: 327px;
+  height: 86px;
+  border-radius: 12px;
+  margin-top: 25px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  color: #a7a9b7;
+  font-size: 12px;
+}
+
+.balace-count {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin: 10px 0px;
+}
+
+.balance {
+  margin: 0px 10px;
+  font-size: 22.7px;
+  font-weight: 500;
+  color: #191d31;
+}
+
+.up-balace {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.up-balace p {
+  margin-right: 10px;
+  font-size: 12px;
+  font-weight: 500;
+  color: #1d272f;
+}
+
+.add-balance-button {
+  background-color: inherit;
+  border: none;
+  cursor: pointer;
+}
+
+.home-call-button {
+  width: 327px;
+  height: 52px;
+  border-radius: 12px;
+  background-color: #f5fa17;
+  margin-top: 25px;
+  font-size: 14px;
+  border: none;
+  cursor: pointer;
+}
