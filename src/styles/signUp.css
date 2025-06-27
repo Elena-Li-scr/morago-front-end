@@ -67,7 +67,7 @@
 .input-wrapper {
   position: relative;
   margin: 10px 0px;
-  width: 271px;
+  width: 327px;
 }
 
 .input-wrapper > img {
@@ -121,7 +121,7 @@
 .password-toggle-button {
   position: absolute;
   top: 15px;
-  right: -40px;
+  right: 15px;
   background-color: inherit;
   border: none;
   cursor: pointer;
