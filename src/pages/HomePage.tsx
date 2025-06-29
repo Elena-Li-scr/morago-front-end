@@ -2,6 +2,7 @@ import HomeHeader from "../components/HomeHeader";
 import ThemePage from "../components/ThemePage";
 import Rating from "../components/Rating";
 import FirstCallModal from "../components/FirstCallModal";
+import InsufficientModal from "../components/InsufficientModal";
 import "../styles/homePage.css";
 
 interface LastCall {
@@ -13,7 +14,7 @@ interface LastCall {
   time: string;
 }
 export default function HomePage() {
-  const showBanner = false;
+  const showBanner = true;
   const lastCalls: LastCall[] = [
     {
       name: "К. Дмитрий",
@@ -81,7 +82,8 @@ export default function HomePage() {
           <h3>Профиль</h3>
         </button>
       </footer>
-      {showBanner && <FirstCallModal />}
+      {/* {showBanner && <FirstCallModal />} */}
+      {/* {showBanner && <InsufficientModal />} */}
     </div>
   );
 }

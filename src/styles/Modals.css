@@ -1,0 +1,112 @@
+.modal-window-wrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal-window {
+  background-color: #ffffff;
+  width: 327px;
+  margin: auto;
+  height: 427px;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  flex-direction: column;
+  border-radius: 12px;
+  position: relative;
+}
+
+.modal-window h2 {
+  text-align: center;
+  font-size: 25px;
+  font-weight: 700;
+  margin-top: 25px;
+  line-height: 130%;
+}
+
+.modal-window p {
+  font-size: 16px;
+  text-align: center;
+  line-height: 150%;
+  margin-top: 15px;
+}
+
+.banner-img {
+  margin-top: 25px;
+  width: 226px;
+  height: 187px;
+}
+
+.modal-window-button {
+  position: absolute;
+  top: 345px;
+  left: 30px;
+  width: 272px;
+  height: 56px;
+  border-radius: 30px;
+  background-color: #015f76;
+  font-size: 16px;
+  color: #ffffff;
+  line-height: 130%;
+  border: none;
+}
+
+.balance-modal-wrapper {
+  width: 270px;
+  height: auto;
+  border-radius: 14px;
+  background-color: #ffffff;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  flex-direction: column;
+}
+
+.balance-modal-info h5 {
+  font-size: 17px;
+  line-height: 22px;
+  font-weight: 600;
+  margin-top: 20px;
+}
+
+.balance-modal-info p {
+  font-size: 13px;
+  line-height: 18px;
+  margin-top: 5px;
+  text-align: center;
+}
+.balace-modal-buttons {
+  overflow: hidden;
+  margin-top: 30px;
+  border-top: 1px solid #3c3c435c;
+}
+
+.balace-modal-buttons button {
+  width: 134.25px;
+  height: 44px;
+  background-color: #ffffff;
+  border: none;
+  cursor: pointer;
+  color: #007aff;
+  font-size: 17px;
+}
+
+.balace-modal-buttons button:hover {
+  font-weight: 600;
+}
+
+.balace-modal-buttons button:first-child {
+  border-bottom-left-radius: 14px;
+  border-right: 1px solid #3c3c435c;
+}
+.balace-modal-buttons button:last-child {
+  border-bottom-right-radius: 14px;
+}
