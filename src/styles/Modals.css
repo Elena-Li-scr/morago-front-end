@@ -13,7 +13,8 @@
 
 .modal-window {
   background-color: #ffffff;
-  width: 327px;
+  width: 100%;
+  max-width: 327px;
   margin: auto;
   height: 427px;
   display: flex;
@@ -83,13 +84,13 @@
   margin-top: 5px;
   text-align: center;
 }
-.balace-modal-buttons {
+.balance-modal-buttons {
   overflow: hidden;
   margin-top: 30px;
   border-top: 1px solid #3c3c435c;
 }
 
-.balace-modal-buttons button {
+.balance-modal-buttons button {
   width: 134.25px;
   height: 44px;
   background-color: #ffffff;
@@ -99,14 +100,14 @@
   font-size: 17px;
 }
 
-.balace-modal-buttons button:hover {
+.balance-modal-buttons button:hover {
   font-weight: 600;
 }
 
-.balace-modal-buttons button:first-child {
+.balance-modal-buttons button:first-child {
   border-bottom-left-radius: 14px;
   border-right: 1px solid #3c3c435c;
 }
-.balace-modal-buttons button:last-child {
+.balance-modal-buttons button:last-child {
   border-bottom-right-radius: 14px;
 }

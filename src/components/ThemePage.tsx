@@ -1,5 +1,7 @@
 import Theme from "./Theme";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useTopicStore } from "../store/useTopicStore";
 
 import "../styles/homePage.css";
 import "../styles/theme.css";
@@ -16,18 +18,25 @@ export default function ThemePage() {
   ];
 
   const [showAllThemes, setShowAllThemes] = useState(false);
+  const navigate = useNavigate();
 
   const shownThemes = showAllThemes ? popularThemes : popularThemes.slice(0, 5);
+  const { setChosenTopic } = useTopicStore();
 
   const handleShowAll = () => {
     setShowAllThemes(true);
+  };
+
+  const handleThemeClick = (theme: string) => {
+    setChosenTopic(theme);
+    navigate("/chosen-topic");
   };
   return (
     <div className="themes-wrapper">
       <h3>Популярные темы перевода</h3>
       <div className="themes">
         {shownThemes.map((theme: string, index: number) => (
-          <Theme key={index} theme={theme} />
+          <Theme key={index} theme={theme} onClick={handleThemeClick} />
         ))}
         {!showAllThemes && (
           <button type="button" className="theme" onClick={handleShowAll}>

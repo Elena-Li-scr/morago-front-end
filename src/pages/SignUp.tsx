@@ -5,6 +5,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { newUser } from "../services/api";
 import { phonePattern } from "../utils/validationRules";
 import { useState } from "react";
+import MainButton from "../components/MainButton";
 
 interface FormData {
   phone: string;
@@ -40,15 +41,15 @@ export default function SignUp() {
     repeatPassword?.trim() !== "";
 
   const onSubmit = async (data: FormData) => {
-    const request = {
+    const payload = {
       user: {
         phone: data.phone,
         password: data.password,
       },
     };
-    try {
-      const response = await newUser({ request });
 
+    try {
+      const response = await newUser(payload);
       console.log(response.data);
       navigate("/code");
     } catch (error) {
@@ -216,13 +217,13 @@ export default function SignUp() {
 
       {/* Кнопка */}
 
-      <button
+      <MainButton
         type="submit"
         disabled={!isValid}
-        className={isValid ? "sign-button sign-button-active" : "sign-button"}
-      >
-        Получить код
-      </button>
+        className={isValid ? "button button-active" : "button"}
+        text="Получить код"
+      />
+
       <p className="sign-form-note">
         <Link to="/sign-in" className="link-to-sign">
           Уже есть аккаунт

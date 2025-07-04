@@ -1,6 +1,7 @@
 .sign-form,
 .code-container {
-  width: 375px;
+  width: 100%;
+  max-width: 375px;
   margin: auto;
   padding: 16px 24px;
   box-sizing: border-box;
@@ -67,7 +68,8 @@
 .input-wrapper {
   position: relative;
   margin: 10px 0px;
-  width: 327px;
+  width: 100%;
+  max-width: 327px;
 }
 
 .input-wrapper > img {
@@ -80,7 +82,7 @@
   width: 100%;
   height: 52px;
   color: #191d31;
-  font-size: 14px;
+  font-size: 12px;
   border-radius: 12px;
   border: 1px solid #f3f3f3;
   padding-left: 54px;
@@ -102,7 +104,8 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  width: 327px;
+  width: 100%;
+  max-width: 327px;
 }
 
 .code-form-input {
@@ -126,9 +129,9 @@
   border: none;
   cursor: pointer;
 }
-.sign-button,
-.code-submit-button {
-  width: 327px;
+.button {
+  width: 100%;
+  max-width: 327px;
   height: 56px;
   border-radius: 30px;
   background-color: #c1c1c1;
@@ -141,8 +144,7 @@
   cursor: pointer;
 }
 
-.sign-button-active,
-.code-submit-button-active {
+.button-active {
   background-color: #015f76;
 }
 
@@ -188,7 +190,8 @@
   background-position: top;
   background-repeat: no-repeat;
   background-color: #ffffff;
-  width: 375px;
+  width: 100%;
+  max-width: 375px;
   margin: auto;
   height: 547px;
   display: flex;
@@ -201,7 +204,7 @@
 .code-cover::before {
   content: "";
   position: absolute;
-  top: 217px;
+  top: 193px;
   left: 0;
   width: 100%;
   height: 50px;
@@ -236,4 +239,14 @@
   margin-top: 10px;
   line-height: 24px;
   text-align: center;
+}
+
+@media screen and (min-width: 375px) {
+  .sign-form-input {
+    font-size: 14px;
+  }
+
+  .code-cover::before {
+    top: 217px;
+  }
 }

@@ -1,6 +1,8 @@
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { useRef, useState } from "react";
+import SucessActionModal from "../components/SucessActionModal";
+import MainButton from "../components/MainButton";
 
 import "../styles/signUp.css";
 
@@ -93,16 +95,13 @@ export default function CodeInput() {
             />
           ))}
         </div>
-        <button
+
+        <MainButton
           type="submit"
-          className={
-            isComplete
-              ? "code-submit-button code-submit-button-active"
-              : "code-submit-button"
-          }
-        >
-          Подтвердить
-        </button>
+          text="Подтвердить"
+          className={isComplete ? "button button-active" : "button"}
+        />
+
         <div className="code-repeat">
           <p>Не получили код? </p>
           <button type="button">Ещё раз</button>
@@ -110,25 +109,12 @@ export default function CodeInput() {
       </form>
 
       {success && (
-        <div className="code-success">
-          <div className="code-cover">
-            <div className="code-success-wrapper">
-              <h3 className="code-success-header">
-                Регистрация <br />
-                прошла успешно
-              </h3>
-              <p className="code-success-text">
-                Теперь вы можете полноценно воспользоваться всеми возможностями
-              </p>
-              <button
-                type="button"
-                className="code-submit-button code-submit-button-active"
-              >
-                Здорово!
-              </button>
-            </div>
-          </div>
-        </div>
+        <SucessActionModal
+          header="Регистрация
+            прошла успешно"
+          text="Теперь вы можете полноценно воспользоваться всеми возможностями"
+          btn="Здорово!"
+        />
       )}
     </div>
   );

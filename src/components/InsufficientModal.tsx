@@ -1,4 +1,4 @@
-import "../styles/Modals.css";
+import "../styles/modals.css";
 export default function InsufficientModal() {
   return (
     <div className="modal-window-wrapper">
@@ -7,7 +7,7 @@ export default function InsufficientModal() {
           <h5>Недостаточно средств</h5>
           <p>Пополните баланс</p>
         </div>
-        <div className="balace-modal-buttons">
+        <div className="balance-modal-buttons">
           <button type="button">Позже</button>
           <button type="button">Пополнить</button>
         </div>
