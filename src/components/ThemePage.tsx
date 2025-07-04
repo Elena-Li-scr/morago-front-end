@@ -1,0 +1,41 @@
+import Theme from "./Theme";
+import { useState } from "react";
+
+import "../styles/homePage.css";
+import "../styles/theme.css";
+
+export default function ThemePage() {
+  const popularThemes: string[] = [
+    "Банк",
+    "Рестораны",
+    "Аптека",
+    "Почта",
+    "Налоговая",
+    "Миграционный центр",
+    "Завод",
+  ];
+
+  const [showAllThemes, setShowAllThemes] = useState(false);
+
+  const shownThemes = showAllThemes ? popularThemes : popularThemes.slice(0, 5);
+
+  const handleShowAll = () => {
+    setShowAllThemes(true);
+  };
+  return (
+    <div className="themes-wrapper">
+      <h3>Популярные темы перевода</h3>
+      <div className="themes">
+        {shownThemes.map((theme: string, index: number) => (
+          <Theme key={index} theme={theme} />
+        ))}
+        {!showAllThemes && (
+          <button type="button" className="theme" onClick={handleShowAll}>
+            <img src="/assets/theme-icons/all.png" alt="theme-icon" />
+            <h5>Остальные</h5>
+          </button>
+        )}
+      </div>
+    </div>
+  );
+}
