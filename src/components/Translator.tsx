@@ -1,36 +1,32 @@
 import Rating from "./Rating";
 import "../styles/translator.css";
-interface Props {
+interface Translator {
   name: string;
   theme: string;
   rating: number;
   reviewsCount: number;
   photo: string;
   time?: string;
+}
+
+interface Props {
+  translator: Translator;
   onClick?: () => void;
 }
 
-export default function Translator({
-  photo,
-  name,
-  rating,
-  theme,
-  time,
-  reviewsCount,
-  onClick,
-}: Props) {
+export default function Translator({ translator, onClick }: Props) {
   return (
     <div className="translator" role="button" onClick={onClick}>
-      <img src={photo} alt="photo" />
+      <img src={translator.photo} alt="photo" />
       <div>
         <div className="translator-main-info">
-          <p>{name}</p>
-          <Rating count={rating} />
-          <span>({reviewsCount})</span>
+          <p>{translator.name}</p>
+          <Rating count={translator.rating} />
+          <span>({translator.reviewsCount})</span>
         </div>
-        <p className="translator-theme">{theme}</p>
+        <p className="translator-theme">{translator.theme}</p>
       </div>
-      <div className="translator-call-time">{time}</div>
+      <div className="translator-call-time">{translator.time}</div>
     </div>
   );
 }

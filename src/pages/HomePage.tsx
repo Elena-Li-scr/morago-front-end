@@ -17,16 +17,8 @@ export default function HomePage() {
       <div className="home-last-calls">
         <h3>Мои последние звонки</h3>
         <div className="last-calls-list">
-          {translators.map((call, index) => (
-            <Translator
-              key={index}
-              photo={call.photo}
-              name={call.name}
-              rating={call.rating}
-              reviewsCount={call.reviewsCount}
-              theme={call.theme}
-              time={call.time}
-            />
+          {translators.map((translator, index) => (
+            <Translator key={index} translator={translator} />
           ))}
         </div>
       </div>

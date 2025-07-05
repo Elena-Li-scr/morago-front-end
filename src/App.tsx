@@ -4,6 +4,7 @@ import CodeInput from "./pages/CodeInput";
 import HomePage from "./pages/HomePage";
 import CallSelectors from "./pages/CallSelectors";
 import ChosenTopicPage from "./pages/ChosenTopicPage";
+import UpBalance from "./pages/UpBalance";
 function App() {
   return (
     <>
@@ -15,6 +16,7 @@ function App() {
           <Route path="/home" element={<HomePage />} />
           <Route path="/call-selectors" element={<CallSelectors />} />
           <Route path="/chosen-topic" element={<ChosenTopicPage />} />
+          <Route path="/up-balance" element={<UpBalance />} />
         </Routes>
       </BrowserRouter>
     </>

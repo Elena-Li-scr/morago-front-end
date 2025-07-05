@@ -229,6 +229,14 @@
   padding: 0px 24px;
 }
 
+/* user balance page */
+
+.up-balance-wrapper {
+  width: 100%;
+  max-width: 375px;
+  margin: auto;
+}
+
 @media screen and (min-width: 375px) {
   .home-header h2 {
     margin-left: 120px;

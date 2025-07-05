@@ -81,6 +81,9 @@ interface Translator {
   reviewsCount: number;
   photo: string;
   time: string;
+  online: boolean;
+  status: string;
+  price: number;
 }
 
 export const translators: Translator[] = [
@@ -91,6 +94,9 @@ export const translators: Translator[] = [
     reviewsCount: 7,
     photo: "/assets/home/photo1.png",
     time: "04.25",
+    online: true,
+    status: "Верифицирован ",
+    price: 1000,
   },
   {
     name: "П. Наталья",
@@ -99,6 +105,9 @@ export const translators: Translator[] = [
     reviewsCount: 34,
     photo: "/assets/home/photo2.png",
     time: "3.14",
+    online: false,
+    status: "Верифицирован ",
+    price: 1000,
   },
   {
     name: "Л. Мин Хо",
@@ -107,5 +116,8 @@ export const translators: Translator[] = [
     reviewsCount: 67,
     photo: "/assets/home/photo3.png",
     time: "03.10",
+    online: true,
+    status: "Верифицирован ",
+    price: 1000,
   },
 ];

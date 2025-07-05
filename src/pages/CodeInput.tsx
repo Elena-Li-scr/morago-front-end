@@ -114,6 +114,7 @@ export default function CodeInput() {
             прошла успешно"
           text="Теперь вы можете полноценно воспользоваться всеми возможностями"
           btn="Здорово!"
+          bgImg="/assets/signIcons/success-note.png"
         />
       )}
     </div>

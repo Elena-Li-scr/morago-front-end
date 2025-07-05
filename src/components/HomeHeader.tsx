@@ -5,6 +5,10 @@ export default function HomeHeader() {
   const selectTranslator = () => {
     navigate("/call-selectors");
   };
+
+  const upBalance = () => {
+    navigate("/up-balance");
+  };
   return (
     <div className="home-header-wrapper">
       <div className="home-header">
@@ -26,7 +30,11 @@ export default function HomeHeader() {
         </div>
         <div className="up-balance">
           <p>Пополнить</p>
-          <button type="button" className="add-balance-button">
+          <button
+            type="button"
+            className="add-balance-button"
+            onClick={upBalance}
+          >
             <img src="/assets/home/add-square.png" alt="add balance button" />
           </button>
         </div>
