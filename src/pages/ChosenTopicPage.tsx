@@ -47,7 +47,11 @@ export default function ChosenTopicPage() {
         </div>
       </div>
       <HomeFooter page="main" />
-      {selectedTranslator && <TranslatorCall translator={selectedTranslator} />}
+      {selectedTranslator && (
+        <div className="modal-window-wrapper">
+          <TranslatorCall translator={selectedTranslator} />
+        </div>
+      )}
     </div>
   );
 }

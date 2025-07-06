@@ -237,6 +237,51 @@
   margin: auto;
 }
 
+.detailing {
+  padding: 30px 24px 0px 24px;
+}
+
+.detailing h3 {
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.prev-call-detail {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  border: 1px solid #f3f3f3;
+  border-radius: 12px;
+  padding: 10px;
+  width: 100%;
+  max-width: 327px;
+  height: 70px;
+  margin: 15px 0px;
+  font-size: 14px;
+}
+
+.prev-call-detail img {
+  width: 50px;
+  height: 50px;
+  margin-right: 10px;
+}
+
+.prev-call-main {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  flex-direction: column;
+  width: 100%;
+}
+
+.prev-call-theme-time {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  color: #a7a9b7;
+}
+
 @media screen and (min-width: 375px) {
   .home-header h2 {
     margin-left: 120px;
