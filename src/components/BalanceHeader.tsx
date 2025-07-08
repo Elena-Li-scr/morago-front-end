@@ -1,6 +1,12 @@
 import MainButton from "./MainButton";
+import { useNavigate } from "react-router-dom";
 
 export default function BalanceHeader() {
+  const navigate = useNavigate();
+
+  const upBalance = () => {
+    navigate("/balance-withdraw");
+  };
   return (
     <div className="home-header-wrapper">
       <div className="home-header">
@@ -20,7 +26,7 @@ export default function BalanceHeader() {
           </div>
         </div>
       </div>
-      <MainButton text="Пополнить баланс" type="button" />
+      <MainButton text="Пополнить баланс" type="button" onClick={upBalance} />
     </div>
   );
 }

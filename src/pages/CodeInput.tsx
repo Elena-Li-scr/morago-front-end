@@ -18,7 +18,7 @@ export default function CodeInput() {
     mode: "onChange",
   });
   const navigate = useNavigate();
-  const [success, setSuccess] = useState(false);
+  const [success, setSuccess] = useState(true);
 
   const inputRefs = [
     useRef<HTMLInputElement | null>(null),

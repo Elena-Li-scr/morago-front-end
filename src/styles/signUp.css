@@ -171,7 +171,7 @@
   margin-left: 5px;
 }
 
-.code-success {
+.success {
   position: fixed;
   top: 0;
   left: 0;
@@ -185,7 +185,6 @@
 }
 
 .code-cover {
-  /* background-image: url("/assets/signIcons/success-note.png"); */
   background-size: 415px 476px;
   background-position: top;
   background-repeat: no-repeat;
@@ -204,7 +203,7 @@
 .code-cover::before {
   content: "";
   position: absolute;
-  top: 193px;
+  top: 209px;
   left: 0;
   width: 100%;
   height: 50px;
@@ -214,7 +213,7 @@
   );
 }
 
-.code-success-wrapper {
+.success-wrapper {
   background: linear-gradient(
     rgba(255, 255, 255, 0.8) 0%,
     rgba(255, 255, 255, 1) 10%
@@ -225,15 +224,16 @@
   flex-direction: column;
   justify-content: flex-end;
   align-items: center;
+  height: 288px;
 }
-.code-success-header {
+.success-header {
   font-size: 22px;
   font-weight: 600;
   text-align: center;
   padding-top: 20px;
 }
 
-.code-success-text {
+.success-text {
   font-size: 14px;
   color: #a7a9b7;
   margin-top: 10px;
@@ -244,9 +244,5 @@
 @media screen and (min-width: 375px) {
   .sign-form-input {
     font-size: 14px;
-  }
-
-  .code-cover::before {
-    top: 217px;
   }
 }
