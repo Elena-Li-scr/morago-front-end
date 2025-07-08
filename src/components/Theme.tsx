@@ -12,13 +12,18 @@ export default function Theme({ theme, onClick, style }: ThemeProps) {
   const { chosenTopic } = useTopicStore();
   const iconSrc = `/assets/theme-icons/${iconMap[theme]}`;
   return (
-    <button
-      className={chosenTopic ? "theme chosen-theme" : "theme"}
-      onClick={() => onClick?.(theme)}
-      style={style}
-    >
-      <img src={iconSrc} alt="theme-icon" />
-      <h5>{theme}</h5>
-    </button>
+    <div className="theme-wrapper">
+      <button
+        className={chosenTopic ? "theme chosen-theme" : "theme"}
+        onClick={() => onClick?.(theme)}
+        style={style}
+      >
+        <img src={iconSrc} alt="theme-icon" />
+        <h5>{theme}</h5>
+      </button>
+      <button type="button" className="theme-info">
+        &#128712;
+      </button>
+    </div>
   );
 }
