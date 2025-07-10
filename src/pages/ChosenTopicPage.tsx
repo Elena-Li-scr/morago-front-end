@@ -1,7 +1,7 @@
 import Translator from "../components/Translator";
 import Theme from "../components/Theme";
 import SimpleHeader from "../components/SimpleHeader";
-import HomeFooter from "../components/HomeFooter";
+import MainFooter from "../components/MainFooter";
 import TranslatorCall from "../components/TranslatorCall";
 import { translators } from "../utils/temporaryVar";
 import { useTopicStore } from "../store/useTopicStore";
@@ -22,10 +22,11 @@ interface Translator {
 export default function ChosenTopicPage() {
   const [selectedTranslator, setSelectedTranslator] =
     useState<Translator | null>(null);
-  const { chosenTopic } = useTopicStore();
+  const { chosenTopic, setChosenTopic } = useTopicStore();
   const navigate = useNavigate();
   const handleBack = () => {
     navigate(-1);
+    setChosenTopic("");
   };
 
   return (
@@ -46,7 +47,7 @@ export default function ChosenTopicPage() {
           ))}
         </div>
       </div>
-      <HomeFooter page="main" />
+      <MainFooter page="main" />
       {selectedTranslator && (
         <div className="modal-window-wrapper">
           <TranslatorCall translator={selectedTranslator} />

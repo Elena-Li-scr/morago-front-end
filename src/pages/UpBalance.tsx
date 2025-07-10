@@ -1,5 +1,5 @@
 import BalanceHeader from "../components/BalanceHeader";
-import HomeFooter from "../components/HomeFooter";
+import MainFooter from "../components/MainFooter";
 import { translators } from "../utils/temporaryVar";
 export default function UpBalance() {
   return (
@@ -22,7 +22,7 @@ export default function UpBalance() {
           ))}
         </div>
       </div>
-      <HomeFooter page="main" />
+      <MainFooter page="main" />
     </div>
   );
 }

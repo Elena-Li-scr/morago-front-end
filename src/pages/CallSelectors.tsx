@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useTopicStore } from "../store/useTopicStore";
 import { servicesGroup } from "../utils/temporaryVar";
 import SimpleHeader from "../components/SimpleHeader";
-import HomeFooter from "../components/HomeFooter";
+import MainFooter from "../components/MainFooter";
 import Theme from "../components/Theme";
 import MainButton from "../components/MainButton";
 
@@ -100,7 +100,7 @@ export default function CallSelectors() {
           disabled={!chosenTopic}
         />
       </div>
-      <HomeFooter page="main" />
+      <MainFooter page="main" />
     </div>
   );
 }

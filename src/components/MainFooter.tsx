@@ -1,15 +1,22 @@
 import { useNavigate } from "react-router-dom";
+import { useTopicStore } from "../store/useTopicStore";
 
 interface Props {
   page: string;
 }
-export default function HomeFooter({ page }: Props) {
+export default function MainFooter({ page }: Props) {
+  const { setChosenTopic } = useTopicStore();
   const navigate = useNavigate();
   const toHomePage = () => {
     navigate("/home");
+    setChosenTopic("");
+  };
+  const toProfilePage = () => {
+    navigate("/profile");
+    setChosenTopic("");
   };
   return (
-    <footer className="home-page-footer">
+    <footer className="main-footer">
       <button type="button" onClick={toHomePage}>
         <img
           src={
@@ -19,9 +26,9 @@ export default function HomeFooter({ page }: Props) {
           }
           alt="main"
         />
-        <h3>Главная</h3>
+        <h3 className={page === "main" ? "main-footer-active" : ""}>Главная</h3>
       </button>
-      <button>
+      <button type="button">
         <img
           src={
             page === "phone"
@@ -30,9 +37,11 @@ export default function HomeFooter({ page }: Props) {
           }
           alt="phone"
         />
-        <h3>Мои звонки</h3>
+        <h3 className={page === "phone" ? "main-footer-active" : ""}>
+          Мои звонки
+        </h3>
       </button>
-      <button>
+      <button type="button">
         <img
           src={
             page === "message"
@@ -41,9 +50,11 @@ export default function HomeFooter({ page }: Props) {
           }
           alt="message"
         />
-        <h3>Сообщения</h3>
+        <h3 className={page === "message" ? "main-footer-active" : ""}>
+          Сообщения
+        </h3>
       </button>
-      <button>
+      <button type="button" onClick={toProfilePage}>
         <img
           src={
             page === "profile"
@@ -52,7 +63,9 @@ export default function HomeFooter({ page }: Props) {
           }
           alt="profile"
         />
-        <h3>Профиль</h3>
+        <h3 className={page === "profile" ? "main-footer-active" : ""}>
+          Профиль
+        </h3>
       </button>
     </footer>
   );

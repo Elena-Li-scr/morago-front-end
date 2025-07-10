@@ -1,8 +1,8 @@
-import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { useRef, useState } from "react";
 import SucessActionModal from "../components/SucessActionModal";
 import MainButton from "../components/MainButton";
+import BackButton from "../components/BackButton";
 
 import "../styles/signUp.css";
 
@@ -17,8 +17,8 @@ export default function CodeInput() {
   const { register, handleSubmit, setValue, getValues, watch } = useForm<Code>({
     mode: "onChange",
   });
-  const navigate = useNavigate();
-  const [success, setSuccess] = useState(true);
+
+  const [success, setSuccess] = useState(false);
 
   const inputRefs = [
     useRef<HTMLInputElement | null>(null),
@@ -30,10 +30,6 @@ export default function CodeInput() {
   const fieldNames = ["num1", "num2", "num3", "num4"] as const;
   const watchedValues = watch(["num1", "num2", "num3", "num4"]);
   const isComplete = watchedValues.every((v) => v && v.length === 1);
-
-  const backButton = () => {
-    navigate("/sign-up");
-  };
 
   const onSubmit = (data: Code) => {
     const code = fieldNames.map((key) => data[key]).join("");
@@ -69,9 +65,7 @@ export default function CodeInput() {
 
   return (
     <div className="code-container">
-      <button type="button" onClick={backButton} className="back-button">
-        <img src="/assets/arrow-left.png" alt="arrow" />
-      </button>
+      <BackButton />
       <h2 className="code-header">Проверочный код</h2>
       <p className="sign-form-text">
         Мы отправили проверочный <br /> код на ваш номер телефона{" "}

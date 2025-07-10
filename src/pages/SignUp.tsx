@@ -76,7 +76,7 @@ export default function SignUp() {
 
       {/* phone number  */}
 
-      <label>Номер телефона</label>
+      <label className="input-label">Номер телефона</label>
       <div className="input-wrapper">
         <img
           src={
@@ -106,9 +106,7 @@ export default function SignUp() {
               }}
               placeholder="Введите номер телефона без “-”"
               className={
-                errors.phone
-                  ? "sign-form-input sign-form-input-error"
-                  : "sign-form-input"
+                errors.phone ? "main-input main-input-error" : "main-input"
               }
               autoComplete="tel"
             />
@@ -119,7 +117,7 @@ export default function SignUp() {
 
       {/*password*/}
 
-      <label>Пароль</label>
+      <label className="input-label">Пароль</label>
       <div className="input-wrapper">
         <img
           src={
@@ -136,9 +134,7 @@ export default function SignUp() {
           placeholder="Введите ваш пароль"
           autoComplete="new-password"
           className={
-            errors.password
-              ? "sign-form-input-error sign-form-input"
-              : "sign-form-input"
+            errors.password ? "main-input-error main-input" : "main-input"
           }
           {...register("password", {
             required: true,
@@ -184,9 +180,7 @@ export default function SignUp() {
           placeholder="Повторите ещё раз"
           autoComplete="new-password"
           className={
-            errors.repeatPassword
-              ? "sign-form-input-error sign-form-input"
-              : "sign-form-input"
+            errors.repeatPassword ? "main-input-error main-input" : "main-input"
           }
           {...register("repeatPassword", {
             required: true,

@@ -3,7 +3,7 @@ import ThemePage from "../components/ThemePage";
 import FirstCallModal from "../components/FirstCallModal";
 import InsufficientModal from "../components/InsufficientModal";
 import Translator from "../components/Translator";
-import HomeFooter from "../components/HomeFooter";
+import MainFooter from "../components/MainFooter";
 import { translators } from "../utils/temporaryVar";
 import "../styles/homePage.css";
 
@@ -22,7 +22,7 @@ export default function HomePage() {
           ))}
         </div>
       </div>
-      <HomeFooter page="main" />
+      <MainFooter page="main" />
       {showBanner && <FirstCallModal />}
       {/* {showBanner && <InsufficientModal />} */}
     </div>

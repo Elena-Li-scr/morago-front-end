@@ -1,7 +1,7 @@
-import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import MainButton from "../components/MainButton";
 import SucessActionModal from "../components/SucessActionModal";
+import BackButton from "../components/BackButton";
 
 import "../styles/balanceWithdraw.css";
 import { useState } from "react";
@@ -13,10 +13,6 @@ interface FormData {
 
 export default function BalanceWithdraw() {
   const [isSuccess, setIsSuccess] = useState(false);
-  const navigate = useNavigate();
-  const backButton = () => {
-    navigate(-1);
-  };
 
   const amounts = [10000, 30000, 50000, 100000];
 
@@ -40,9 +36,7 @@ export default function BalanceWithdraw() {
   const selectedAmount = watch("amount");
   return (
     <div className="balance-withdraw-wrapper">
-      <button type="button" onClick={backButton} className="back-button">
-        <img src="/assets/arrow-left.png" alt="arrow" />
-      </button>
+      <BackButton />
       <h2 className="balance-withdraw-header">Пополнить баланс</h2>
       <p className="balance-withdraw-text">
         Минимальная сумма пополнения 10.000 вон. Средства зачисляются на счёт в

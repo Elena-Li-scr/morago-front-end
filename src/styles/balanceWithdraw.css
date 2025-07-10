@@ -1,5 +1,5 @@
 .balance-withdraw-wrapper {
-  padding: 16px 22px;
+  padding: 30px 22px 16px 22px;
   width: 100%;
   max-width: 375px;
   margin: auto;
@@ -8,6 +8,7 @@
 .balance-withdraw-header {
   font-size: 30px;
   font-weight: 600;
+  margin-top: 20px;
 }
 
 .balance-withdraw-text {

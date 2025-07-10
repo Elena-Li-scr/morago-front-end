@@ -6,6 +6,9 @@ import CallSelectors from "./pages/CallSelectors";
 import ChosenTopicPage from "./pages/ChosenTopicPage";
 import UpBalance from "./pages/UpBalance";
 import BalanceWithdraw from "./pages/BalanceWithdraw";
+import Profile from "./pages/Profile";
+import ChangeProfile from "./pages/ChangeProfile";
+import ChangePassword from "./pages/ChangePassword";
 function App() {
   return (
     <>
@@ -19,6 +22,9 @@ function App() {
           <Route path="/chosen-topic" element={<ChosenTopicPage />} />
           <Route path="/up-balance" element={<UpBalance />} />
           <Route path="/balance-withdraw" element={<BalanceWithdraw />} />
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/change-profile" element={<ChangeProfile />} />
+          <Route path="/change-password" element={<ChangePassword />} />
         </Routes>
       </BrowserRouter>
     </>

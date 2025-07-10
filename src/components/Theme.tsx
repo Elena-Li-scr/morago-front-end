@@ -21,9 +21,11 @@ export default function Theme({ theme, onClick, style }: ThemeProps) {
         <img src={iconSrc} alt="theme-icon" />
         <h5>{theme}</h5>
       </button>
-      <button type="button" className="theme-info">
-        &#128712;
-      </button>
+      {!chosenTopic && (
+        <button type="button" className="theme-info">
+          &#128712;
+        </button>
+      )}
     </div>
   );
 }
