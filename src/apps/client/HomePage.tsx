@@ -1,11 +1,11 @@
-import HomeHeader from "../components/HomeHeader";
-import ThemePage from "../components/ThemePage";
-import FirstCallModal from "../components/FirstCallModal";
-import InsufficientModal from "../components/InsufficientModal";
-import Translator from "../components/Translator";
-import MainFooter from "../components/MainFooter";
-import { translators } from "../utils/temporaryVar";
-import "../styles/homePage.css";
+import HomeHeader from "../../shared/components/HomeHeader";
+import ThemePage from "../../shared/components/ThemePage";
+import FirstCallModal from "../../shared/components/FirstCallModal";
+// import InsufficientModal from "../../shared/components/InsufficientModal";
+import Translator from "../../shared/components/Translator";
+import MainFooter from "../../shared/components/MainFooter";
+import { translators } from "../../shared/utils/temporaryVar";
+import "../../shared/styles/homePage.css";
 
 export default function HomePage() {
   const showBanner = false;

@@ -1,13 +1,13 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useTopicStore } from "../store/useTopicStore";
-import { servicesGroup } from "../utils/temporaryVar";
-import SimpleHeader from "../components/SimpleHeader";
-import MainFooter from "../components/MainFooter";
-import Theme from "../components/Theme";
-import MainButton from "../components/MainButton";
+import { useTopicStore } from "../../shared/store/useTopicStore";
+import { servicesGroup } from "../../shared/utils/temporaryVar";
+import SimpleHeader from "../../shared/components/SimpleHeader";
+import MainFooter from "../../shared/components/MainFooter";
+import Theme from "../../shared/components/Theme";
+import MainButton from "../../shared/components/MainButton";
 
-import "../styles/homePage.css";
+import "../../shared/styles/homePage.css";
 
 export default function CallSelectors() {
   const [openedGroups, setOpenedGroups] = useState<Record<string, boolean>>({});

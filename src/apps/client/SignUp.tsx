@@ -1,11 +1,11 @@
-import "../styles/signUp.css";
+import "../../shared/styles/signUp.css";
 import { useForm, Controller } from "react-hook-form";
 import Cleave from "cleave.js/react";
 import { Link, useNavigate } from "react-router-dom";
-import { newUser } from "../services/api";
-import { phonePattern } from "../utils/validationRules";
+import { newUser } from "../../shared/services/api";
+import { phonePattern } from "../../shared/utils/validationRules";
 import { useState } from "react";
-import MainButton from "../components/MainButton";
+import MainButton from "../../shared/components/MainButton";
 
 interface FormData {
   phone: string;

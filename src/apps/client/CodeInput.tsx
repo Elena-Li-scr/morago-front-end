@@ -1,10 +1,10 @@
 import { useForm } from "react-hook-form";
 import { useRef, useState } from "react";
-import SucessActionModal from "../components/SucessActionModal";
-import MainButton from "../components/MainButton";
-import BackButton from "../components/BackButton";
+import SucessActionModal from "../../shared/components/SucessActionModal";
+import MainButton from "../../shared/components/MainButton";
+import BackButton from "../../shared/components/BackButton";
 
-import "../styles/signUp.css";
+import "../../shared/styles/signUp.css";
 
 interface Code {
   num1: string;

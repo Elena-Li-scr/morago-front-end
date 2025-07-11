@@ -1,14 +1,14 @@
 import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
-import SignUp from "./pages/SignUp";
-import CodeInput from "./pages/CodeInput";
-import HomePage from "./pages/HomePage";
-import CallSelectors from "./pages/CallSelectors";
-import ChosenTopicPage from "./pages/ChosenTopicPage";
-import UpBalance from "./pages/UpBalance";
-import BalanceWithdraw from "./pages/BalanceWithdraw";
-import Profile from "./pages/Profile";
-import ChangeProfile from "./pages/ChangeProfile";
-import ChangePassword from "./pages/ChangePassword";
+import SignUp from "./apps/client/SignUp";
+import CodeInput from "./apps/client/CodeInput";
+import HomePage from "./apps/client/HomePage";
+import CallSelectors from "./apps/client/CallSelectors";
+import ChosenTopicPage from "./apps/client//ChosenTopicPage";
+import UpBalance from "./apps/client//UpBalance";
+import BalanceWithdraw from "./apps/client//BalanceWithdraw";
+import Profile from "./apps/client//Profile";
+import ChangeProfile from "./apps/client//ChangeProfile";
+import ChangePassword from "./apps/client//ChangePassword";
 function App() {
   return (
     <>

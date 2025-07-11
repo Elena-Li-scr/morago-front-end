@@ -1,13 +1,13 @@
-import Translator from "../components/Translator";
-import Theme from "../components/Theme";
-import SimpleHeader from "../components/SimpleHeader";
-import MainFooter from "../components/MainFooter";
-import TranslatorCall from "../components/TranslatorCall";
-import { translators } from "../utils/temporaryVar";
-import { useTopicStore } from "../store/useTopicStore";
+import Translator from "../../shared/components/Translator";
+import Theme from "../../shared/components/Theme";
+import SimpleHeader from "../../shared/components/SimpleHeader";
+import MainFooter from "../../shared/components/MainFooter";
+import TranslatorCall from "../../shared/components/TranslatorCall";
+import { translators } from "../../shared/utils/temporaryVar";
+import { useTopicStore } from "../../shared/store/useTopicStore";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
-import "../styles/homePage.css";
+import "../../shared/styles/homePage.css";
 
 interface Translator {
   name: string;

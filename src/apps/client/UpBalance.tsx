@@ -1,6 +1,6 @@
-import BalanceHeader from "../components/BalanceHeader";
-import MainFooter from "../components/MainFooter";
-import { translators } from "../utils/temporaryVar";
+import BalanceHeader from "../../shared/components/BalanceHeader";
+import MainFooter from "../../shared/components/MainFooter";
+import { translators } from "../../shared/utils/temporaryVar";
 export default function UpBalance() {
   return (
     <div className="up-balance-wrapper">

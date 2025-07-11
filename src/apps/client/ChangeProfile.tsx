@@ -1,7 +1,7 @@
-import "../styles/profile.css";
-import BackButton from "../components/BackButton";
+import "../../shared/styles/profile.css";
+import BackButton from "../../shared/components/BackButton";
 import { useForm } from "react-hook-form";
-import MainButton from "../components/MainButton";
+import MainButton from "../../shared/components/MainButton";
 
 interface FormData {
   lastName: string;
