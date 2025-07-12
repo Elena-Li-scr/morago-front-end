@@ -65,7 +65,7 @@ export default function CodeInput() {
 
   return (
     <div className="code-container">
-      <BackButton />
+      <BackButton icon="/assets/arrow-left.png" />
       <h2 className="code-header">Проверочный код</h2>
       <p className="sign-form-text">
         Мы отправили проверочный <br /> код на ваш номер телефона{" "}
@@ -109,6 +109,7 @@ export default function CodeInput() {
           text="Теперь вы можете полноценно воспользоваться всеми возможностями"
           btn="Здорово!"
           bgImg="/assets/signIcons/success-note.png"
+          className="button button-active"
         />
       )}
     </div>
