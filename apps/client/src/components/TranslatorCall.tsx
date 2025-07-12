@@ -1,5 +1,5 @@
-import MainButton from "./MainButton";
-import "../styles/translatorCall.css";
+import MainButton from "@shared/components/MainButton";
+import "@shared/styles/translatorCall.css";
 interface Translator {
   name: string;
   theme: string;

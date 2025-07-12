@@ -1,4 +1,4 @@
-import "../styles/simpleHeader.css";
+import "@shared/styles/simpleHeader.css";
 interface Props {
   onClick: () => void;
 }

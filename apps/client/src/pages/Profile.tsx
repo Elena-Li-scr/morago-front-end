@@ -1,5 +1,5 @@
-import "../../shared/styles/profile.css";
-import MainFooter from "../../shared/components/MainFooter";
+import "@shared/styles/profile.css";
+import MainFooter from "../components/MainFooter";
 import { useNavigate } from "react-router-dom";
 export default function Profile() {
   const navigate = useNavigate();

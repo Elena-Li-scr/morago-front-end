@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { useTopicStore } from "../store/useTopicStore";
+import { useTopicStore } from "@shared/store/useTopicStore";
 
 interface Props {
   page: string;

@@ -1,10 +1,10 @@
-import Theme from "./Theme";
+import Theme from "@shared/components/Theme";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useTopicStore } from "../store/useTopicStore";
+import { useTopicStore } from "@shared/store/useTopicStore";
 
-import "../styles/homePage.css";
-import "../styles/theme.css";
+import "@shared/styles/homePage.css";
+import "@shared/styles/theme.css";
 
 export default function ThemePage() {
   const popularThemes: string[] = [

@@ -1,4 +1,4 @@
-import "../styles/modals.css";
+import "@shared/styles/modals.css";
 
 export default function FirstCallModal() {
   return (

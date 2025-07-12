@@ -1,5 +1,5 @@
 import Rating from "./Rating";
-import "../styles/translator.css";
+import "@shared/styles/translator.css";
 interface Translator {
   name: string;
   theme: string;

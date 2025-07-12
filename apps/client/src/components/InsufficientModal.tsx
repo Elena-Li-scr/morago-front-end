@@ -1,4 +1,4 @@
-import "../styles/modals.css";
+import "@shared/styles/modals.css";
 export default function InsufficientModal() {
   return (
     <div className="modal-window-wrapper">

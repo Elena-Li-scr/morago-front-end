@@ -1,6 +1,6 @@
-import "../../shared/styles/profile.css";
-import BackButton from "../../shared/components/BackButton";
-import MainButton from "../../shared/components/MainButton";
+import "@shared/styles/profile.css";
+import BackButton from "@shared/components/BackButton";
+import MainButton from "@shared/components/MainButton";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
 

@@ -1,4 +1,4 @@
-import MainButton from "./MainButton";
+import MainButton from "@shared/components/MainButton";
 import { useNavigate } from "react-router-dom";
 
 export default function BalanceHeader() {

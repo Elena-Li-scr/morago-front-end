@@ -1,9 +1,9 @@
 import { useForm } from "react-hook-form";
-import MainButton from "../../shared/components/MainButton";
-import SucessActionModal from "../../shared/components/SucessActionModal";
-import BackButton from "../../shared/components/BackButton";
+import MainButton from "@shared/components/MainButton";
+import SucessActionModal from "@shared/components/SucessActionModal";
+import BackButton from "@shared/components/BackButton";
 
-import "../../shared/styles/balanceWithdraw.css";
+import "@shared/styles/balanceWithdraw.css";
 import { useState } from "react";
 
 interface FormData {
