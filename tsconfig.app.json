@@ -21,7 +21,28 @@
     "noUnusedParameters": true,
     "erasableSyntaxOnly": true,
     "noFallthroughCasesInSwitch": true,
-    "noUncheckedSideEffectImports": true
+    "noUncheckedSideEffectImports": true,
+
+    "baseUrl": ".",
+    "paths": {
+      "@shared/*": ["shared/*"]
+    }
   },
-  "include": ["src"]
+  "include": [
+    "src",
+    "apps/client/src/components/Rating.tsx",
+    "apps/client/src/components/InsufficientModal.tsx",
+    "apps/client/src/components/HomeHeader.tsx",
+    "apps/client/src/components/FirstCallModal.tsx",
+    "apps/client/src/components/Translator.tsx",
+    "apps/client/src/components/SimpleHeader.tsx",
+    "apps/client/src/components/TranslatorCall.tsx",
+    "apps/client/src/components/ThemePage.tsx",
+    "shared/components",
+    "shared/store",
+    "shared/services",
+    "shared/utils",
+    "shared/styles.d.ts",
+    "apps/client/src/App.tsx"
+  ]
 }

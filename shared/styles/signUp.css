@@ -1,0 +1,247 @@
+.sign-form,
+.code-container {
+  width: 100%;
+  max-width: 375px;
+  margin: auto;
+  padding: 30px 24px;
+  box-sizing: border-box;
+}
+
+.sign-form-header {
+  font-size: 30px;
+  font-weight: 700;
+  line-height: 130%;
+  color: #191d31;
+  margin-top: 30px;
+  margin-bottom: 15px;
+}
+
+.code-header {
+  font-size: 20px;
+  font-weight: 700;
+  color: #191d31;
+  margin-bottom: 15px;
+  margin-top: 20px;
+}
+
+.back-button {
+  border-radius: 50%;
+  border: 1px solid #f3f3f3;
+  width: 46px;
+  height: 46px;
+  padding: 11px;
+  background-color: inherit;
+  cursor: pointer;
+}
+.sign-form-text,
+.sign-form-note {
+  font-size: 14px;
+  color: #a7a9b7;
+  margin-bottom: 20px;
+  line-height: 24px;
+}
+
+.sign-form-note {
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+.link-to-sign {
+  text-decoration: none;
+  color: #a7a9b7;
+}
+
+.link-to-sign:hover,
+.link-to-sign:focus,
+.link-to-sign:active,
+.link-to-sign:visited {
+  color: #a7a9b7;
+  text-decoration: none;
+}
+
+.input-label {
+  font-weight: 600;
+  display: block;
+  margin-top: 20px;
+}
+.input-wrapper {
+  position: relative;
+  margin: 10px 0px;
+  width: 100%;
+  max-width: 327px;
+}
+
+.input-wrapper > img {
+  position: absolute;
+  top: 15px;
+  left: 15px;
+}
+
+.main-input {
+  width: 100%;
+  height: 52px;
+  color: #191d31;
+  font-size: 12px;
+  border-radius: 12px;
+  border: 1px solid #f3f3f3;
+  padding-left: 54px;
+  font-family: "Montserrat", sans-serif;
+  font-weight: 400;
+}
+
+.main-input::placeholder {
+  color: #a7a9b7;
+}
+
+.main-input-error,
+.errors {
+  color: #b50000;
+  font-size: 14px;
+}
+
+.code-form-inputs {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  max-width: 327px;
+}
+
+.code-form-input {
+  width: 66px;
+  height: 59px;
+  border-radius: 12px;
+  border: none;
+  background-color: #f8f9fb;
+  font-size: 22px;
+  color: #191d31;
+  font-weight: 500;
+  text-align: center;
+  line-height: 59px;
+}
+
+.password-toggle-button {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background-color: inherit;
+  border: none;
+  cursor: pointer;
+}
+.button {
+  width: 100%;
+  max-width: 327px;
+  height: 56px;
+  border-radius: 30px;
+  background-color: #c1c1c1;
+  color: #ffffff;
+  font-family: "Montserrat", sans-serif;
+  font-weight: 600;
+  font-size: 16px;
+  border: 1px solid #a7a9b7;
+  margin: 30px 0px;
+  cursor: pointer;
+}
+
+.button-active {
+  background-color: #015f76;
+}
+
+.personal-data-warning {
+  color: #a7a9b7;
+  font-size: 12px;
+  text-align: center;
+}
+
+.code-repeat {
+  color: #a7a9b7;
+  font-size: 14px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.code-repeat button {
+  background-color: inherit;
+  border: none;
+  color: #191d31;
+  font-size: 14px;
+  cursor: pointer;
+  margin-left: 5px;
+}
+
+.success {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.code-cover {
+  background-size: 415px 476px;
+  background-position: top;
+  background-repeat: no-repeat;
+  background-color: #ffffff;
+  width: 100%;
+  max-width: 375px;
+  margin: auto;
+  height: 547px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  overflow: hidden;
+  position: relative;
+}
+
+.code-cover::before {
+  content: "";
+  position: absolute;
+  top: 209px;
+  left: 0;
+  width: 100%;
+  height: 50px;
+  background: linear-gradient(
+    rgba(255, 255, 255, 0.1),
+    rgba(255, 255, 255, 0.8)
+  );
+}
+
+.success-wrapper {
+  background: linear-gradient(
+    rgba(255, 255, 255, 0.8) 0%,
+    rgba(255, 255, 255, 1) 10%
+  );
+  padding: 16px 24px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+  height: 288px;
+}
+.success-header {
+  font-size: 22px;
+  font-weight: 600;
+  text-align: center;
+  padding-top: 20px;
+}
+
+.success-text {
+  font-size: 14px;
+  color: #a7a9b7;
+  margin-top: 10px;
+  line-height: 24px;
+  text-align: center;
+}
+
+@media screen and (min-width: 375px) {
+  .main-input {
+    font-size: 14px;
+  }
+}
