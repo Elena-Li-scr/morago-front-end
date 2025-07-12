@@ -12,7 +12,7 @@ export default function MainButton({
   type,
   text,
   onClick,
-  className = "button button-active",
+  className,
   disabled,
 }: Props) {
   return (

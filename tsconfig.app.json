@@ -43,6 +43,7 @@
     "shared/services",
     "shared/utils",
     "shared/styles.d.ts",
-    "apps/client/src/App.tsx"
+    "apps/client/src/App.tsx",
+    "apps/translator/src/App.tsx"
   ]
 }
