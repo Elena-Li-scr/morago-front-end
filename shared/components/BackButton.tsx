@@ -1,13 +1,16 @@
 import { useNavigate } from "react-router-dom";
 
-export default function BackButton() {
+interface Props {
+  icon: string;
+}
+export default function BackButton({ icon }: Props) {
   const navigate = useNavigate();
   const backHandle = () => {
     navigate(-1);
   };
   return (
     <button type="button" onClick={backHandle} className="back-button">
-      <img src="/assets/arrow-left.png" alt="arrow" />
+      <img src={icon} alt="arrow" />
     </button>
   );
 }

@@ -1,0 +1,217 @@
+.mr-top-25px {
+    margin-top: 25px;
+}
+
+.newTraslator-title {
+    margin: 33px 0;
+    font-size: 16px;
+    text-align: center;
+}
+
+.tranalator-checkbox-block {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.tranalator-option {
+    margin-left: 15px;
+    line-height: 180%;
+}
+
+.tranalator-checkbox {
+    margin: 20px 0;
+    position: relative;
+    font-size: 14px;
+    color: #191D31;
+}
+
+.tranalator-checkbox-line {
+    width: 100%;
+    height: 1px;
+    background: #DEE1E7;
+    margin: 20px 0;
+}
+
+.tranalator-checkbox-title {
+    margin-bottom: 20px;
+    font-size: 16px;
+    font-weight: 800;
+    color: #191D31;
+}
+
+.tranalator-fileupload-title {
+    display: block;
+    margin-bottom: 20px;
+
+}
+
+.tranalator-checkbox-input {
+    position: relative;
+    padding: 13px 18px 14px 16px;
+    background: #F9F9F9;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+}
+
+.checkbox {
+    color: #191D31;
+}
+
+.iconPaperClip {
+    position: absolute;
+    right: 18px;
+    top: 14px;
+}
+
+.newTraslator-text {
+    margin: 20px 0 43px;
+    text-align: center;
+    color: #A7A9B7;
+    font-size: 10px;
+}
+
+
+.tranalator-checkbox-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.checkbox-button {
+    padding: 10px 14px;
+    background: #F9F9F9;
+}
+
+.checkbox-button.active {
+    background: #EB9412;
+    color: #FFFFFF;
+    border-radius: 6px;
+}
+
+.icon-camera-btn {
+
+    position: absolute;
+    width: 44px;
+    height: 44px;
+    top: 65px;
+    left: 63px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.register-block {
+    position: relative;
+}
+
+.icon-camera {
+    position: relative;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    color: #fff;
+    z-index: 1;
+}
+
+.icon-camera-btn::after {
+    z-index: 0;
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    content: '';
+    top: 0;
+    left: 0;
+    background: #1D272F;
+    border-radius: 30px;
+    border: 1.5px solid #FFFFFF;
+}
+
+.camera {
+    background: red;
+}
+
+.register-user {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.register-user-photo {
+    background: red;
+    width: 100px;
+    height: 100px;
+    border-radius: 21.05px;
+}
+
+.hidden {
+    opacity: 0;
+    z-index: -9999;
+    position: absolute;
+    width: 100%;
+}
+
+.tranalator-fileupload-label {
+    position: relative;
+    margin-left: 14px;
+    color: #A7A9B7;
+    font-size: 14px;
+}
+
+.tranalator-fileupload-label.active {
+    color: #191D31;
+}
+
+.tranalator-checkbox-block label {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.checkmark {
+    position: absolute;
+    top: 3px;
+    left: -1px;
+    height: 18px;
+    width: 18px;
+    border: 1.5px solid #191D31;
+    border-radius: 5px;
+    background-color: #F9F9F9;
+
+}
+
+.checkmark:after {
+    content: '✓';
+    position: absolute;
+    display: none;
+}
+
+.checkmark.special {
+    left: 16px;
+    top: 16px;
+}
+
+.tranalator-checkbox-block input:checked~.checkmark {
+    border-color: #EB9412;
+}
+
+.tranalator-checkbox-block input:checked~.checkmark:after {
+    display: block;
+    top: -2px;
+    left: 3px;
+    color: #EB9412;
+    ;
+}
+
+
+
+::-webkit-calendar-picker-indicator {
+    position: absolute;
+    z-index: 56;
+    left: 14px;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+}

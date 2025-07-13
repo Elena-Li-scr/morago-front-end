@@ -11,3 +11,9 @@ body {
   font-family: "Montserrat", sans-serif;
   font-weight: 400;
 }
+
+input,
+button {
+  border: none;
+  background: none;
+}
