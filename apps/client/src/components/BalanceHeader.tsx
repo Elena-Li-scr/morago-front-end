@@ -26,7 +26,12 @@ export default function BalanceHeader() {
           </div>
         </div>
       </div>
-      <MainButton text="Пополнить баланс" type="button" onClick={upBalance} />
+      <MainButton
+        text="Пополнить баланс"
+        type="button"
+        onClick={upBalance}
+        className="button button-active"
+      />
     </div>
   );
 }

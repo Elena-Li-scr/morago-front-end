@@ -98,6 +98,7 @@ export default function CallSelectors() {
           type="button"
           onClick={handleNext}
           disabled={!chosenTopic}
+          className="button button-active"
         />
       </div>
       <MainFooter page="main" />

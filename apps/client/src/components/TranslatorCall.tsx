@@ -76,6 +76,7 @@ export default function TranslatorCall({ translator }: Props) {
         text={translator.online ? "Позвонить" : "Не доступен"}
         bgColor={translator.online ? "#3AB500" : "#C1C1C1"}
         disabled={!translator.online}
+        className="button button-active"
       />
     </div>
   );

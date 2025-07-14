@@ -5,6 +5,7 @@ import MainButton from "@shared/components/MainButton";
 import BackButton from "@shared/components/BackButton";
 
 import "@shared/styles/signUp.css";
+import { useNavigate } from "react-router-dom";
 
 interface Code {
   num1: string;
@@ -18,7 +19,8 @@ export default function CodeInput() {
     mode: "onChange",
   });
 
-  const [success, setSuccess] = useState(false);
+  const [success, setSuccess] = useState(true);
+  const navigate = useNavigate();
 
   const inputRefs = [
     useRef<HTMLInputElement | null>(null),
@@ -61,6 +63,10 @@ export default function CodeInput() {
         inputRefs[index - 1].current?.focus();
       }
     }
+  };
+
+  const successHandler = () => {
+    navigate("/home");
   };
 
   return (
@@ -110,6 +116,7 @@ export default function CodeInput() {
           btn="Здорово!"
           bgImg="/assets/signIcons/success-note.png"
           className="button button-active"
+          onClick={successHandler}
         />
       )}
     </div>
