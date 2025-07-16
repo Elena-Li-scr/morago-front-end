@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useTopicStore } from "@shared/store/useTopicStore";
+import { useTopicStore } from "@shared/store/useStore";
 import { servicesGroup } from "@shared/utils/temporaryVar";
 import SimpleHeader from "../components/SimpleHeader";
 import MainFooter from "../components/MainFooter";
@@ -69,7 +69,7 @@ export default function CallSelectors() {
                   type="button"
                   onClick={() => groupSelectorsToggle(groupName)}
                 >
-                  {isGroupOpen ? "<" : "V"}
+                  {isGroupOpen ? "V" : "<"}
                 </button>
               </div>
               {isGroupOpen && (

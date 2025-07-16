@@ -7,13 +7,21 @@ export default function BalanceHeader() {
   const upBalance = () => {
     navigate("/balance-withdraw");
   };
+
+  const toNotifications = () => {
+    navigate("/notification");
+  };
   return (
     <div className="home-header-wrapper">
       <div className="home-header">
         <h2>
           <img src="/assets/home/morago.png" alt="morago" />
         </h2>
-        <button type="button" className="home-notification-bell">
+        <button
+          type="button"
+          className="home-notification-bell"
+          onClick={toNotifications}
+        >
           <img src="/assets/home/notification-bell.png" alt="notification" />
         </button>
       </div>

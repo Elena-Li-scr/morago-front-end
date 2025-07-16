@@ -1,20 +1,13 @@
 import MainButton from "@shared/components/MainButton";
 import "@shared/styles/translatorCall.css";
-interface Translator {
-  name: string;
-  theme: string;
-  rating: number;
-  photo: string;
-  online: boolean;
-  status: string;
-  price: number;
-}
+import type { Translator } from "../types";
 
 interface Props {
   translator: Translator;
+  onClick?: () => void;
 }
 
-export default function TranslatorCall({ translator }: Props) {
+export default function TranslatorCall({ translator, onClick }: Props) {
   return (
     <div className="translator-call-wrapper">
       <div className="translator-call-header">
@@ -43,7 +36,7 @@ export default function TranslatorCall({ translator }: Props) {
           </div>
         </div>
         <div className="translators-call-buttons">
-          <button>
+          <button type="button" onClick={onClick}>
             <img
               src={
                 translator.online
@@ -77,6 +70,7 @@ export default function TranslatorCall({ translator }: Props) {
         bgColor={translator.online ? "#3AB500" : "#C1C1C1"}
         disabled={!translator.online}
         className="button button-active"
+        onClick={onClick}
       />
     </div>
   );

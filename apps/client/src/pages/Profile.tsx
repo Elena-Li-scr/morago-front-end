@@ -10,6 +10,10 @@ export default function Profile() {
   const ChangePassword = () => {
     navigate("/change-password");
   };
+
+  const toNotifications = () => {
+    navigate("/notification");
+  };
   return (
     <div className="profile-wrapper">
       <header className="profile-header">
@@ -45,7 +49,11 @@ export default function Profile() {
           <img src="/assets/signIcons/lock-valid.png" alt="change password" />
           <p>Изменить пароль</p>
         </button>
-        <button type="button" className="profile-main-option">
+        <button
+          type="button"
+          className="profile-main-option"
+          onClick={toNotifications}
+        >
           <img src="/assets/profile/notification.png" alt="notification" />
           <p>Уведомления</p>
         </button>

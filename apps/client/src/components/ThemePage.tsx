@@ -1,7 +1,7 @@
 import Theme from "@shared/components/Theme";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useTopicStore } from "@shared/store/useTopicStore";
+import { useTopicStore } from "@shared/store/useStore";
 
 import "@shared/styles/homePage.css";
 import "@shared/styles/theme.css";
