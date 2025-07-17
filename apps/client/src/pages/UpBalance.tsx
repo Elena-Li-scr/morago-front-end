@@ -8,8 +8,8 @@ export default function UpBalance() {
       <div className="detailing">
         <h3>Детализация</h3>
         <div className="prev-calling-list">
-          {translators.map((translator) => (
-            <div className="prev-call-detail">
+          {translators.map((translator, index) => (
+            <div className="prev-call-detail" key={index}>
               <img src={translator.photo} alt="translator-photo" />
               <div className="prev-call-main">
                 <p>{translator.name}</p>

@@ -3,6 +3,7 @@ import BackButton from "@shared/components/BackButton";
 import MainButton from "@shared/components/MainButton";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 interface FormData {
   password: string;
@@ -19,6 +20,7 @@ export default function ChangePassword() {
   } = useForm<FormData>({
     mode: "onChange",
   });
+  const navigate = useNavigate();
   const onSubmit = (data: FormData) => {
     console.log(data);
   };
@@ -39,6 +41,10 @@ export default function ChangePassword() {
       ...prev,
       [field]: !prev[field],
     }));
+  };
+
+  const toRecoveryPassword = () => {
+    navigate("/forgot-password");
   };
 
   return (
@@ -100,7 +106,11 @@ export default function ChangePassword() {
             <p className="errors">{errors.password.message}</p>
           )}
 
-          <button type="button" className="forgot-password">
+          <button
+            type="button"
+            className="forgot-password"
+            onClick={toRecoveryPassword}
+          >
             Забыл пароль
           </button>
 

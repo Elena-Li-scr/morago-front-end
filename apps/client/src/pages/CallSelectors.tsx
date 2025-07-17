@@ -69,7 +69,19 @@ export default function CallSelectors() {
                   type="button"
                   onClick={() => groupSelectorsToggle(groupName)}
                 >
-                  {isGroupOpen ? "V" : "<"}
+                  {isGroupOpen ? (
+                    <img
+                      src="/assets/close.PNG"
+                      alt="to-open"
+                      className="close-group"
+                    />
+                  ) : (
+                    <img
+                      src="/assets/open.PNG"
+                      alt="to-open"
+                      className="open-group"
+                    />
+                  )}
                 </button>
               </div>
               {isGroupOpen && (

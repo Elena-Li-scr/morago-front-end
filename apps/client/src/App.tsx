@@ -12,6 +12,9 @@ import ChangePassword from "./pages/ChangePassword";
 import CallPage from "./pages/CallPage";
 import CallsHistory from "./pages/CallsHistory";
 import Notification from "./pages/Notification";
+import ForgotPassword from "./pages/ForgotPassword";
+import ForgotPasswordCode from "./pages/ForgotPasswordCode";
+import NewPassword from "./pages/NewPassword";
 function App() {
   return (
     <>
@@ -31,6 +34,12 @@ function App() {
           <Route path="/call" element={<CallPage />} />
           <Route path="/calls-history" element={<CallsHistory />} />
           <Route path="/notification" element={<Notification />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route
+            path="/forgot-password-code"
+            element={<ForgotPasswordCode />}
+          />
+          <Route path="/new-password" element={<NewPassword />} />
         </Routes>
       </BrowserRouter>
     </>
