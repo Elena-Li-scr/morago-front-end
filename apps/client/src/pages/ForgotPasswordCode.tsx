@@ -13,7 +13,7 @@ interface Code {
   num4: string;
 }
 
-export default function CodeInput() {
+export default function ForgotPasswordCode() {
   const [success, setSuccess] = useState(false);
   const navigate = useNavigate();
   const fieldNames = ["num1", "num2", "num3", "num4"] as const;
@@ -25,24 +25,23 @@ export default function CodeInput() {
   };
 
   const successHandler = () => {
-    navigate("/home");
+    navigate("/new-password");
   };
 
   return (
     <div className="code-container">
       <BackButton icon="/assets/arrow-left.png" />
-      <h2 className="code-header">Проверочный код</h2>
+      <h2 className="code-header">Код для сброса пароля</h2>
       <p className="sign-form-text">
-        Мы отправили проверочный <br /> код на ваш номер телефона{" "}
+        Мы отправили код для сброса пароля на ваш номер телефона
       </p>
       <CodeForm onSubmit={onSubmit} />
 
       {success && (
         <SucessActionModal
-          header="Регистрация
-            прошла успешно"
-          text="Теперь вы можете полноценно воспользоваться всеми возможностями"
-          btn="Здорово!"
+          header="Пароль сброшен"
+          text="Теперь вы можете войти с новым паролем"
+          btn="Ok"
           bgImg="/assets/signIcons/success-note.png"
           className="button button-active"
           onClick={successHandler}

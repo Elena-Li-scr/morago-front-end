@@ -84,6 +84,13 @@ interface Translator {
   online: boolean;
   status: string;
   price: number;
+  date?: string;
+}
+
+interface Notification {
+  title: string;
+  body: string;
+  time: string;
 }
 
 export const translators: Translator[] = [
@@ -97,6 +104,7 @@ export const translators: Translator[] = [
     online: true,
     status: "Верифицирован ",
     price: 1000,
+    date: "05.05.2022",
   },
   {
     name: "П. Наталья",
@@ -108,6 +116,7 @@ export const translators: Translator[] = [
     online: false,
     status: "Верифицирован ",
     price: 1000,
+    date: "05.05.2022",
   },
   {
     name: "Л. Мин Хо",
@@ -119,5 +128,39 @@ export const translators: Translator[] = [
     online: true,
     status: "Верифицирован ",
     price: 1000,
+    date: "05.05.2022",
+  },
+];
+
+export const missed: Translator[] = [
+  {
+    name: "К. Дмитрий",
+    theme: "Банк",
+    rating: 4,
+    reviewsCount: 7,
+    photo: "/assets/home/photo1.png",
+    time: "00.00",
+    online: true,
+    status: "Верифицирован ",
+    price: 1000,
+    date: "05.05.2022",
+  },
+];
+
+export const notifications: Notification[] = [
+  {
+    title: "Новые тарифы",
+    body: "Some notifications",
+    time: "2025-07-16 10:30",
+  },
+  {
+    title: "Приложение обновилось — стало еще круче",
+    body: "Some notifications",
+    time: "2025-07-15 18:20",
+  },
+  {
+    title: "Бонусы от реферальной ссылки — пяу!",
+    body: "Some notifications",
+    time: "2025-07-15 18:20",
   },
 ];

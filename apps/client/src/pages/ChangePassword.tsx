@@ -3,6 +3,7 @@ import BackButton from "@shared/components/BackButton";
 import MainButton from "@shared/components/MainButton";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 interface FormData {
   password: string;
@@ -19,6 +20,7 @@ export default function ChangePassword() {
   } = useForm<FormData>({
     mode: "onChange",
   });
+  const navigate = useNavigate();
   const onSubmit = (data: FormData) => {
     console.log(data);
   };
@@ -41,10 +43,14 @@ export default function ChangePassword() {
     }));
   };
 
+  const toRecoveryPassword = () => {
+    navigate("/forgot-password");
+  };
+
   return (
     <div className="change-profile-wrapper">
       <div className="change-profile-header">
-        <BackButton />
+        <BackButton icon="/assets/arrow-left.png" />
         <h3>Изменить пароль</h3>
       </div>
       <form className="change-profile-form" onSubmit={handleSubmit(onSubmit)}>
@@ -100,7 +106,11 @@ export default function ChangePassword() {
             <p className="errors">{errors.password.message}</p>
           )}
 
-          <button type="button" className="forgot-password">
+          <button
+            type="button"
+            className="forgot-password"
+            onClick={toRecoveryPassword}
+          >
             Забыл пароль
           </button>
 
@@ -208,7 +218,11 @@ export default function ChangePassword() {
             <p className="errors">{errors.repeatPassword.message}</p>
           )}
         </div>
-        <MainButton text="Сохранить изменения" type="submit" />
+        <MainButton
+          text="Сохранить изменения"
+          type="submit"
+          className="button button-active"
+        />
       </form>
     </div>
   );

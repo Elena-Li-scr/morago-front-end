@@ -1,20 +1,13 @@
 import Rating from "./Rating";
 import "@shared/styles/translator.css";
-interface Translator {
-  name: string;
-  theme: string;
-  rating: number;
-  reviewsCount: number;
-  photo: string;
-  time?: string;
-}
+import type { Translator } from "../types";
 
 interface Props {
   translator: Translator;
   onClick?: () => void;
 }
 
-export default function Translator({ translator, onClick }: Props) {
+export default function TranslatorInfo({ translator, onClick }: Props) {
   return (
     <div className="translator" role="button" onClick={onClick}>
       <img src={translator.photo} alt="photo" />

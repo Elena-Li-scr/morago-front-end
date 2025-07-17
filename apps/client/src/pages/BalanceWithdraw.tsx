@@ -36,7 +36,7 @@ export default function BalanceWithdraw() {
   const selectedAmount = watch("amount");
   return (
     <div className="balance-withdraw-wrapper">
-      <BackButton />
+      <BackButton icon="/assets/arrow-left.png" />
       <h2 className="balance-withdraw-header">Пополнить баланс</h2>
       <p className="balance-withdraw-text">
         Минимальная сумма пополнения 10.000 вон. Средства зачисляются на счёт в
@@ -87,7 +87,11 @@ export default function BalanceWithdraw() {
           ))}
         </div>
         {errors.amount && <p>{errors.amount.message}</p>}
-        <MainButton type="submit" text="Запросить пополнение" />
+        <MainButton
+          type="submit"
+          text="Запросить пополнение"
+          className="button button-active"
+        />
       </form>
       <button className="withdraw-support">Поддержка</button>
       {isSuccess && (
@@ -98,6 +102,7 @@ export default function BalanceWithdraw() {
           bgImg="/assets/home/up-balance.png"
           btn="Здорово!"
           onClick={successAction}
+          className="button button-active"
         />
       )}
     </div>

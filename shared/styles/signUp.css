@@ -240,6 +240,39 @@
   text-align: center;
 }
 
+/* forgot password  */
+.interface-toggle-buttons {
+  background-color: #f8f9fb;
+  width: 100%;
+  height: 50px;
+  border-radius: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 20px 0px;
+}
+
+.user-interface {
+  width: 49.5%;
+  height: 42px;
+  border-radius: 50px;
+  color: #a7a9b7;
+  background-color: #f8f9fb;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.user-interface-active {
+  color: #ffffff;
+  background-color: #eb9412;
+}
+
+.password-back-button {
+  color: #191d31;
+  font-weight: 500;
+  margin-top: 0px;
+}
 @media screen and (min-width: 375px) {
   .main-input {
     font-size: 14px;

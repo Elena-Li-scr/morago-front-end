@@ -200,6 +200,15 @@
   margin-left: 10px;
 }
 
+.open-group {
+  width: 10px;
+  height: 12px;
+}
+.close-group {
+  width: 12px;
+  height: 10px;
+}
+
 .call-selectors {
   margin-top: 10px;
 }

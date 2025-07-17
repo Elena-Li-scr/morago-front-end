@@ -17,7 +17,7 @@ export default function ChangeProfile() {
   return (
     <div className="change-profile-wrapper">
       <div className="change-profile-header">
-        <BackButton />
+        <BackButton icon="/assets/arrow-left.png" />
         <h3>Изменить профиль</h3>
       </div>
       <form className="change-profile-form" onSubmit={handleSubmit(onSubmit)}>
@@ -43,7 +43,11 @@ export default function ChangeProfile() {
             />
           </div>
         </div>
-        <MainButton text="Сохранить изменения" type="submit" />
+        <MainButton
+          text="Сохранить изменения"
+          type="submit"
+          className="button button-active"
+        />
       </form>
     </div>
   );

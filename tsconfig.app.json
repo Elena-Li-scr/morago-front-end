@@ -34,7 +34,7 @@
     "apps/client/src/components/InsufficientModal.tsx",
     "apps/client/src/components/HomeHeader.tsx",
     "apps/client/src/components/FirstCallModal.tsx",
-    "apps/client/src/components/Translator.tsx",
+    "apps/client/src/components/TranslatorInfo.tsx",
     "apps/client/src/components/SimpleHeader.tsx",
     "apps/client/src/components/TranslatorCall.tsx",
     "apps/client/src/components/ThemePage.tsx",
