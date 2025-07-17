@@ -10,11 +10,7 @@ import { FileUpload } from "../components/registration_translator/FileUpload";
 import "../assets/style/newTranslator.css";
 import { ButtonCheckboxGroup } from "../components/registration_translator/ButtonCheckboxGroup";
 import AvatarUpload from "../components/registration_translator/AvatarUpload";
-import {
-  formatKoreanPhone,
-  formatTopikLevel,
-  validatePhone,
-} from "../utils/inputValidate";
+import { handleInput } from "../utils/inputValidate";
 import { useNavigate } from "react-router-dom";
 import { CHECKBOX_GROUPS, INPUT_FIELDS_CONFIG } from "../constans/constans";
 import SucessActionModal from "@shared/components/SucessActionModal";
@@ -39,18 +35,10 @@ export default function NewTrasnlator() {
     setIsFormValid(isValid);
   }, [user]);
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    if (name === "phone") {
-      const formatted = formatKoreanPhone(value);
-      setUser((prev) => ({ ...prev, phone: formatted }));
-      validatePhone(formatted, setErrors);
-      return;
-    }
-    setUser((prev) => ({
-      ...prev,
-      [name]: name === "topikLevel" ? formatTopikLevel(value) : value,
-    }));
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
+    handleInput(user, e.target, setUser, setErrors);
   };
 
   const toggleItem = (field: keyof UserProfileExtra, value: string) => {
@@ -73,7 +61,7 @@ export default function NewTrasnlator() {
   const successSubmit = () => {
     setSuccess(false);
     document.body.style.overflow = "scroll";
-    navigate("/");
+    navigate("/my-home-translator-page");
   };
 
   return (
@@ -140,7 +128,7 @@ export default function NewTrasnlator() {
       {success && (
         <SucessActionModal
           onClick={successSubmit}
-          bgImg="/images/successRegistr.png"
+          bgImg="/assets/images/successRegistr.png"
           header="Мы отправили смс с ссылкой для записи на собеседование"
           text="Если вы не получили, то звоните 010 2530 8575"
           btn="Здорово!"

@@ -3,12 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { LuLock } from "react-icons/lu";
 import { FiPhone } from "react-icons/fi";
 import { InputField } from "../components/registration_translator/InputField";
-import {
-  formatKoreanPhone,
-  showPasswordIcon,
-  validatePasswords,
-  validatePhone,
-} from "../utils/inputValidate";
+import { handleInput, showPasswordIcon } from "../utils/inputValidate";
 import { defaultData, type FormErrors } from "../types/types";
 import { newUser } from "@shared/services/api";
 import "../assets/style/register.css";
@@ -23,24 +18,10 @@ export default function RegisterForm() {
   const [showRepeatPassword, setShowRepeatPassword] = useState(false);
   const navigate = useNavigate();
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    if (name === "phone") {
-      const formatted = formatKoreanPhone(value);
-      setFormData((prev) => ({ ...prev, phone: formatted }));
-      validatePhone(formatted, setErrors);
-      return;
-    }
-    if (name === "password" || name === "confirmPassword") {
-      const updatedData = { ...formData, [name]: value };
-      setFormData(updatedData);
-      validatePasswords(
-        updatedData.password,
-        updatedData.confirmPassword,
-        setErrors
-      );
-      return;
-    }
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
+    handleInput(formData, e.target, setFormData, setErrors);
   };
 
   const isFilled =

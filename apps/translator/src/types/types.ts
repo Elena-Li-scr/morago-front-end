@@ -12,6 +12,7 @@ export const defaultData: FormData = {
   password: "",
   confirmPassword: "",
 };
+
 export type UserProfileExtra = {
   phone: string;
   fullName: string;
@@ -35,3 +36,18 @@ export const defaultExtraData: UserProfileExtra = {
   certifiedTopics: [],
   availableLanguages: [],
 };
+
+export type ChangePasswordData = {
+  currentPassword: string;
+  newPassword: string;
+  confirmNewPassword: string;
+};
+
+export const defaultChangePasswordData: ChangePasswordData = {
+  currentPassword: "",
+  newPassword: "",
+  confirmNewPassword: "",
+};
+export type ChangePasswordErrors = Partial<
+  Record<keyof ChangePasswordData, string>
+>;

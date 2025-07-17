@@ -3,8 +3,8 @@ import "../assets/style/verification.css";
 import { useNavigate } from "react-router-dom";
 import SucessActionModal from "@shared/components/SucessActionModal";
 import MainButton from "@shared/components/MainButton";
-import BackButton from "@shared/components/BackButton";
 import { CODE_LENGTH, COUNTDOWN_SECONDS } from "../constans/constans";
+import { MdKeyboardBackspace } from "react-icons/md";
 
 export default function VerificationCode() {
   const [success, setSuccess] = useState(false);
@@ -69,7 +69,13 @@ export default function VerificationCode() {
   return (
     <div className="container">
       <form onSubmit={handleSubmit} className="verification">
-        <BackButton icon="/images/arrow-left.png" />
+        <button
+          type="button"
+          onClick={() => navigate("/register")}
+          className="back-button"
+        >
+          <MdKeyboardBackspace className="back-icon" />
+        </button>
         <h2 className="verification-title">Проверочный код</h2>
         <p className="verification-text">
           Мы отправили проверочный код на ваш номер телефона{" "}
@@ -109,7 +115,7 @@ export default function VerificationCode() {
       {success && (
         <SucessActionModal
           onClick={successSubmit}
-          bgImg="/images/success.png"
+          bgImg="/assets/images/success.png"
           header="Регистрация прошла успешно"
           text="Теперь вы можете пользоваться всеми возможностями"
           btn="Здорово!"
@@ -118,8 +124,4 @@ export default function VerificationCode() {
       )}
     </div>
   );
-}
-
-{
-  /* <FiArrowLeftCircle className="verification-back-icon" /> */
 }

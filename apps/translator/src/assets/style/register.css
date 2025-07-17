@@ -6,7 +6,7 @@
 
 
 .container {
-    max-width: 376px;
+    max-width: 400px;
     width: 100%;
     margin: 0 auto;
     padding: 0 24px;
@@ -47,6 +47,14 @@
     color: #191D31;
     margin: 10px 0;
     font-weight: 800;
+    display: flex;
+    justify-content: space-between;
+}
+
+.register-label-balance {
+    font-size: 12px;
+    font-weight: 400;
+
 }
 
 input::placeholder {
@@ -74,12 +82,20 @@ input::placeholder {
 }
 
 .button {
-    width: 100%;
-    margin-top: 35px;
+    max-width: 100% !important;
+    margin-top: 20px !important;
+    margin-bottom: 0 !important;
     background: #C1C1C1;
     border-radius: 30px;
     color: #fff;
     padding: 17.5px 0;
+    font-family: "Montserrat", sans-serif;
+    border: 1px solid #a7a9b7;
+}
+
+.button.balance-btn {
+    border: 1px solid #a7a9b7;
+    max-width: 100%;
 }
 
 .button.active {

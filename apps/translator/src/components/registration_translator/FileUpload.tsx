@@ -28,7 +28,11 @@ export const FileUpload: React.FC<FileUploadProps> = ({ label, onChange }) => {
   return (
     <div className="tranalator-fileupload register-input">
       <button type="button" onClick={handleClick}>
-        <img className="iconPaper-Clip" src="/icons/paperclip-2.svg" alt="" />
+        <img
+          className="iconPaper-Clip"
+          src="/assets/icons/paperclip-2.svg"
+          alt="clip"
+        />
       </button>
       {preview ? (
         <label className="tranalator-fileupload-label input active ">

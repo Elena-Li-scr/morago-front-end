@@ -28,7 +28,7 @@ const AvatarUpload: React.FC<AvatarUploadProps> = ({ onChange }) => {
     <div className="register-user">
       <div className="register-block">
         <img
-          src={preview || "/images/user.png"}
+          src={preview || "/assets/images/user.png"}
           alt="avatar"
           className="register-user-photo"
         />

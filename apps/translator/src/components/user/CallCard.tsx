@@ -1,0 +1,51 @@
+type Props = {
+  avatarUrl: string;
+  name: string;
+  topic: string;
+  time: string;
+  price: number;
+  date?: string;
+};
+
+const formatTime = (totalSeconds: number): string => {
+  const minutes = Math.floor(totalSeconds / 60);
+  const seconds = totalSeconds % 60;
+  const minLabel =
+    minutes === 1 ? "мин." : minutes >= 2 && minutes <= 4 ? "мин." : "мин.";
+  const secLabel =
+    seconds === 1 ? "сек" : seconds >= 2 && seconds <= 4 ? "сек" : "сек";
+  const minText = minutes > 0 ? `${minutes} ${minLabel}` : "";
+  const secText = seconds > 0 ? `${seconds} ${secLabel}` : "";
+  return [minText, secText].filter(Boolean).join(" ");
+};
+
+export const CallCard = ({
+  avatarUrl,
+  name,
+  topic,
+  time,
+  price,
+  date,
+}: Props) => {
+  return (
+    <div className="call-card">
+      <div className="call-user">
+        <img src={avatarUrl} alt={`${name}`} className="all-user-avatar" />
+      </div>
+      <div className="call-info">
+        <p className="call-info-username">{name}</p>
+        <p className="call-info-topic">{topic}</p>
+      </div>
+      {date ? (
+        <div className="call-time">
+          <p className="call-time-time">{date}</p>
+        </div>
+      ) : (
+        <div className="call-time">
+          <p className="call-time-price">{price.toLocaleString()} ₩</p>
+          <p className="call-time-time">{formatTime(Number(time))}</p>
+        </div>
+      )}
+    </div>
+  );
+};
