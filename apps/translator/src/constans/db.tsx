@@ -1,0 +1,38 @@
+export const callData = [
+  {
+    id: 1,
+    avatarUrl: "/assets/images/user.png",
+    name: "Пугачева Алла",
+    topic: "Банк",
+    time: "1460",
+    price: 23000,
+    date: "04.25",
+  },
+  {
+    id: 2,
+    avatarUrl: "/assets/images/user.png",
+    name: "Юзер Первый",
+    topic: "Почта",
+    time: "260",
+    price: 4000,
+    date: "04.25",
+  },
+  {
+    id: 3,
+    avatarUrl: "/assets/images/user.png",
+    name: "Юзер Второй",
+    topic: "Завод",
+    time: "860",
+    price: 16000,
+    date: "03.14",
+  },
+  {
+    id: 4,
+    avatarUrl: "/assets/images/user.png",
+    name: "Юзер Третий",
+    topic: "Аптека",
+    time: "80",
+    price: 1000,
+    date: "03.10",
+  },
+];
