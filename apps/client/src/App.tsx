@@ -15,13 +15,16 @@ import Notification from "./pages/Notification";
 import ForgotPassword from "./pages/ForgotPassword";
 import ForgotPasswordCode from "./pages/ForgotPasswordCode";
 import NewPassword from "./pages/NewPassword";
+import GreetingPage from "./pages/GreetingPage";
+import SignIn from "./pages/SignIn";
 function App() {
   return (
     <>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Navigate to="/sign-up" />} />
+          <Route path="/" element={<GreetingPage />} />
           <Route path="/sign-up" element={<SignUp />} />
+          <Route path="/sign-in" element={<SignIn />} />
           <Route path="/code" element={<CodeInput />} />
           <Route path="/home" element={<HomePage />} />
           <Route path="/call-selectors" element={<CallSelectors />} />

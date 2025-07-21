@@ -40,31 +40,6 @@ export default function ForgotPassword() {
         Восстановить <br /> пароль
       </h2>
 
-      <div className="interface-toggle-buttons">
-        <button
-          type="button"
-          className={
-            userInterface
-              ? "user-interface user-interface-active"
-              : "user-interface"
-          }
-          onClick={() => setUserInterface(true)}
-        >
-          Я пользователь
-        </button>
-        <button
-          type="button"
-          className={
-            !userInterface
-              ? "user-interface user-interface-active"
-              : "user-interface"
-          }
-          onClick={() => setUserInterface(false)}
-        >
-          Я переводчик
-        </button>
-      </div>
-
       {/* phone number  */}
 
       <label className="input-label">Номер телефона</label>

@@ -34,6 +34,13 @@ export default function BalanceWithdraw() {
   };
 
   const selectedAmount = watch("amount");
+  const fullName = watch("fullName");
+
+  const isValid =
+    selectedAmount &&
+    fullName?.trim() !== "" &&
+    !errors.fullName &&
+    !errors.amount;
   return (
     <div className="balance-withdraw-wrapper">
       <BackButton icon="/assets/arrow-left.png" />
@@ -91,6 +98,7 @@ export default function BalanceWithdraw() {
           type="submit"
           text="Запросить пополнение"
           className="button button-active"
+          disabled={!isValid}
         />
       </form>
       <button className="withdraw-support">Поддержка</button>
