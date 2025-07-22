@@ -62,9 +62,7 @@ export default function GreetingPage() {
       <button
         type="button"
         className="translator-page-button"
-        onClick={() =>
-          (window.location.href = "http://localhost:5173/register")
-        }
+        onClick={() => (window.location.href = "http://localhost:5173/register")}
       >
         Я переводчик
       </button>
