@@ -2,7 +2,7 @@
     margin-top: 25px;
 }
 
-.newTraslator-title {
+.new-traslator-title {
     margin: 33px 0;
     font-size: 16px;
     text-align: center;
@@ -55,9 +55,6 @@
     align-items: center;
 }
 
-.checkbox {
-    color: #191D31;
-}
 
 .iconPaperClip {
     position: absolute;
@@ -65,7 +62,7 @@
     top: 14px;
 }
 
-.newTraslator-text {
+.new-traslator-text {
     margin: 20px 0 43px;
     text-align: center;
     color: #A7A9B7;
@@ -139,13 +136,6 @@
     align-items: center;
 }
 
-.register-user-photo {
-    background: red;
-    width: 100px;
-    height: 100px;
-    border-radius: 21.05px;
-}
-
 .hidden {
     opacity: 0;
     z-index: -9999;
@@ -153,16 +143,13 @@
     width: 100%;
 }
 
-.tranalator-fileupload-label {
-    position: relative;
-    margin-left: 14px;
-    color: #A7A9B7;
-    font-size: 14px;
+.register-user-photo {
+    background: red;
+    width: 100px;
+    height: 100px;
+    border-radius: 21.05px;
 }
 
-.tranalator-fileupload-label.active {
-    color: #191D31;
-}
 
 .tranalator-checkbox-block label {
     position: relative;
@@ -170,48 +157,30 @@
     align-items: center;
 }
 
-.checkmark {
-    position: absolute;
-    top: 3px;
-    left: -1px;
-    height: 18px;
-    width: 18px;
+.checkbox {
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
     border: 1.5px solid #191D31;
     border-radius: 5px;
-    background-color: #F9F9F9;
-
+    width: 18px;
+    height: 18px;
+    appearance: none;
+    -webkit-appearance: none;
 }
 
-.checkmark:after {
-    content: '✓';
-    position: absolute;
-    display: none;
-}
 
-.checkmark.special {
-    left: 16px;
-    top: 16px;
-}
 
-.tranalator-checkbox-block input:checked~.checkmark {
+.checkbox:checked {
     border-color: #EB9412;
 }
 
-.tranalator-checkbox-block input:checked~.checkmark:after {
-    display: block;
-    top: -2px;
-    left: 3px;
+/* Галочка */
+.checkbox:checked::after {
+    content: "✓";
     color: #EB9412;
-    ;
-}
-
-
-
-::-webkit-calendar-picker-indicator {
+    font-size: 16px;
     position: absolute;
-    z-index: 56;
-    left: 14px;
-    width: 100%;
-    height: 100%;
-    opacity: 0;
 }

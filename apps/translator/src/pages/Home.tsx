@@ -3,10 +3,13 @@ import "../assets/style/listContacts.css";
 import { CallCard } from "../components/user/CallCard";
 import { callData } from "../constans/db";
 import { useState } from "react";
+import { compareDesc, parseISO } from "date-fns";
 
 export default function Home() {
   const [empyContact, setEmptyContact] = useState<boolean>(false);
-
+  const sortedCallData = [...callData].sort((a, b) =>
+    compareDesc(parseISO(a.date), parseISO(b.date))
+  );
   return (
     <div className="container">
       <div className="home-page">
@@ -15,7 +18,7 @@ export default function Home() {
           <div className="list-contact-empty">Нет истории звонков</div>
         ) : (
           <div className="list-contact">
-            {callData.map((call) => (
+            {sortedCallData.map((call) => (
               <CallCard
                 key={call.id}
                 avatarUrl={call.avatarUrl}

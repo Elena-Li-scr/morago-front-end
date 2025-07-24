@@ -26,21 +26,23 @@ export default function MainFooter() {
   if (!isProfilePage)
     return (
       <footer className="main-footer-tranlator main-footer">
-        {navWithHandlers.map((item) => (
-          <button key={item.name} type="button" onClick={item.onClick}>
-            <img
-              src={page === item.route ? item.iconActive : item.icon}
-              alt={item.name}
-            />
-            <h3
-              className={`main-footer-icon ${
-                page === item.route ? "main-footer-active" : ""
-              }`}
-            >
-              {item.label}
-            </h3>
-          </button>
-        ))}
+        <div className="main-footer-container">
+          {navWithHandlers.map((item) => (
+            <button key={item.name} type="button" onClick={item.onClick}>
+              <img
+                src={page === item.route ? item.iconActive : item.icon}
+                alt={item.name}
+              />
+              <h3
+                className={`main-footer-icon ${
+                  page === item.route ? "main-footer-active" : ""
+                }`}
+              >
+                {item.label}
+              </h3>
+            </button>
+          ))}
+        </div>
       </footer>
     );
 }

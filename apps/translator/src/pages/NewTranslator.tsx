@@ -1,61 +1,32 @@
-import React, { useEffect, useState } from "react";
-import {
-  defaultExtraData,
-  type FormErrors,
-  type UserProfileExtra,
-} from "../types/types";
-import { InputField } from "../components/registration_translator/InputField";
-import { CheckboxGroup } from "../components/registration_translator/CheckboxGroup";
-import { FileUpload } from "../components/registration_translator/FileUpload";
+import { useState } from "react";
+import { ControlledCheckboxGroup } from "../components/registration_translator/CheckboxGroup";
 import "../assets/style/newTranslator.css";
-import { ButtonCheckboxGroup } from "../components/registration_translator/ButtonCheckboxGroup";
+import { LanguageToggleButtons } from "../components/registration_translator/LanguageToggleButtons";
 import AvatarUpload from "../components/registration_translator/AvatarUpload";
-import { handleInput } from "../utils/inputValidate";
 import { useNavigate } from "react-router-dom";
 import { CHECKBOX_GROUPS, INPUT_FIELDS_CONFIG } from "../constans/constans";
 import SucessActionModal from "@shared/components/SucessActionModal";
+import { ControlledInputField } from "../components/registration_translator/ControlledInputField";
+import { FormProvider, useForm } from "react-hook-form";
+import { rules } from "../utils/rules";
+import { auth } from "../utils/auth";
+import type { UserProfileExtra } from "../types/types";
 
 export default function NewTrasnlator() {
-  const [user, setUser] = useState(defaultExtraData);
-  const [errors, setErrors] = useState<FormErrors>({});
-  const [isFormValid, setIsFormValid] = useState(false);
-  const [success, setSuccess] = useState(false);
+  const methods = useForm<UserProfileExtra>({
+    mode: "onChange",
+  });
 
+  const { control, handleSubmit, formState } = methods;
+  const [success, setSuccess] = useState(false);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const isValid =
-      !!user.fullName?.trim() &&
-      !!user.phone?.trim() &&
-      !!user.birthDate?.trim() &&
-      !!user.topikLevel?.trim() &&
-      user.topikPhoto !== null &&
-      user.translationTopics.length > 0 &&
-      user.availableLanguages.length > 0;
-    setIsFormValid(isValid);
-  }, [user]);
-
-  const handleInputChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
-  ) => {
-    handleInput(user, e.target, setUser, setErrors);
-  };
-
-  const toggleItem = (field: keyof UserProfileExtra, value: string) => {
-    setUser((prev) => {
-      const current = prev[field] as string[];
-      const updated = current.includes(value)
-        ? current.filter((v) => v !== value)
-        : [...current, value];
-      return { ...prev, [field]: updated };
-    });
-  };
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
+  const onSubmit = (data: any) => {
+    console.log("Отправка данных:", data);
     document.body.style.overflow = "hidden";
-    console.log(user);
+    auth.setProfileFilled();
     setSuccess(true);
+    // fetch('/api/register', { method: 'POST', body: formData });
   };
 
   const successSubmit = () => {
@@ -66,62 +37,51 @@ export default function NewTrasnlator() {
 
   return (
     <div className="container">
-      <h2 className="newTraslator-title">Заполните свой профайл</h2>
-      <form className="newTraslator-form" onSubmit={handleSubmit}>
-        <AvatarUpload
-          onChange={(file) =>
-            setUser((prev) => ({ ...prev, profilePhoto: file }))
-          }
-        />
-        {INPUT_FIELDS_CONFIG.map((field) => (
-          <InputField
-            key={field.name}
-            label={field.label}
-            name={field.name}
-            type={field.type}
-            value={user[field.name]}
-            placeholder={field.placeholder}
-            icon={field.icon}
-            errors={errors[field.name]}
-            handleChange={handleInputChange}
+      <h2 className="new-traslator-title">Заполните свой профайл</h2>
+      <FormProvider {...methods}>
+        <form className="new-traslator-form" onSubmit={handleSubmit(onSubmit)}>
+          <AvatarUpload
+            onChange={(file) => methods.setValue("profilePhoto", file)}
           />
-        ))}
-
-        <FileUpload
-          label="Загрузите фото ТОПИКА"
-          onChange={(file) =>
-            setUser((prev) => ({ ...prev, topikPhoto: file }))
-          }
-        />
-
-        {CHECKBOX_GROUPS.map((group) => {
-          const Component = group.useButtons
-            ? ButtonCheckboxGroup
-            : CheckboxGroup;
-          return (
-            <Component
-              key={group.field}
-              label={group.label}
-              options={group.options}
-              selected={
-                Array.isArray(user[group.field])
-                  ? (user[group.field] as string[])
-                  : []
-              }
-              onToggle={(val) => toggleItem(group.field, val)}
-            />
-          );
-        })}
-
-        <button
-          type="submit"
-          disabled={!isFormValid}
-          className={`button ${isFormValid ? "active" : ""}`}
-        >
-          Зарегистрироваться
-        </button>
-      </form>
-      <p className="newTraslator-text">
+          {INPUT_FIELDS_CONFIG.map(
+            ({ name, label, placeholder, icon, format, type }) => (
+              <ControlledInputField
+                key={name}
+                name={name}
+                control={control}
+                label={label}
+                placeholder={placeholder}
+                icon={icon}
+                format={format}
+                type={type}
+                rules={rules[name]}
+              />
+            )
+          )}
+          {CHECKBOX_GROUPS.map((group) => {
+            const Component = group.useButtons
+              ? LanguageToggleButtons
+              : ControlledCheckboxGroup;
+            return (
+              <Component
+                name={group.field}
+                key={group.field}
+                label={group.label}
+                options={group.options}
+                rules={rules[group.field]}
+              />
+            );
+          })}
+          <button
+            type="submit"
+            disabled={!formState.isValid}
+            className={`button ${formState.isValid ? "active" : ""}`}
+          >
+            Зарегистрироваться
+          </button>
+        </form>
+      </FormProvider>
+      <p className="new-traslator-text">
         Нажимая на кнопку, вы даете согласие на обработку своих персональных
         данных
       </p>

@@ -1,9 +1,14 @@
-import { type UserProfileExtra } from "../types/types";
+import type {
+  CheckboxGroupConfig,
+  FormField,
+  InputFieldConfig,
+  NavItem,
+  WithdrawalForm,
+} from "../types/types";
 import { AiOutlineUser } from "react-icons/ai";
 import { FiPhone } from "react-icons/fi";
 import { LuCalendarDays } from "react-icons/lu";
 import { HiOutlineExclamationCircle } from "react-icons/hi2";
-
 import { TbMessageQuestion } from "react-icons/tb";
 import { RiLockPasswordLine } from "react-icons/ri";
 import { FaRegBell } from "react-icons/fa";
@@ -11,27 +16,23 @@ import { BsShieldLock } from "react-icons/bs";
 import { HiOutlineUsers } from "react-icons/hi2";
 import { RxShare2 } from "react-icons/rx";
 
-//Registration & newTranslator ---------------
+import {
+  formatDateString,
+  formatPhone,
+  formatTopikLevel,
+} from "../utils/formatInput";
+import { rules } from "../utils/rules";
 
-type CheckboxGroupConfig = {
-  label: string;
-  field: keyof UserProfileExtra;
-  options: string[];
-  useButtons?: boolean;
-};
+//Registration & newTranslator ---------------
 
 export const CODE_LENGTH = 4;
 export const COUNTDOWN_SECONDS = 180;
+
 export const CHECKBOX_GROUPS: CheckboxGroupConfig[] = [
   {
     label: "Темы перевода",
     field: "translationTopics",
     options: ["Пудонсан", "Маркет", "Банк", "Больница", "Ресторан", "Такси"],
-  },
-  {
-    label: "Темы с сертификатом",
-    field: "certifiedTopics",
-    options: ["Юриспруденция", "Экономика"],
   },
   {
     label: "Доступные языки перевода",
@@ -41,47 +42,115 @@ export const CHECKBOX_GROUPS: CheckboxGroupConfig[] = [
   },
 ];
 
-export const INPUT_FIELDS_CONFIG = [
+export const INPUT_FIELDS_CONFIG: InputFieldConfig[] = [
   {
-    label: "ФИО",
     name: "fullName",
+    label: "ФИО",
     type: "text",
     placeholder: "Введите имя и фамилию",
     icon: <AiOutlineUser className="register-icon" />,
   },
   {
-    label: "Номер телефона",
     name: "phone",
+    label: "Номер телефона",
     type: "text",
     placeholder: "Введите номер телефона",
+    format: formatPhone,
     icon: <FiPhone className="register-icon" />,
   },
   {
-    label: "Дата рождения",
     name: "birthDate",
-    type: "date",
+    label: "Дата рождения",
+    type: "text",
+    format: formatDateString,
     placeholder: "Введите дату рождения",
     icon: <LuCalendarDays className="register-icon" />,
   },
   {
-    label: "Уровень TOPIK",
     name: "topikLevel",
+    label: "Уровень TOPIK",
     type: "text",
+    format: formatTopikLevel,
     placeholder: "Введите уровень корейского",
     icon: <HiOutlineExclamationCircle className="register-icon" />,
   },
-] as const;
+];
+
+// Inputs only for FROM PASSWORD -------------------
+
+const phoneField = {
+  name: "phone",
+  placeholder: "Введите номер телефона без “-”",
+  label: "Номер телефона",
+  type: "tel",
+  format: formatPhone,
+  rules: rules.phone,
+  icon: <FiPhone className="register-icon" />,
+};
+
+const passwordField = {
+  name: "password",
+  placeholder: "Введите пароль",
+  type: "password",
+  label: "Пароль",
+  rules: rules.password,
+  icon: <RiLockPasswordLine className="register-icon" />,
+};
+
+const confirmPasswordField = (getValues: () => any) => ({
+  name: "confirmPassword",
+  placeholder: "Введите ваш пароль",
+  type: "password",
+  rules: rules.confirmPassword(getValues),
+  icon: <RiLockPasswordLine className="register-icon" />,
+});
+
+export const FORM_CONFIG: Record<
+  string,
+  (getValues: () => any) => FormField[]
+> = {
+  register: (getValues: () => any) => [
+    phoneField,
+    passwordField,
+    confirmPasswordField(getValues),
+  ],
+
+  login: () => [phoneField, passwordField],
+
+  changePassword: (getValues: () => any) => [
+    {
+      ...passwordField,
+      name: "currontPassword",
+      placeholder: "Введите текущий пароль",
+      label: "Текущий пароль",
+    },
+    {
+      ...passwordField,
+      label: "Новый пароль",
+      placeholder: "Введите новый пароль",
+    },
+    {
+      ...confirmPasswordField(getValues),
+      placeholder: "Повторите новый пароль",
+      label: "Повторите новый пароль",
+    },
+  ],
+
+  resetPassword: () => [phoneField],
+
+  newPassword: (getValues: () => any) => [
+    {
+      ...passwordField,
+      label: "Новый пароль",
+    },
+    {
+      ...confirmPasswordField(getValues),
+      placeholder: "Повторите ещё раз",
+    },
+  ],
+};
 
 // FooterNav -------------
-
-export type NavItem = {
-  name: string;
-  label: string;
-  icon: string;
-  route: string;
-  iconActive: string;
-  onClick?: () => void;
-};
 
 export const navItems: NavItem[] = [
   {
@@ -116,12 +185,6 @@ export const navItems: NavItem[] = [
 
 // WithdrawalForm --------------
 
-export type WithdrawalForm = {
-  bankAccount: string;
-  bankName: string;
-  balance: string;
-};
-
 export const withdrawalData: WithdrawalForm = {
   bankAccount: "",
   bankName: "",
@@ -138,6 +201,10 @@ export const koreanBanks = [
   "케이뱅크 (K-Bank)",
   "토스뱅크 (Toss Bank)",
 ];
+export const koreanBankOptions = koreanBanks.map((bank) => ({
+  value: bank,
+  label: bank,
+}));
 
 // Profile ---------------------
 

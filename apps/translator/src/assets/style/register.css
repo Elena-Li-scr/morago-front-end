@@ -102,6 +102,12 @@ input::placeholder {
     background: #EB9412;
 }
 
+.reset-password-btn {
+    background: #F8F9FB !important;
+    border: none !important;
+    color: #191D31 !important;
+}
+
 .register-footer {
     margin-top: 30px;
     display: flex;
@@ -122,6 +128,7 @@ input::placeholder {
 .register-validate {
     color: #B50000;
     line-height: 130%;
+    margin-bottom: 10px;
 }
 
 .register-icon {
@@ -143,4 +150,24 @@ input::placeholder {
     position: absolute;
     right: 14.5px;
     top: 10.5px;
+}
+
+
+
+.login-buttons {
+    margin-top: 45px;
+}
+
+
+
+.login-btn {
+    color: #191D31;
+    margin-top: 12px;
+    background: #F8F9FB;
+    width: 100%;
+    height: 56px;
+    border-radius: 30px;
+    font-family: "Montserrat", sans-serif;
+    font-weight: 600;
+    font-size: 16px;
 }

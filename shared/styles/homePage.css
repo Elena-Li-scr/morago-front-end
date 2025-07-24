@@ -104,6 +104,7 @@
   gap: 10px;
   margin-top: 20px;
 }
+
 .themes-wrapper h3,
 .home-last-calls h3 {
   font-size: 16px;
@@ -114,6 +115,7 @@
 .home-last-calls {
   padding: 0px 24px;
 }
+
 .last-calls-list {
   display: flex;
   flex-direction: column;
@@ -148,6 +150,7 @@
   font-size: 10px;
   cursor: pointer;
 }
+
 .main-footer-active {
   color: #1d272f;
 }
@@ -159,6 +162,7 @@
   max-width: 375px;
   margin: auto;
 }
+
 .selectors-search {
   position: relative;
 }
@@ -168,6 +172,7 @@
   top: 22px;
   left: 12px;
 }
+
 .selectors-search-input {
   width: 100%;
   height: 52px;
@@ -213,6 +218,7 @@
 .chosen-topic-main {
   padding: 0px 24px;
 }
+
 .chosen-topic-main h3 {
   font-size: 16px;
   font-weight: 800;
