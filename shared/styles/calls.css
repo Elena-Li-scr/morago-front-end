@@ -21,19 +21,26 @@
   background: url("/assets/call/background.png") no-repeat;
   background-size: cover;
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
+  height: 85%;
   align-items: center;
   flex-direction: column;
-  padding: 0px 24px;
+  padding: 50px 24px 0px 24px;
+}
+
+.call-main > div:last-child {
+  width: 100%;
 }
 
 .call-translator-name {
   font-size: 30px;
-  margin-top: 50px;
+  margin: 30px auto;
   color: #ffffff;
+  display: block;
+  text-align: center;
 }
 
-.call-main > img {
+.call-main-photo {
   width: 210px;
   height: 210px;
   border-radius: 65px;
@@ -44,7 +51,8 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  width: 90%;
+  width: 80%;
+  margin: 0px auto;
 }
 
 .call-buttons button {
@@ -87,9 +95,10 @@
 }
 
 .call-off-button {
+  display: block;
   width: 72px;
   height: 72px;
-  margin: 40px 0px;
+  margin: 40px auto;
   cursor: pointer;
 }
 

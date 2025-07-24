@@ -1,4 +1,4 @@
-import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import SignUp from "./pages/SignUp";
 import CodeInput from "./pages/CodeInput";
 import HomePage from "./pages/HomePage";
@@ -15,13 +15,16 @@ import Notification from "./pages/Notification";
 import ForgotPassword from "./pages/ForgotPassword";
 import ForgotPasswordCode from "./pages/ForgotPasswordCode";
 import NewPassword from "./pages/NewPassword";
+import GreetingPage from "./pages/GreetingPage";
+import SignIn from "./pages/SignIn";
 function App() {
   return (
     <>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Navigate to="/sign-up" />} />
+          <Route path="/" element={<GreetingPage />} />
           <Route path="/sign-up" element={<SignUp />} />
+          <Route path="/sign-in" element={<SignIn />} />
           <Route path="/code" element={<CodeInput />} />
           <Route path="/home" element={<HomePage />} />
           <Route path="/call-selectors" element={<CallSelectors />} />
@@ -35,10 +38,7 @@ function App() {
           <Route path="/calls-history" element={<CallsHistory />} />
           <Route path="/notification" element={<Notification />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
-          <Route
-            path="/forgot-password-code"
-            element={<ForgotPasswordCode />}
-          />
+          <Route path="/forgot-password-code" element={<ForgotPasswordCode />} />
           <Route path="/new-password" element={<NewPassword />} />
         </Routes>
       </BrowserRouter>

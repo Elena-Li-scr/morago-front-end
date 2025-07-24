@@ -1,5 +1,5 @@
 import { useForm } from "react-hook-form";
-import { useRef } from "react";
+import { useRef, useEffect, useState } from "react";
 import MainButton from "@shared/components/MainButton";
 
 import "@shared/styles/signUp.css";
@@ -30,6 +30,14 @@ export default function CodeForm({ onSubmit }: Props) {
   const fieldNames = ["num1", "num2", "num3", "num4"] as const;
   const watchedValues = watch(["num1", "num2", "num3", "num4"]);
   const isComplete = watchedValues.every((v) => v && v.length === 1);
+  const [timer, setTimer] = useState(180);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setTimer((prev) => (prev > 0 ? prev - 1 : 0));
+    }, 1000);
+    return () => clearInterval(interval);
+  }, []);
 
   const handleChange = (
     index: number,
@@ -57,6 +65,14 @@ export default function CodeForm({ onSubmit }: Props) {
     }
   };
 
+  const formatTime = (seconds: number) => {
+    const min = Math.floor(seconds / 60)
+      .toString()
+      .padStart(2, "0");
+    const sec = (seconds % 60).toString().padStart(2, "0");
+    return ` ${min}:${sec}`;
+  };
+
   return (
     <form className="code-form" onSubmit={handleSubmit(onSubmit)}>
       <div className="code-form-inputs">
@@ -77,11 +93,15 @@ export default function CodeForm({ onSubmit }: Props) {
           />
         ))}
       </div>
+      <p className="verification-timer">{formatTime(timer)}</p>
 
       <MainButton
         type="submit"
         text="Подтвердить"
-        className={isComplete ? "button button-active" : "button"}
+        className={
+          isComplete && timer !== 0 ? "button button-active" : "button"
+        }
+        disabled={timer === 0}
       />
       <div className="code-repeat">
         <p>Не получили код? </p>

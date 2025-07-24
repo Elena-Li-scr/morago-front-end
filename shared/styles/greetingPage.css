@@ -1,0 +1,77 @@
+.greeting-page-wrapper {
+  width: 100%;
+  min-height: 100vh;
+  max-width: 375px;
+  margin: auto;
+  padding: 40px 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.greeting-page-bg-1 {
+  background-image: url("/assets/background-1.png");
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.greeting-page-bg-2 {
+  background-image: url("/assets/background-2.png");
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.greeting-page-bg-3 {
+  background-image: url("/assets/background-3.png");
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.skip-button {
+  align-self: flex-end;
+  font-size: 14px;
+  color: #a7a9b7;
+  cursor: pointer;
+}
+
+.greeting-page-wrapper h2 {
+  font-size: 27px;
+  font-weight: 700;
+  color: #ffffff;
+  margin-top: 340px;
+  text-align: center;
+}
+
+.greeting-page-wrapper p {
+  font-size: 14px;
+  color: #a7a9b7;
+  margin: 20px 0px;
+  text-align: center;
+  line-height: 180%;
+}
+
+.bg-change-buttons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.bg-change-buttons button {
+  background-color: #ebecf3;
+  width: 8px;
+  height: 8px;
+  cursor: pointer;
+  border-radius: 50%;
+  margin: 0px 3px;
+}
+
+.translator-page-button {
+  color: #a7a9b7;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.bg-change-buttons .main-bg {
+  background-color: #015f76;
+}

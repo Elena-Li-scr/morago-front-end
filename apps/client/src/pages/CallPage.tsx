@@ -15,43 +15,51 @@ export default function CallPage() {
         <img src="/assets/home/morago.png" alt="morago" />
       </div>
       <div className="call-main">
-        <p className="call-translator-name">{selectedTranslator?.name}</p>
-        <img src={selectedTranslator?.photo} alt="translator-photo" />
-        <div className="call-buttons">
-          <button type="button">
-            <div className="call-img-cover">
-              <img
-                src="/assets/call/mute-off.png"
-                alt="mute-button"
-                className="mute-button"
-              />
-            </div>
-            Mute
-          </button>
-          <button type="button">
-            <div className="call-img-cover">
-              <img
-                src="/assets/call/photo-off.png"
-                alt="photo-button"
-                className="photo-button"
-              />
-            </div>
-            Photo
-          </button>
-          <button type="button">
-            <div className="call-img-cover call-img-cover-active">
-              <img
-                src="/assets/call/speaker-on.png"
-                alt="speaker-button"
-                className="speaker-button"
-              />
-            </div>
-            Speaker
+        <div>
+          <p className="call-translator-name">{selectedTranslator?.name}</p>
+          <img
+            src={selectedTranslator?.photo}
+            alt="translator-photo"
+            className="call-main-photo"
+          />
+        </div>
+        <div>
+          <div className="call-buttons">
+            <button type="button">
+              <div className="call-img-cover">
+                <img
+                  src="/assets/call/mute-off.png"
+                  alt="mute-button"
+                  className="mute-button"
+                />
+              </div>
+              Mute
+            </button>
+            <button type="button">
+              <div className="call-img-cover">
+                <img
+                  src="/assets/call/photo-off.png"
+                  alt="photo-button"
+                  className="photo-button"
+                />
+              </div>
+              Photo
+            </button>
+            <button type="button">
+              <div className="call-img-cover call-img-cover-active">
+                <img
+                  src="/assets/call/speaker-on.png"
+                  alt="speaker-button"
+                  className="speaker-button"
+                />
+              </div>
+              Speaker
+            </button>
+          </div>
+          <button className="call-off-button" type="button" onClick={offCall}>
+            <img src="/assets/call/call-off.png" alt="call-off" />
           </button>
         </div>
-        <button className="call-off-button" type="button" onClick={offCall}>
-          <img src="/assets/call/call-off.png" alt="call-off" />
-        </button>
       </div>
     </div>
   );
