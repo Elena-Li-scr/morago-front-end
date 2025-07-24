@@ -1,3 +1,6 @@
+import { format, isThisWeek, isToday, isYesterday } from "date-fns";
+import { ru } from "date-fns/locale";
+
 type Props = {
   avatarUrl: string;
   name: string;
@@ -27,6 +30,19 @@ export const CallCard = ({
   price,
   date,
 }: Props) => {
+  const formatCallDate = (dateString: string): string => {
+    const newDate = new Date(dateString);
+    if (isToday(newDate)) {
+      return format(newDate, "HH:mm");
+    }
+    if (isYesterday(newDate)) {
+      return "Вчера";
+    }
+    if (isThisWeek(newDate, { weekStartsOn: 1 })) {
+      return format(newDate, "EEEE", { locale: ru });
+    }
+    return format(newDate, "dd.MM.yyyy");
+  };
   return (
     <div className="call-card">
       <div className="call-user">
@@ -38,7 +54,7 @@ export const CallCard = ({
       </div>
       {date ? (
         <div className="call-time">
-          <p className="call-time-time">{date}</p>
+          <p className="call-time-time">{formatCallDate(date)}</p>
         </div>
       ) : (
         <div className="call-time">

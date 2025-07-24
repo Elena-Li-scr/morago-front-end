@@ -9,25 +9,36 @@ import Withdrawal from "./pages/Withdrawal";
 import Profile from "./pages/Profile";
 import ChangePassword from "./pages/ChangePassword";
 import ProfileLayout from "./components/layout/MyProfileLayout";
+import LogIn from "./pages/LogIn";
+import ResetPassword from "./pages/ResetPassword";
+import NewPassword from "./pages/NewPassword";
+import ProtectedRoute from "./components/layout/ProtectedRoute";
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route index element={<Navigate to="/register" />} />
+        <Route index element={<Navigate to="/logIn" />} />
+        <Route path="/logIn" element={<LogIn />} />
         <Route path="/register" element={<RegisterForm />} />
-        <Route path="/verification" element={<VerificationCode />} />
-
-        <Route path="/newTranslator" element={<NewTrasnlator />} />
-        <Route path="/" element={<MainLayout />}>
-          <Route path="/my-balance-translator-page" element={<Balance />} />
-          <Route path="/my-home-translator-page" element={<Home />} />
-          <Route path="my-profile-page" element={<ProfileLayout />}>
-            <Route index element={<Profile />} />
-            <Route path="change-password" element={<ChangePassword />} />
+        <Route
+          path="/verification/:process/:phone"
+          element={<VerificationCode />}
+        />
+        <Route path="/new-translator" element={<NewTrasnlator />} />
+        <Route path="/reset-password" element={<ResetPassword />} />
+        <Route path="/new-password" element={<NewPassword />} />
+        <Route element={<ProtectedRoute />}>
+          <Route path="/" element={<MainLayout />}>
+            <Route path="/my-home-translator-page" element={<Home />} />
+            <Route path="/my-balance-translator-page" element={<Balance />} />
+            <Route path="my-profile-page" element={<ProfileLayout />}>
+              <Route index element={<Profile />} />
+              <Route path="change-password" element={<ChangePassword />} />
+            </Route>
           </Route>
+          <Route path="/withdrawal-page" element={<Withdrawal />} />
         </Route>
-        <Route path="/withdrawal-page" element={<Withdrawal />} />
       </Routes>
     </BrowserRouter>
   );

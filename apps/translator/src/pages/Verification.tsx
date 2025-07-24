@@ -1,74 +1,99 @@
-import React, { useEffect, useRef, useState } from "react";
-import "../assets/style/verification.css";
-import { useNavigate } from "react-router-dom";
-import SucessActionModal from "@shared/components/SucessActionModal";
-import MainButton from "@shared/components/MainButton";
-import { CODE_LENGTH, COUNTDOWN_SECONDS } from "../constans/constans";
+import { useEffect, useRef, useState } from "react";
 import { MdKeyboardBackspace } from "react-icons/md";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { CODE_LENGTH } from "../constans/constans";
+import MainButton from "@shared/components/MainButton";
+import "../assets/style/verification.css";
+import SucessActionModal from "@shared/components/SucessActionModal";
+import { auth } from "../utils/auth";
 
-export default function VerificationCode() {
+type VerificationParams = {
+  process: "register" | "reset";
+  phone: string;
+};
+type ModalText = {
+  title: string;
+  text: string;
+};
+const TITLES: Record<"register" | "reset", string> = {
+  register: "Подтверждение регистрации",
+  reset: "Код для сброса пароля",
+};
+const MODAL_TEXT: Record<"register" | "reset", ModalText> = {
+  register: {
+    title: "Регистрация прошла успешно",
+    text: "Теперь вы можете полноценно воспользоваться всеми возможностями",
+  },
+  reset: {
+    title: "Пароль сброшен",
+    text: "Теперь вы можете войти с новым паролем",
+  },
+};
+
+export default function VerificationPage() {
   const [success, setSuccess] = useState(false);
-  const [code, setCode] = useState<string[]>(Array(CODE_LENGTH).fill(""));
-  const [timer, setTimer] = useState(COUNTDOWN_SECONDS);
-  const [error, setError] = useState<string>("");
-  const inputsRef = useRef<Array<HTMLInputElement | null>>([]);
+  const { process = "register", phone = "" } = useParams<VerificationParams>();
   const navigate = useNavigate();
+  const [remaining, setRemaining] = useState(180); // 3 минуты
+  const [code, setCode] = useState<string[]>(Array(CODE_LENGTH).fill(""));
+
+  const inputsRef = useRef<Array<HTMLInputElement | null>>([]);
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      setTimer((prev) => (prev > 0 ? prev - 1 : 0));
-    }, 1000);
-    return () => clearInterval(interval);
-  }, []);
+    if (remaining <= 0) return;
+    const timer = setInterval(() => setRemaining((r) => r - 1), 100);
+    return () => clearInterval(timer);
+  }, [remaining]);
 
-  const handleChange = (index: number, value: string) => {
-    if (/^\d?$/.test(value)) {
-      const updated = [...code];
-      updated[index] = value;
-      setCode(updated);
-      setError("");
-      if (value && index < code.length - 1) {
-        inputsRef.current[index + 1]?.focus();
-      }
+  const handleChange = (value: string, index: number) => {
+    if (!/^\d?$/.test(value)) return; // Только одна цифра
+    const updatedCode = [...code];
+    updatedCode[index] = value;
+    setCode(updatedCode);
+
+    // Перемещаем фокус
+    if (value && index < 3) {
+      inputsRef.current[index + 1]?.focus();
     }
   };
 
-  const handleKeyDown = (
-    index: number,
-    e: React.KeyboardEvent<HTMLInputElement>
-  ) => {
+  const handleKeyDown = (e: React.KeyboardEvent, index: number) => {
     if (e.key === "Backspace" && !code[index] && index > 0) {
       inputsRef.current[index - 1]?.focus();
     }
   };
 
-  const formatTime = (seconds: number) => {
-    const min = Math.floor(seconds / 60)
-      .toString()
-      .padStart(2, "0");
-    const sec = (seconds % 60).toString().padStart(2, "0");
-    return ` ${min}:${sec}`;
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleSubmit = async () => {
     const fullCode = code.join("");
-    if (fullCode !== "1234") {
-      setError("Неверный код. Попробуйте снова.");
-    } else {
+    if (fullCode.length !== 4) return;
+    // const success = await verifyCode({ phone, code: fullCode, mode: process });
+    if (fullCode.length == 4) {
+      if (process === "register") {
+        auth.setVerified();
+      }
       setSuccess(true);
+    } else {
+      console.log("Неверный код");
     }
   };
 
   const successSubmit = () => {
-    const complitedCode = code.join("");
-    console.log(complitedCode);
-    navigate("/newTranslator");
+    navigate(process === "register" ? "/new-translator" : "/new-password");
   };
+
+  const handleResend = async () => {
+    // await resendCode({ phone, mode: process });
+    setRemaining(180); // Сбросить таймер
+  };
+
+  const formattedTimer = `${Math.floor(remaining / 60)}:${(
+    "0" +
+    (remaining % 60)
+  ).slice(-2)}`;
 
   return (
     <div className="container">
-      <form onSubmit={handleSubmit} className="verification">
+      <div className="verification">
         <button
           type="button"
           onClick={() => navigate("/register")}
@@ -76,52 +101,57 @@ export default function VerificationCode() {
         >
           <MdKeyboardBackspace className="back-icon" />
         </button>
-        <h2 className="verification-title">Проверочный код</h2>
+        <h2 className="verification-title">{TITLES[process]}</h2>
         <p className="verification-text">
-          Мы отправили проверочный код на ваш номер телефона{" "}
+          Мы отправили проверочный код на ваш номер телефона
         </p>
         <div className="verification-code">
           {code.map((digit, index) => (
             <input
-              title={`${index + 1}`}
               key={index}
+              type="text"
+              inputMode="numeric"
+              maxLength={1}
+              value={digit}
+              onChange={(e) => handleChange(e.target.value, index)}
+              onKeyDown={(e) => handleKeyDown(e, index)}
               ref={(el) => {
                 inputsRef.current[index] = el;
               }}
-              type="tel"
-              inputMode="numeric"
-              maxLength={1}
-              className={`verification-input`}
-              value={digit}
-              onChange={(e) => handleChange(index, e.target.value)}
-              onKeyDown={(e) => handleKeyDown(index, e)}
+              className="verification-input"
             />
           ))}
         </div>
-        <p className="verification-timer">{formatTime(timer)}</p>
-        <p className="verification-onemore">
-          Не получили код? <span>Ещё раз</span>
-        </p>
+        <p className="verification-timer">{formattedTimer}</p>
+
         <MainButton
           type="submit"
-          disabled={code.every((digit) => digit === "") || timer === 0}
+          disabled={code.some((digit) => digit === "") || remaining === 0}
           className={`button ${
-            code.every((digit) => digit !== "") && "active"
+            code.every((digit) => digit !== "" || remaining === 0) && "active"
           }`}
-          text="Получить код"
+          text=" Подтвердить"
+          onClick={handleSubmit}
         />
-        {error && <p className="verification-error">{error}</p>}
-      </form>
-      {success && (
-        <SucessActionModal
-          onClick={successSubmit}
-          bgImg="/assets/images/success.png"
-          header="Регистрация прошла успешно"
-          text="Теперь вы можете пользоваться всеми возможностями"
-          btn="Здорово!"
-          className="button active"
-        />
-      )}
+        {remaining === 0 && (
+          <div className="verification-rest-text">
+            <span> Не получили код? </span>
+            <button onClick={handleResend} className="verification-reset-code">
+              Ещё раз
+            </button>
+          </div>
+        )}
+        {success && (
+          <SucessActionModal
+            onClick={successSubmit}
+            bgImg="/assets/images/success.png"
+            header={`${MODAL_TEXT[process].title}`}
+            text={`${MODAL_TEXT[process].text}`}
+            btn="Здорово!"
+            className="button active"
+          />
+        )}
+      </div>
     </div>
   );
 }

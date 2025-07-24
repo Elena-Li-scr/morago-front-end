@@ -1,49 +1,55 @@
-type CheckboxGroupProps = {
+import { useController, useFormContext } from "react-hook-form";
+
+type Props = {
+  name: string;
   label: string;
   options: string[];
-  selected: string[];
-  onToggle: (option: string) => void;
+  rules?: any;
+  single?: boolean;
 };
 
-export const CheckboxGroup: React.FC<CheckboxGroupProps> = ({
+export const ControlledCheckboxGroup = ({
+  name,
   label,
   options,
-  selected,
-  onToggle,
-}) => {
-  const itSpecialInputField = label === "Темы с сертификатом";
+  rules,
+  single = false,
+}: Props) => {
+  const { control } = useFormContext();
+  const {
+    field: { value, onChange },
+  } = useController({ name, control, rules });
 
+  const handleChange = (option: string) => {
+    if (single) {
+      onChange(!value ? true : !value);
+    } else {
+      const newValue = value?.includes(option)
+        ? value.filter((v: string) => v !== option)
+        : [...(value || []), option];
+      onChange(newValue);
+    }
+  };
   return (
     <div className="tranalator-checkbox">
-      {itSpecialInputField && <div className="tranalator-checkbox-line"></div>}
-      <h4 className="tranalator-checkbox-title ">{label}</h4>
-      <div className="tranalator-checkbox-block ">
+      <p className="tranalator-checkbox-title">{label}</p>
+      <div className="tranalator-checkbox-block">
         {options.map((option) => (
-          <label
-            key={option}
-            className={` ${itSpecialInputField && `tranalator-checkbox-input`}`}
-          >
+          <label key={option}>
             <input
               type="checkbox"
-              checked={selected.includes(option)}
-              onChange={() => onToggle(option)}
+              checked={
+                single
+                  ? !!value
+                  : Array.isArray(value) && value.includes(option)
+              }
+              onChange={() => handleChange(option)}
               className="checkbox"
             />
-            <span
-              className={`checkmark ${itSpecialInputField && "special"}`}
-            ></span>
             <span className="tranalator-option">{option}</span>
-            {itSpecialInputField && (
-              <img
-                className="iconPaperClip"
-                src="/icons/paperclip-2.svg"
-                alt=""
-              />
-            )}
           </label>
         ))}
       </div>
-      {itSpecialInputField && <div className="tranalator-checkbox-line"></div>}
     </div>
   );
 };

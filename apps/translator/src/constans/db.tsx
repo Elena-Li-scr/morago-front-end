@@ -1,3 +1,12 @@
+function getRandomDate(start: Date, end: Date): Date {
+  return new Date(
+    start.getTime() + Math.random() * (end.getTime() - start.getTime())
+  );
+}
+const now = new Date();
+const twoWeeksAgo = new Date();
+twoWeeksAgo.setDate(now.getDate() - 7);
+
 export const callData = [
   {
     id: 1,
@@ -6,7 +15,7 @@ export const callData = [
     topic: "Банк",
     time: "1460",
     price: 23000,
-    date: "04.25",
+    date: getRandomDate(twoWeeksAgo, now).toISOString(),
   },
   {
     id: 2,
@@ -15,7 +24,7 @@ export const callData = [
     topic: "Почта",
     time: "260",
     price: 4000,
-    date: "04.25",
+    date: getRandomDate(twoWeeksAgo, now).toISOString(),
   },
   {
     id: 3,
@@ -24,7 +33,7 @@ export const callData = [
     topic: "Завод",
     time: "860",
     price: 16000,
-    date: "03.14",
+    date: getRandomDate(twoWeeksAgo, now).toISOString(),
   },
   {
     id: 4,
@@ -33,6 +42,6 @@ export const callData = [
     topic: "Аптека",
     time: "80",
     price: 1000,
-    date: "03.10",
+    date: getRandomDate(twoWeeksAgo, now).toISOString(),
   },
 ];
