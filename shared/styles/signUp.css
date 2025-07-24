@@ -99,6 +99,26 @@
   font-size: 14px;
 }
 
+.custom-file-upload {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 52px;
+  color: #191d31;
+  font-size: 14px;
+  border-radius: 12px;
+  border: 1px solid #f3f3f3;
+  font-family: "Montserrat", sans-serif;
+  font-weight: 400;
+  cursor: pointer;
+  margin: 20px 0px;
+}
+
+.hidden-file-input {
+  display: none;
+}
+
 .code-form-inputs {
   display: flex;
   justify-content: space-between;
@@ -212,17 +232,11 @@
   left: 0;
   width: 100%;
   height: 50px;
-  background: linear-gradient(
-    rgba(255, 255, 255, 0.1),
-    rgba(255, 255, 255, 0.8)
-  );
+  background: linear-gradient(rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.8));
 }
 
 .success-wrapper {
-  background: linear-gradient(
-    rgba(255, 255, 255, 0.8) 0%,
-    rgba(255, 255, 255, 1) 10%
-  );
+  background: linear-gradient(rgba(255, 255, 255, 0.8) 0%, rgba(255, 255, 255, 1) 10%);
   padding: 16px 24px;
   box-sizing: border-box;
   display: flex;

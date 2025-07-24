@@ -36,18 +36,14 @@ export default function BalanceWithdraw() {
   const selectedAmount = watch("amount");
   const fullName = watch("fullName");
 
-  const isValid =
-    selectedAmount &&
-    fullName?.trim() !== "" &&
-    !errors.fullName &&
-    !errors.amount;
+  const isValid = selectedAmount && fullName?.trim() !== "" && !errors.fullName && !errors.amount;
   return (
     <div className="balance-withdraw-wrapper">
       <BackButton icon="/assets/arrow-left.png" />
       <h2 className="balance-withdraw-header">Пополнить баланс</h2>
       <p className="balance-withdraw-text">
-        Минимальная сумма пополнения 10.000 вон. Средства зачисляются на счёт в
-        течении одного рабочего дня.
+        Минимальная сумма пополнения 10.000 вон. Средства зачисляются на счёт в течении одного
+        рабочего дня.
       </p>
       <h3>Счёт для пополнения</h3>
       <div className="balance-withdraw-card">
@@ -65,9 +61,7 @@ export default function BalanceWithdraw() {
             {...register("fullName", { required: true })}
           />
         </div>
-        {errors.fullName && (
-          <p className="form-error">{errors.fullName.message}</p>
-        )}
+        {errors.fullName && <p className="form-error">{errors.fullName.message}</p>}
         <label>Сумма для пополнения</label>
         <div className="balance-withdraw-amounts">
           {amounts.map((amount) => (
@@ -75,21 +69,13 @@ export default function BalanceWithdraw() {
               type="button"
               key={amount}
               className={selectedAmount === amount ? "selected-amount" : ""}
-              onClick={() =>
-                setValue("amount", amount, { shouldValidate: true })
-              }
+              onClick={() => setValue("amount", amount, { shouldValidate: true })}
             >
               <div>
-                <img
-                  className="coin-image"
-                  src="/assets/home/coin-icon.png"
-                  alt="coin"
-                />
+                <img className="coin-image" src="/assets/home/coin-icon.png" alt="coin" />
                 <span>{amount.toLocaleString("ru-RU")} вон</span>
               </div>
-              {selectedAmount === amount && (
-                <img src="/assets/home/tick.png" alt="tick" />
-              )}
+              {selectedAmount === amount && <img src="/assets/home/tick.png" alt="tick" />}
             </button>
           ))}
         </div>

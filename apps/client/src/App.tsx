@@ -1,4 +1,4 @@
-import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import SignUp from "./pages/SignUp";
 import CodeInput from "./pages/CodeInput";
 import HomePage from "./pages/HomePage";
@@ -38,10 +38,7 @@ function App() {
           <Route path="/calls-history" element={<CallsHistory />} />
           <Route path="/notification" element={<Notification />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
-          <Route
-            path="/forgot-password-code"
-            element={<ForgotPasswordCode />}
-          />
+          <Route path="/forgot-password-code" element={<ForgotPasswordCode />} />
           <Route path="/new-password" element={<NewPassword />} />
         </Routes>
       </BrowserRouter>
