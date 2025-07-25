@@ -11,6 +11,11 @@ interface TranslatorStore {
   setSelectedTranslator: (translator: Translator | null) => void;
 }
 
+interface ListStore {
+  chosenList: string;
+  setChosenList: (list: string) => void;
+}
+
 export const useTopicStore = create<TopicStore>((set) => ({
   chosenTopic: "",
   setChosenTopic: (topic) => set({ chosenTopic: topic }),
@@ -18,6 +23,10 @@ export const useTopicStore = create<TopicStore>((set) => ({
 
 export const useTranslatorStore = create<TranslatorStore>((set) => ({
   selectedTranslator: null,
-  setSelectedTranslator: (translator) =>
-    set({ selectedTranslator: translator }),
+  setSelectedTranslator: (translator) => set({ selectedTranslator: translator }),
+}));
+
+export const useListStore = create<ListStore>((set) => ({
+  chosenList: "",
+  setChosenList: (list) => set({ chosenList: list }),
 }));
