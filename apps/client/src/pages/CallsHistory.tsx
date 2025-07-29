@@ -20,15 +20,13 @@ export default function CallsHistory() {
       <div className="call-header">
         <img src="/assets/home/morago.png" alt="morago" />
       </div>
-      <div className="call-history-main">
+      <div className="call-history-main scroll-content">
         <div className="calls-history-selectors">
           <button
             type="button"
             onClick={() => setAllCalls(true)}
             className={
-              !allCalls
-                ? "call-history-button"
-                : "call-history-button call-history-button-active"
+              !allCalls ? "call-history-button" : "call-history-button call-history-button-active"
             }
           >
             Все
@@ -37,9 +35,7 @@ export default function CallsHistory() {
             type="button"
             onClick={() => setAllCalls(false)}
             className={
-              allCalls
-                ? "call-history-button"
-                : "call-history-button call-history-button-active"
+              allCalls ? "call-history-button" : "call-history-button call-history-button-active"
             }
           >
             Пропущенные
@@ -82,10 +78,7 @@ export default function CallsHistory() {
             }
           }}
         >
-          <TranslatorCall
-            translator={selectedTranslator}
-            onClick={callHandler}
-          />
+          <TranslatorCall translator={selectedTranslator} onClick={callHandler} />
         </div>
       )}
     </div>

@@ -14,7 +14,6 @@
 .modal-window {
   background-color: #ffffff;
   width: 100%;
-  max-width: 327px;
   margin: auto;
   height: 427px;
   display: flex;

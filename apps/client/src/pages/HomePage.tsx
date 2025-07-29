@@ -11,15 +11,17 @@ export default function HomePage() {
   const showBanner = false;
 
   return (
-    <div className="home-page-wrapper">
+    <div className="page-wrapper">
       <HomeHeader />
-      <ThemePage />
-      <div className="home-last-calls">
-        <h3>Мои последние звонки</h3>
-        <div className="last-calls-list">
-          {translators.map((translator, index) => (
-            <TranslatorInfo key={index} translator={translator} />
-          ))}
+      <div className="scroll-content">
+        <ThemePage />
+        <div className="home-last-calls">
+          <h3>Мои последние звонки</h3>
+          <div className="last-calls-list">
+            {translators.map((translator, index) => (
+              <TranslatorInfo key={index} translator={translator} />
+            ))}
+          </div>
         </div>
       </div>
       <MainFooter page="main" />

@@ -25,7 +25,7 @@ export default function ChangeProfile() {
   };
 
   return (
-    <div className="change-profile-wrapper">
+    <div className="page-wrapper change-profile-wrapper">
       <div className="change-profile-header">
         <BackButton icon="/assets/arrow-left.png" />
         <h3>Изменить профиль</h3>

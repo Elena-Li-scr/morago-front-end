@@ -23,10 +23,10 @@ export default function ChosenTopicPage() {
   };
 
   return (
-    <div className="chosen-topic-wrapper">
+    <div className="page-wrapper">
       <SimpleHeader onClick={handleBack} />
 
-      <div className="chosen-topic-main">
+      <div className="chosen-topic-main scroll-content">
         <h3>Выбранная тема</h3>
         <Theme theme={chosenTopic} />
         <div className="translators-list">
@@ -50,10 +50,7 @@ export default function ChosenTopicPage() {
             }
           }}
         >
-          <TranslatorCall
-            translator={selectedTranslator}
-            onClick={callHandler}
-          />
+          <TranslatorCall translator={selectedTranslator} onClick={callHandler} />
         </div>
       )}
     </div>
