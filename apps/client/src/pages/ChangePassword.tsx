@@ -8,7 +8,7 @@ import { useNavigate } from "react-router-dom";
 interface FormData {
   password: string;
   newPassword: string;
-  repeatPassword: string;
+  confirmPassword: string;
 }
 
 export default function ChangePassword() {
@@ -27,14 +27,14 @@ export default function ChangePassword() {
   const [show, setShow] = useState({
     password: false,
     newPassword: false,
-    repeatPassword: false,
+    confirmPassword: false,
   });
 
   const newPassword = watch("newPassword");
   const password = watch("password");
-  const repeatPassword = watch("repeatPassword");
+  const confirmPassword = watch("confirmPassword");
 
-  const toggleVisibility = (field: "password" | "repeatPassword" | "newPassword") => {
+  const toggleVisibility = (field: "password" | "confirmPassword" | "newPassword") => {
     setShow((prev) => ({
       ...prev,
       [field]: !prev[field],
@@ -157,34 +157,34 @@ export default function ChangePassword() {
           <div className="input-wrapper">
             <img
               src={
-                repeatPassword?.trim() === ""
+                confirmPassword?.trim() === ""
                   ? "/assets/signIcons/lock.png"
-                  : errors.repeatPassword
+                  : errors.confirmPassword
                     ? "/assets/signIcons/lock-error.png"
                     : "/assets/signIcons/lock-valid.png"
               }
               alt="lock-img"
             />
             <input
-              type={show.repeatPassword ? "text" : "password"}
+              type={show.confirmPassword ? "text" : "password"}
               placeholder="Повторите ещё раз"
               autoComplete="new-password"
-              className={errors.repeatPassword ? "main-input-error main-input" : "main-input"}
-              {...register("repeatPassword", {
+              className={errors.confirmPassword ? "main-input-error main-input" : "main-input"}
+              {...register("confirmPassword", {
                 required: true,
                 validate: (value) => value === newPassword || "Пароли не совпадают",
               })}
             />
             <button
               type="button"
-              onClick={() => toggleVisibility("repeatPassword")}
+              onClick={() => toggleVisibility("confirmPassword")}
               className="password-toggle-button"
             >
               <img
                 src={
-                  repeatPassword?.trim() === ""
+                  confirmPassword?.trim() === ""
                     ? "/assets/signIcons/eye.png"
-                    : errors.repeatPassword
+                    : errors.confirmPassword
                       ? "/assets/signIcons/eye-error.png"
                       : "/assets/signIcons/eye-valid.png"
                 }
@@ -193,7 +193,7 @@ export default function ChangePassword() {
             </button>
           </div>
 
-          {errors.repeatPassword && <p className="errors">{errors.repeatPassword.message}</p>}
+          {errors.confirmPassword && <p className="errors">{errors.confirmPassword.message}</p>}
         </div>
         <MainButton text="Сохранить изменения" type="submit" className="button button-active" />
       </form>

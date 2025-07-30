@@ -98,6 +98,9 @@
   font-size: 14px;
 }
 
+.errors {
+  margin: 10px 0px;
+}
 .custom-file-upload {
   display: flex;
   justify-content: center;

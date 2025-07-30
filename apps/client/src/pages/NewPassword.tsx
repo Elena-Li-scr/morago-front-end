@@ -6,7 +6,7 @@ import MainButton from "@shared/components/MainButton";
 
 interface FormData {
   password: string;
-  repeatPassword: string;
+  confirmPassword: string;
 }
 export default function NewPassword() {
   const {
@@ -19,23 +19,23 @@ export default function NewPassword() {
   const navigate = useNavigate();
   const [show, setShow] = useState({
     password: false,
-    repeatPassword: false,
+    confirmPassword: false,
   });
   const password = watch("password");
-  const repeatPassword = watch("repeatPassword");
+  const confirmPassword = watch("confirmPassword");
 
   const isValid =
     !errors.password &&
-    !errors.repeatPassword &&
+    !errors.confirmPassword &&
     password?.trim() !== "" &&
-    repeatPassword?.trim() !== "";
+    confirmPassword?.trim() !== "";
 
   const onSubmit = async (data: FormData) => {
     console.log(data);
     navigate("/home");
   };
 
-  const toggleVisibility = (field: "password" | "repeatPassword") => {
+  const toggleVisibility = (field: "password" | "confirmPassword") => {
     setShow((prev) => ({
       ...prev,
       [field]: !prev[field],
@@ -45,9 +45,7 @@ export default function NewPassword() {
   return (
     <form className="sign-form" onSubmit={handleSubmit(onSubmit)}>
       <h2 className="sign-form-header">Новый пароль</h2>
-      <p className="sign-form-text">
-        Введите новый пароль для входа в личный кабинет
-      </p>
+      <p className="sign-form-text">Введите новый пароль для входа в личный кабинет</p>
 
       <label className="input-label">Пароль</label>
       <div className="input-wrapper">
@@ -56,8 +54,8 @@ export default function NewPassword() {
             password?.trim() === ""
               ? "/assets/signIcons/lock.png"
               : errors.password
-              ? "/assets/signIcons/lock-error.png"
-              : "/assets/signIcons/lock-valid.png"
+                ? "/assets/signIcons/lock-error.png"
+                : "/assets/signIcons/lock-valid.png"
           }
           alt="lock-img"
         />
@@ -65,9 +63,7 @@ export default function NewPassword() {
           type={show.password ? "text" : "password"}
           placeholder="Введите ваш пароль"
           autoComplete="new-password"
-          className={
-            errors.password ? "main-input-error main-input" : "main-input"
-          }
+          className={errors.password ? "main-input-error main-input" : "main-input"}
           {...register("password", {
             required: true,
             minLength: {
@@ -86,8 +82,8 @@ export default function NewPassword() {
               password?.trim() === ""
                 ? "/assets/signIcons/eye.png"
                 : errors.password
-                ? "/assets/signIcons/eye-error.png"
-                : "/assets/signIcons/eye-valid.png"
+                  ? "/assets/signIcons/eye-error.png"
+                  : "/assets/signIcons/eye-valid.png"
             }
             alt="eye"
           />
@@ -99,47 +95,43 @@ export default function NewPassword() {
       <div className="input-wrapper">
         <img
           src={
-            repeatPassword?.trim() === ""
+            confirmPassword?.trim() === ""
               ? "/assets/signIcons/lock.png"
-              : errors.repeatPassword
-              ? "/assets/signIcons/lock-error.png"
-              : "/assets/signIcons/lock-valid.png"
+              : errors.confirmPassword
+                ? "/assets/signIcons/lock-error.png"
+                : "/assets/signIcons/lock-valid.png"
           }
           alt="lock-img"
         />
         <input
-          type={show.repeatPassword ? "text" : "password"}
+          type={show.confirmPassword ? "text" : "password"}
           placeholder="Повторите ещё раз"
           autoComplete="new-password"
-          className={
-            errors.repeatPassword ? "main-input-error main-input" : "main-input"
-          }
-          {...register("repeatPassword", {
+          className={errors.confirmPassword ? "main-input-error main-input" : "main-input"}
+          {...register("confirmPassword", {
             required: true,
             validate: (value) => value === password || "Пароли не совпадают",
           })}
         />
         <button
           type="button"
-          onClick={() => toggleVisibility("repeatPassword")}
+          onClick={() => toggleVisibility("confirmPassword")}
           className="password-toggle-button"
         >
           <img
             src={
-              repeatPassword?.trim() === ""
+              confirmPassword?.trim() === ""
                 ? "/assets/signIcons/eye.png"
-                : errors.repeatPassword
-                ? "/assets/signIcons/eye-error.png"
-                : "/assets/signIcons/eye-valid.png"
+                : errors.confirmPassword
+                  ? "/assets/signIcons/eye-error.png"
+                  : "/assets/signIcons/eye-valid.png"
             }
             alt="eye"
           />
         </button>
       </div>
 
-      {errors.repeatPassword && (
-        <p className="errors">{errors.repeatPassword.message}</p>
-      )}
+      {errors.confirmPassword && <p className="errors">{errors.confirmPassword.message}</p>}
 
       {/* Кнопка */}
 

@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 
 interface FormData {
   password: string;
-  repeatPassword: string;
+  confirmPassword: string;
 }
 export default function NewPassword() {
   const {
@@ -38,13 +38,13 @@ export default function NewPassword() {
           type="password"
           placeholder="Repeat Password"
           className="sign-input"
-          {...register("repeatPassword", {
+          {...register("confirmPassword", {
             required: true,
             validate: (value) => value === password || "Passwords are not match",
           })}
         />
 
-        {errors.repeatPassword && <p className="form-error">{errors.repeatPassword.message}</p>}
+        {errors.confirmPassword && <p className="form-error">{errors.confirmPassword.message}</p>}
         <BigButton text="Save" type="submit" />
         <button className="forgot-back-button" type="button" onClick={() => navigate(-1)}>
           Back
