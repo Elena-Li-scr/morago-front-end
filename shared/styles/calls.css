@@ -1,6 +1,6 @@
 .call-page-wrapper {
   width: 100%;
-  max-width: 375px;
+  max-width: 430px;
   margin: 0px auto;
   height: 100vh;
   background-color: #015f76;
@@ -8,7 +8,7 @@
 
 .call-header {
   width: 100%;
-  max-width: 375px;
+  max-width: 430px;
   height: 70px;
   background-color: #015f76;
   display: flex;
@@ -112,8 +112,11 @@
 
 .call-history-wrapper {
   width: 100%;
-  max-width: 375px;
+  max-width: 430px;
   margin: 0px auto;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
 }
 
 .call-history-main {

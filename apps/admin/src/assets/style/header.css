@@ -1,5 +1,5 @@
 .main-header {
-  width: 100%;
+  width: 100vw;
   height: 101px;
   display: flex;
   justify-content: flex-start;
@@ -18,7 +18,7 @@
 
 .main-header-main {
   background-color: #066278;
-  width: 100%;
+  flex: 1;
   height: 100px;
   display: flex;
   justify-content: flex-end;

@@ -3,9 +3,9 @@ import MainFooter from "../components/MainFooter";
 import { translators } from "@shared/utils/temporaryVar";
 export default function UpBalance() {
   return (
-    <div className="up-balance-wrapper">
+    <div className="page-wrapper">
       <BalanceHeader />
-      <div className="detailing">
+      <div className="detailing scroll-content">
         <h3>Детализация</h3>
         <div className="prev-calling-list">
           {translators.map((translator, index) => (

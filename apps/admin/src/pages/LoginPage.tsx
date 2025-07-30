@@ -15,7 +15,7 @@ export default function LoginPage() {
 
   const onSubmit = (data: FormData) => {
     try {
-      if (data.email === "admin" && data.password === "admin") {
+      if (data.email === "admin@gmail.com" && data.password === "admin") {
         navigate("/home");
       } else {
         throw new Error("Incorrect password or Email");

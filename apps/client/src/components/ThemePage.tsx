@@ -39,10 +39,12 @@ export default function ThemePage() {
           <Theme key={index} theme={theme} onClick={handleThemeClick} />
         ))}
         {!showAllThemes && (
-          <button type="button" className="theme" onClick={handleShowAll}>
-            <img src="/assets/theme-icons/all.png" alt="theme-icon" />
-            <h5>Остальные</h5>
-          </button>
+          <div className="theme-wrapper">
+            <button type="button" className="theme" onClick={handleShowAll}>
+              <img src="/assets/theme-icons/all.png" alt="theme-icon" />
+              <h5>Остальные</h5>
+            </button>
+          </div>
         )}
       </div>
     </div>

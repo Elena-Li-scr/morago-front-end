@@ -1,4 +1,5 @@
 import { useForm } from "react-hook-form";
+import { useEffect } from "react";
 import MainButton from "@shared/components/MainButton";
 import SucessActionModal from "@shared/components/SucessActionModal";
 import BackButton from "@shared/components/BackButton";
@@ -22,7 +23,7 @@ export default function BalanceWithdraw() {
     watch,
     setValue,
     formState: { errors },
-  } = useForm<FormData>();
+  } = useForm<FormData>({ mode: "onTouched" });
 
   const onSubmit = (data: FormData) => {
     console.log("Отправленные данные:", data);
@@ -33,10 +34,14 @@ export default function BalanceWithdraw() {
     setIsSuccess(false);
   };
 
-  const selectedAmount = watch("amount");
-  const fullName = watch("fullName");
+  useEffect(() => {
+    register("amount", { required: "Выберите сумму пополнения" });
+  }, [register]);
 
-  const isValid = selectedAmount && fullName?.trim() !== "" && !errors.fullName && !errors.amount;
+  const selectedAmount = watch("amount");
+  // const fullName = watch("fullName");
+
+  // const isValid = selectedAmount && fullName?.trim() !== "" && !errors.fullName && !errors.amount;
   return (
     <div className="balance-withdraw-wrapper">
       <BackButton icon="/assets/arrow-left.png" />
@@ -58,10 +63,10 @@ export default function BalanceWithdraw() {
           <input
             type="text"
             placeholder="Фамилия Имя"
-            {...register("fullName", { required: true })}
+            {...register("fullName", { required: "Укажите фамилию и имя отправителя" })}
           />
         </div>
-        {errors.fullName && <p className="form-error">{errors.fullName.message}</p>}
+        {errors.fullName && <p className="errors">{errors.fullName.message}</p>}
         <label>Сумма для пополнения</label>
         <div className="balance-withdraw-amounts">
           {amounts.map((amount) => (
@@ -79,12 +84,12 @@ export default function BalanceWithdraw() {
             </button>
           ))}
         </div>
-        {errors.amount && <p>{errors.amount.message}</p>}
+        {errors.amount && <p className="errors">{errors.amount.message}</p>}
         <MainButton
           type="submit"
           text="Запросить пополнение"
           className="button button-active"
-          disabled={!isValid}
+          // disabled={!isValid}
         />
       </form>
       <button className="withdraw-support">Поддержка</button>
