@@ -13,6 +13,11 @@ import LogIn from "./pages/LogIn";
 import ResetPassword from "./pages/ResetPassword";
 import NewPassword from "./pages/NewPassword";
 import ProtectedRoute from "./components/layout/ProtectedRoute";
+import ChangeDataTranslator from "./pages/ChangeDataTranslator";
+import ProfileSubLayout from "./components/layout/ProfileSubLayout";
+import CallHistory from "./pages/CallHistory";
+import { IncomingCallModal } from "./components/call/IncomingCallModal";
+import { CallModal } from "./components/call/CallModal";
 
 function App() {
   return (
@@ -32,14 +37,21 @@ function App() {
           <Route path="/" element={<MainLayout />}>
             <Route path="/my-home-translator-page" element={<Home />} />
             <Route path="/my-balance-translator-page" element={<Balance />} />
-            <Route path="my-profile-page" element={<ProfileLayout />}>
-              <Route index element={<Profile />} />
-              <Route path="change-password" element={<ChangePassword />} />
-            </Route>
+            <Route path="/my-call-history" element={<CallHistory />} />
           </Route>
+          <Route path="/my-profile-page" element={<ProfileLayout />}>
+            <Route index element={<Profile />} />
+          </Route>
+          <Route path="/my-profile-page" element={<ProfileSubLayout />}>
+            <Route path="change-data" element={<ChangeDataTranslator />} />
+            <Route path="change-password" element={<ChangePassword />} />
+          </Route>
+
           <Route path="/withdrawal-page" element={<Withdrawal />} />
         </Route>
       </Routes>
+      <IncomingCallModal />
+      <CallModal />
     </BrowserRouter>
   );
 }

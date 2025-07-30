@@ -4,16 +4,19 @@ export type RegisterFormValues = {
   phone: string;
   password: string;
   confirmPassword: string;
+  role: string;
 };
 
 export type UserProfileExtra = {
   phone: string;
-  fullName: string;
-  birthDate: string;
-  topikLevel: string;
-  profilePhoto?: File | null;
-  translationTopics: string[];
-  availableLanguages: string[];
+  fullName?: string;
+  firstName?: string;
+  lastName?: string;
+  birthDate?: string;
+  topikLevel?: string;
+  profilePhoto?: string | null;
+  translationTopics?: string[];
+  availableLanguages?: string[];
 };
 
 export type ChangePasswordData = {
@@ -24,6 +27,7 @@ export type ChangePasswordData = {
 
 export type InputFieldConfig = {
   name: keyof UserProfileExtra;
+  key?: string;
   label: string;
   placeholder: string;
   icon?: React.ReactNode;
@@ -53,9 +57,8 @@ export type FormField = {
 export type NavItem = {
   name: string;
   label: string;
-  icon: string;
+  icon: React.ReactNode;
   route: string;
-  iconActive: string;
   onClick?: () => void;
 };
 
@@ -64,3 +67,13 @@ export type WithdrawalForm = {
   bankName: string;
   balance: string;
 };
+
+export interface Call {
+  id: number;
+  avatarUrl: string;
+  name: string;
+  topic: string;
+  time: string;
+  price: number;
+  date: string;
+}

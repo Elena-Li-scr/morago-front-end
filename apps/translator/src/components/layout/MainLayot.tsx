@@ -1,18 +1,16 @@
 import { Outlet } from "react-router-dom";
-import MainFooter from "./MainFooter";
+import MainFooter from "../headers_footers/MainFooter";
 import "../../assets/style/nav.css";
-import MainHeader from "./MainHeader";
+import BalanceHeader from "../headers_footers/BalanceHeader";
 
 export default function MainLayout() {
   return (
-    <>
-      <div className="layout">
-        <MainHeader />
-        <main className="main-translator">
-          <Outlet />
-        </main>
-        <MainFooter />
-      </div>
-    </>
+    <div className="layout">
+      <BalanceHeader />
+      <main className="main-translator">
+        <Outlet />
+      </main>
+      <MainFooter />
+    </div>
   );
 }

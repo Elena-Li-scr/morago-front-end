@@ -27,7 +27,28 @@
     gap: 9.5px;
     justify-content: center;
     margin: 0 auto;
+    align-items: center;
 
+}
+
+.main-footer-button {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.main-footer-nav {
+    width: 20px;
+    color: #A7A9B7;
+}
+
+.main-footer-nav-icon {
+    width: 100%;
+    height: 100%;
+}
+
+.main-footer-nav.active {
+    color: #191D31;
 }
 
 .home-header {
@@ -37,6 +58,7 @@
 .home-header-balance {
     position: fixed;
     width: 100%;
+    z-index: 99;
     padding: 32.95px 24px 30px 24px !important;
     height: max-content !important;
 }

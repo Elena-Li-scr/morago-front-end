@@ -27,6 +27,8 @@ export default function NewTrasnlator() {
     auth.setProfileFilled();
     setSuccess(true);
     // fetch('/api/register', { method: 'POST', body: formData });
+
+    localStorage.setItem("newTranslator", JSON.stringify(data));
   };
 
   const successSubmit = () => {

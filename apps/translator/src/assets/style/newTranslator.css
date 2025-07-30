@@ -158,7 +158,6 @@
 }
 
 .checkbox {
-
     display: flex;
     align-items: center;
     justify-content: center;
@@ -183,4 +182,10 @@
     color: #EB9412;
     font-size: 16px;
     position: absolute;
+}
+
+
+.profile-img {
+    width: 54px;
+    border-radius: 65px;
 }

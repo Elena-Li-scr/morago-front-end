@@ -1,13 +1,17 @@
-import React, { useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { AiOutlineCamera } from "react-icons/ai";
+import { useLocation } from "react-router-dom";
+
 type AvatarUploadProps = {
-  onChange: (file: File) => void;
+  onChange?: (file: string) => void;
+  translatorAvatar?: string | null;
 };
 
-const AvatarUpload: React.FC<AvatarUploadProps> = ({ onChange }) => {
+const AvatarUpload = ({ onChange, translatorAvatar }: AvatarUploadProps) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [preview, setPreview] = useState<string | null>(null);
 
+  const location = useLocation();
   const handleClick = () => {
     fileInputRef.current?.click();
   };
@@ -17,32 +21,44 @@ const AvatarUpload: React.FC<AvatarUploadProps> = ({ onChange }) => {
     if (file) {
       const reader = new FileReader();
       reader.onload = () => {
-        setPreview(reader.result as string);
-        onChange(file);
+        const base64String = reader.result as string;
+        setPreview(base64String);
+        onChange?.(base64String);
       };
       reader.readAsDataURL(file);
     }
   };
 
+  const isMyProfile = location.pathname === "/my-profile-page";
+
   return (
     <div className="register-user">
       <div className="register-block">
         <img
-          src={preview || "/assets/images/user.png"}
+          src={preview || translatorAvatar || "/assets/images/user.png"}
           alt="avatar"
-          className="register-user-photo"
+          className={isMyProfile ? `profile-img` : `register-user-photo`}
+          // className="profile-img"
         />
-        <button type="button" onClick={handleClick} className="icon-camera-btn">
-          <AiOutlineCamera className="icon-camera" />
-        </button>
+        {!isMyProfile && (
+          <button
+            type="button"
+            onClick={handleClick}
+            className="icon-camera-btn"
+          >
+            <AiOutlineCamera className="icon-camera" />
+          </button>
+        )}
       </div>
-      <input
-        ref={fileInputRef}
-        type="file"
-        accept="image/*"
-        onChange={handleFileChange}
-        className="hidden"
-      />
+      {!isMyProfile && (
+        <input
+          ref={fileInputRef}
+          type="file"
+          accept="image/*"
+          onChange={handleFileChange}
+          className="hidden"
+        />
+      )}
     </div>
   );
 };

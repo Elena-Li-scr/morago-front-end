@@ -18,7 +18,7 @@ export default function LogoHeader({ backIcon, notifiIcon }: Props) {
           <IoArrowBackSharp className="back-icon" style={{ color: "#fff" }} />
         </button>
       ) : (
-        <div style={{ width: "44px" }}></div>
+        <div style={{ width: `${notifiIcon ? "44px" : ""}` }}></div>
       )}
       <h2 className="home-header-logo">
         <img src="/assets/balanceHeader/morago.png" alt="morago" />

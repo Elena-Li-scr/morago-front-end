@@ -4,6 +4,7 @@ import { FORM_CONFIG } from "../../constans/constans";
 import MainButton from "@shared/components/MainButton";
 import { useNavigate } from "react-router-dom";
 import { auth } from "../../utils/auth";
+import { registerTranslator } from "../../api/services/services";
 
 export default function AuthForm({ type }: { type: keyof typeof FORM_CONFIG }) {
   const {
@@ -20,11 +21,21 @@ export default function AuthForm({ type }: { type: keyof typeof FORM_CONFIG }) {
         // await login(data.phone, data.password);
         navigate("/my-home-translator-page");
         break;
-      case "register":
-        // await register(data.phone, data.password);
+      case "register": {
+        const cleanPhone = data.phone.replace(/[^0-9]/g, "");
+        const registerData = {
+          phone: cleanPhone,
+          password: data.password,
+          confirmPassword: data.confirmPassword,
+          role: "ROLE_TRANSLATOR",
+        };
+        console.log(registerData);
+        // const res = await registerTranslator(registerData);
+
         auth.setToken("fake-token");
         navigate(`/verification/register/${data.phone}`);
         break;
+      }
       case "changePassword":
         // await requestResetCode(data.phone);
         navigate(-1);

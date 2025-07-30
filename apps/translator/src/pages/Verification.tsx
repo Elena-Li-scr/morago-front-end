@@ -1,11 +1,11 @@
 import { useEffect, useRef, useState } from "react";
-import { MdKeyboardBackspace } from "react-icons/md";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { CODE_LENGTH } from "../constans/constans";
 import MainButton from "@shared/components/MainButton";
 import "../assets/style/verification.css";
 import SucessActionModal from "@shared/components/SucessActionModal";
 import { auth } from "../utils/auth";
+import ChangePageBtn from "../components/buttons/ChangePageBtn";
 
 type VerificationParams = {
   process: "register" | "reset";
@@ -41,7 +41,7 @@ export default function VerificationPage() {
 
   useEffect(() => {
     if (remaining <= 0) return;
-    const timer = setInterval(() => setRemaining((r) => r - 1), 100);
+    const timer = setInterval(() => setRemaining((r) => r - 1), 1000);
     return () => clearInterval(timer);
   }, [remaining]);
 
@@ -94,13 +94,7 @@ export default function VerificationPage() {
   return (
     <div className="container">
       <div className="verification">
-        <button
-          type="button"
-          onClick={() => navigate("/register")}
-          className="back-button"
-        >
-          <MdKeyboardBackspace className="back-icon" />
-        </button>
+        <ChangePageBtn page="changePasswordIkconBack" />
         <h2 className="verification-title">{TITLES[process]}</h2>
         <p className="verification-text">
           Мы отправили проверочный код на ваш номер телефона
