@@ -5,23 +5,22 @@ import type {
   NavItem,
   WithdrawalForm,
 } from "../types/types";
-import { AiOutlineUser } from "react-icons/ai";
-import { FiPhone } from "react-icons/fi";
-import { LuCalendarDays } from "react-icons/lu";
-import { HiOutlineExclamationCircle } from "react-icons/hi2";
-import { TbMessageQuestion } from "react-icons/tb";
-import { RiLockPasswordLine } from "react-icons/ri";
-import { FaRegBell } from "react-icons/fa";
-import { BsShieldLock } from "react-icons/bs";
-import { HiOutlineUsers } from "react-icons/hi2";
-import { RxShare2 } from "react-icons/rx";
-
 import {
   formatDateString,
   formatPhone,
   formatTopikLevel,
 } from "../utils/formatInput";
 import { rules } from "../utils/rules";
+import { AiOutlineUser } from "react-icons/ai";
+import { FiPhone } from "react-icons/fi";
+import { LuCalendarDays } from "react-icons/lu";
+import { HiOutlineExclamationCircle, HiOutlineUsers } from "react-icons/hi2";
+import { TbMessageQuestion } from "react-icons/tb";
+import { RiHome5Fill, RiLockPasswordLine } from "react-icons/ri";
+import { FaPhoneAlt, FaRegBell } from "react-icons/fa";
+import { BsShieldLock } from "react-icons/bs";
+import { RxShare2 } from "react-icons/rx";
+import { FaUserLarge } from "react-icons/fa6";
 
 //Registration & newTranslator ---------------
 
@@ -150,36 +149,47 @@ export const FORM_CONFIG: Record<
   ],
 };
 
+// Inputs for change Translator Data -------------------
+
+export const CHANGE_DATA_INPUTS: InputFieldConfig[] = [
+  {
+    name: "firstName",
+    key: "fitsrName",
+    label: "Фамилия",
+    type: "text",
+    placeholder: "Введите Вашу фамилию",
+    icon: <AiOutlineUser className="register-icon" />,
+  },
+  {
+    name: "lastName",
+    key: "lastName",
+    label: "Имя",
+    type: "text",
+    placeholder: "Введите Ваше имя",
+    icon: <AiOutlineUser className="register-icon" />,
+  },
+];
+
 // FooterNav -------------
 
 export const navItems: NavItem[] = [
   {
     name: "main",
     label: "Главная",
-    icon: "/assets/icons/main.png",
+    icon: <RiHome5Fill className="main-footer-nav-icon" />,
     route: "/my-home-translator-page",
-    iconActive: "/assets/icons/main-active.png",
   },
   {
     name: "phone",
     label: "Мои звонки",
-    icon: "/assets/icons/phone.png",
-    route: "/settings/notifications",
-    iconActive: "/assets/icons/phone-active.png",
-  },
-  {
-    name: "message",
-    label: "Сообщения",
-    icon: "/assets/icons/message.png",
-    route: "/settings/notifications",
-    iconActive: "/assets/icons/message-active.png",
+    icon: <FaPhoneAlt className="main-footer-nav-icon" />,
+    route: "/my-call-history",
   },
   {
     name: "profile",
     label: "Профиль",
-    icon: "/assets/icons/profile.png",
+    icon: <FaUserLarge className="main-footer-nav-icon" />,
     route: "/my-profile-page",
-    iconActive: "/assets/icons/profile-active.png",
   },
 ];
 

@@ -41,6 +41,24 @@ export const rules = {
       value: 2,
       message: "Минимум 2 символа",
     },
+    validate: (value: string) => {
+      const words = value.trim().split(/\s+/);
+      return words.length >= 2 || "Введите как минимум два слова";
+    },
+  },
+  firstName: {
+    required: "Введите фамилию",
+    minLength: {
+      value: 2,
+      message: "Минимум 2 символа",
+    },
+  },
+  lastName: {
+    required: "Введите имя",
+    minLength: {
+      value: 2,
+      message: "Минимум 2 символа",
+    },
   },
 
   birthDate: {

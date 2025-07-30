@@ -4,6 +4,7 @@ import { CallCard } from "../components/user/CallCard";
 import { callData } from "../constans/db";
 import { useState } from "react";
 import { compareDesc, parseISO } from "date-fns";
+import { TestCallButton } from "../components/call/TestCallButton";
 
 export default function Home() {
   const [empyContact, setEmptyContact] = useState<boolean>(false);
@@ -32,6 +33,7 @@ export default function Home() {
           </div>
         )}
       </div>
+      <TestCallButton />
     </div>
   );
 }

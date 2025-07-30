@@ -1,5 +1,5 @@
 import { settingsSections } from "../constans/constans";
-import { Outlet, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 // import "../assets/style/register.css";
 
 export default function Profile() {
