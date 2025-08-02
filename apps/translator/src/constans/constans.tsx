@@ -30,13 +30,26 @@ export const COUNTDOWN_SECONDS = 180;
 export const CHECKBOX_GROUPS: CheckboxGroupConfig[] = [
   {
     label: "Темы перевода",
-    field: "translationTopics",
-    options: ["Пудонсан", "Маркет", "Банк", "Больница", "Ресторан", "Такси"],
+    field: "themeIds",
+    options: [
+      { id: 1, label: "Пудонсан" },
+      { id: 2, label: "Маркет" },
+      { id: 3, label: "Банк" },
+      { id: 4, label: "Больница" },
+      { id: 5, label: "Ресторан" },
+      { id: 6, label: "Такси" },
+    ],
   },
   {
     label: "Доступные языки перевода",
-    field: "availableLanguages",
-    options: ["Русский", "Казахский", "Узбекский", "Английский", "Таджикский"],
+    field: "languageIds",
+    options: [
+      { id: 1, label: "Русский" },
+      { id: 2, label: "Казахский" },
+      { id: 3, label: "Узбекский" },
+      { id: 4, label: "Английский" },
+      { id: 5, label: "Таджикский" },
+    ],
     useButtons: true,
   },
 ];
@@ -58,7 +71,7 @@ export const INPUT_FIELDS_CONFIG: InputFieldConfig[] = [
     icon: <FiPhone className="register-icon" />,
   },
   {
-    name: "birthDate",
+    name: "dateOfBirth",
     label: "Дата рождения",
     type: "text",
     format: formatDateString,
@@ -66,7 +79,7 @@ export const INPUT_FIELDS_CONFIG: InputFieldConfig[] = [
     icon: <LuCalendarDays className="register-icon" />,
   },
   {
-    name: "topikLevel",
+    name: "levelOfKorean",
     label: "Уровень TOPIK",
     type: "text",
     format: formatTopikLevel,

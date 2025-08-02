@@ -6,6 +6,7 @@ import "../assets/style/verification.css";
 import SucessActionModal from "@shared/components/SucessActionModal";
 import { auth } from "../utils/auth";
 import ChangePageBtn from "../components/buttons/ChangePageBtn";
+import { sendVerificationCode, verifyCode } from "../api/services/services";
 
 type VerificationParams = {
   process: "register" | "reset";
@@ -36,6 +37,7 @@ export default function VerificationPage() {
   const navigate = useNavigate();
   const [remaining, setRemaining] = useState(180); // 3 минуты
   const [code, setCode] = useState<string[]>(Array(CODE_LENGTH).fill(""));
+  const [error, setError] = useState("");
 
   const inputsRef = useRef<Array<HTMLInputElement | null>>([]);
 
@@ -66,23 +68,27 @@ export default function VerificationPage() {
   const handleSubmit = async () => {
     const fullCode = code.join("");
     if (fullCode.length !== 4) return;
-    // const success = await verifyCode({ phone, code: fullCode, mode: process });
-    if (fullCode.length == 4) {
+    try {
+      // const success = await verifyCode(phone!, fullCode);
       if (process === "register") {
         auth.setVerified();
       }
       setSuccess(true);
-    } else {
-      console.log("Неверный код");
+    } catch (err: any) {
+      setError(err.response?.data.error);
     }
   };
 
   const successSubmit = () => {
-    navigate(process === "register" ? "/new-translator" : "/new-password");
+    navigate(
+      process === "register" ? `/new-translator/${phone}` : "/new-password"
+    );
   };
 
   const handleResend = async () => {
-    // await resendCode({ phone, mode: process });
+    const repeatCode = await sendVerificationCode(phone);
+    console.log(repeatCode);
+
     setRemaining(180); // Сбросить таймер
   };
 
@@ -117,12 +123,12 @@ export default function VerificationPage() {
           ))}
         </div>
         <p className="verification-timer">{formattedTimer}</p>
-
+        {error && <p className="register-validate">{error}</p>}
         <MainButton
           type="submit"
           disabled={code.some((digit) => digit === "") || remaining === 0}
           className={`button ${
-            code.every((digit) => digit !== "" || remaining === 0) && "active"
+            code.every((digit) => digit !== "" && remaining > 0) ? "active" : ""
           }`}
           text=" Подтвердить"
           onClick={handleSubmit}

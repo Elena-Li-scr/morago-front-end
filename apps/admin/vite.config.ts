@@ -11,11 +11,11 @@ export default defineConfig({
     },
   },
   build: {
-    outDir: "../../dist/client",
+    outDir: "../../dist/admin",
     emptyOutDir: true,
   },
   server: {
     open: true,
-    port: 5173,
+    port: 5175,
   },
 });

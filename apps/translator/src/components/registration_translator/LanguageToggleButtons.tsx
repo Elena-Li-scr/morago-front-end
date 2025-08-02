@@ -1,8 +1,13 @@
 import { Controller, useFormContext } from "react-hook-form";
+type Option = {
+  id: number;
+  label: string;
+};
+
 type Props = {
   label: string;
   name: string;
-  options: string[];
+  options: Option[];
   rules?: any;
 };
 
@@ -19,9 +24,9 @@ export const LanguageToggleButtons = ({
       control={control}
       rules={rules}
       render={({ field: { value = [], onChange }, fieldState: { error } }) => {
-        const toggle = (lang: string) => {
+        const toggle = (lang: number) => {
           const updated = value.includes(lang)
-            ? value.filter((l: string) => l !== lang)
+            ? value.filter((l: number) => l !== lang)
             : [...value, lang];
           onChange(updated);
         };
@@ -31,14 +36,14 @@ export const LanguageToggleButtons = ({
             <div className="tranalator-checkbox-buttons">
               {options.map((option) => (
                 <button
-                  key={option}
+                  key={option.id}
                   type="button"
                   className={`checkbox-button ${
-                    value.includes(option) ? "active" : ""
+                    value.includes(option.id) ? "active" : ""
                   }`}
-                  onClick={() => toggle(option)}
+                  onClick={() => toggle(option.id)}
                 >
-                  {option}
+                  {option.label}
                 </button>
               ))}
             </div>

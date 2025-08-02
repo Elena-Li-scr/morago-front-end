@@ -7,6 +7,8 @@ import { rules } from "../utils/rules";
 import AvatarUpload from "../components/registration_translator/AvatarUpload";
 import { useTranslatorFromLocalStorage } from "../components/hooks/useTranslatorFromLocalStorage";
 import { useNavigate } from "react-router-dom";
+import { auth } from "../utils/auth";
+import { newTranslatorData } from "../api/services/services";
 
 export default function ChangeDataTranslator() {
   const methods = useForm<UserProfileExtra>({
@@ -14,22 +16,26 @@ export default function ChangeDataTranslator() {
   });
   const navigate = useNavigate();
 
-  const userDataString = localStorage.getItem("newTranslator");
+  const userDataString = auth.isNewTranslator();
   const userData = userDataString ? JSON.parse(userDataString) : {};
+  const translator = useTranslatorFromLocalStorage();
 
   const { control, handleSubmit, formState } = methods;
-  const onSubmit = (data: any) => {
+  const onSubmit = async (data: any) => {
     const updatedUserData = {
-      ...userData,
-      fullName: `${data.firstName} ${data.lastName}`.trim(),
-      profilePhoto: data.profilePhoto,
+      firstName: data.firstName,
+      lastName: data.lastName,
+      imageUrl: data.imageUrl || translator?.imageUrl,
     };
-    localStorage.setItem("newTranslator", JSON.stringify(updatedUserData));
-    navigate("/my-profile-page");
-    // fetch('/api/register', { method: 'POST', body: formData });
-  };
 
-  const translator = useTranslatorFromLocalStorage();
+    try {
+      await newTranslatorData(updatedUserData);
+      auth.setNewTranslator(updatedUserData);
+      navigate("/my-profile-page");
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   return (
     <div className="container">
@@ -44,8 +50,8 @@ export default function ChangeDataTranslator() {
             onSubmit={handleSubmit(onSubmit)}
           >
             <AvatarUpload
-              translatorAvatar={translator?.profilePhoto}
-              onChange={(file) => methods.setValue("profilePhoto", file)}
+              translatorAvatar={translator?.imageUrl}
+              onChange={(file) => methods.setValue("imageUrl", file)}
             />
             {CHANGE_DATA_INPUTS.map(
               ({ name, key, label, placeholder, icon, format, type }) => (
