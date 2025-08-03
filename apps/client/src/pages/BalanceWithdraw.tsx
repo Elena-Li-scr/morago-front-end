@@ -1,4 +1,5 @@
 import { useForm } from "react-hook-form";
+import { useEffect } from "react";
 import MainButton from "@shared/components/MainButton";
 import SucessActionModal from "@shared/components/SucessActionModal";
 import BackButton from "@shared/components/BackButton";
@@ -22,7 +23,7 @@ export default function BalanceWithdraw() {
     watch,
     setValue,
     formState: { errors },
-  } = useForm<FormData>();
+  } = useForm<FormData>({ mode: "onTouched" });
 
   const onSubmit = (data: FormData) => {
     console.log("Отправленные данные:", data);
@@ -33,14 +34,21 @@ export default function BalanceWithdraw() {
     setIsSuccess(false);
   };
 
+  useEffect(() => {
+    register("amount", { required: "Выберите сумму пополнения" });
+  }, [register]);
+
   const selectedAmount = watch("amount");
+  // const fullName = watch("fullName");
+
+  // const isValid = selectedAmount && fullName?.trim() !== "" && !errors.fullName && !errors.amount;
   return (
     <div className="balance-withdraw-wrapper">
-      <BackButton />
+      <BackButton icon="/assets/arrow-left.png" />
       <h2 className="balance-withdraw-header">Пополнить баланс</h2>
       <p className="balance-withdraw-text">
-        Минимальная сумма пополнения 10.000 вон. Средства зачисляются на счёт в
-        течении одного рабочего дня.
+        Минимальная сумма пополнения 10.000 вон. Средства зачисляются на счёт в течении одного
+        рабочего дня.
       </p>
       <h3>Счёт для пополнения</h3>
       <div className="balance-withdraw-card">
@@ -55,12 +63,10 @@ export default function BalanceWithdraw() {
           <input
             type="text"
             placeholder="Фамилия Имя"
-            {...register("fullName", { required: true })}
+            {...register("fullName", { required: "Укажите фамилию и имя отправителя" })}
           />
         </div>
-        {errors.fullName && (
-          <p className="form-error">{errors.fullName.message}</p>
-        )}
+        {errors.fullName && <p className="errors">{errors.fullName.message}</p>}
         <label>Сумма для пополнения</label>
         <div className="balance-withdraw-amounts">
           {amounts.map((amount) => (
@@ -68,26 +74,23 @@ export default function BalanceWithdraw() {
               type="button"
               key={amount}
               className={selectedAmount === amount ? "selected-amount" : ""}
-              onClick={() =>
-                setValue("amount", amount, { shouldValidate: true })
-              }
+              onClick={() => setValue("amount", amount, { shouldValidate: true })}
             >
               <div>
-                <img
-                  className="coin-image"
-                  src="/assets/home/coin-icon.png"
-                  alt="coin"
-                />
+                <img className="coin-image" src="/assets/home/coin-icon.png" alt="coin" />
                 <span>{amount.toLocaleString("ru-RU")} вон</span>
               </div>
-              {selectedAmount === amount && (
-                <img src="/assets/home/tick.png" alt="tick" />
-              )}
+              {selectedAmount === amount && <img src="/assets/home/tick.png" alt="tick" />}
             </button>
           ))}
         </div>
-        {errors.amount && <p>{errors.amount.message}</p>}
-        <MainButton type="submit" text="Запросить пополнение" />
+        {errors.amount && <p className="errors">{errors.amount.message}</p>}
+        <MainButton
+          type="submit"
+          text="Запросить пополнение"
+          className="button button-active"
+          // disabled={!isValid}
+        />
       </form>
       <button className="withdraw-support">Поддержка</button>
       {isSuccess && (
@@ -98,6 +101,7 @@ export default function BalanceWithdraw() {
           bgImg="/assets/home/up-balance.png"
           btn="Здорово!"
           onClick={successAction}
+          className="button button-active"
         />
       )}
     </div>

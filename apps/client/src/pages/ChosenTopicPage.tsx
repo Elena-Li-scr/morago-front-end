@@ -1,27 +1,16 @@
-import Translator from "../components/Translator";
+import TranslatorInfo from "../components/TranslatorInfo";
 import Theme from "@shared/components/Theme";
 import SimpleHeader from "../components/SimpleHeader";
 import MainFooter from "../components/MainFooter";
 import TranslatorCall from "../components/TranslatorCall";
 import { translators } from "@shared/utils/temporaryVar";
-import { useTopicStore } from "@shared/store/useTopicStore";
+import { useTopicStore, useTranslatorStore } from "@shared/store/useStore";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+
 import "@shared/styles/homePage.css";
 
-interface Translator {
-  name: string;
-  theme: string;
-  rating: number;
-  photo: string;
-  online: boolean;
-  status: string;
-  price: number;
-}
-
 export default function ChosenTopicPage() {
-  const [selectedTranslator, setSelectedTranslator] =
-    useState<Translator | null>(null);
+  const { selectedTranslator, setSelectedTranslator } = useTranslatorStore();
   const { chosenTopic, setChosenTopic } = useTopicStore();
   const navigate = useNavigate();
   const handleBack = () => {
@@ -29,17 +18,21 @@ export default function ChosenTopicPage() {
     setChosenTopic("");
   };
 
+  const callHandler = () => {
+    navigate("/call");
+  };
+
   return (
-    <div className="chosen-topic-wrapper">
+    <div className="page-wrapper">
       <SimpleHeader onClick={handleBack} />
 
-      <div className="chosen-topic-main">
+      <div className="chosen-topic-main scroll-content">
         <h3>Выбранная тема</h3>
         <Theme theme={chosenTopic} />
         <div className="translators-list">
           <h3>Доступные переводчики</h3>
           {translators.map((translator, index) => (
-            <Translator
+            <TranslatorInfo
               key={index}
               translator={translator}
               onClick={() => setSelectedTranslator(translator)}
@@ -49,8 +42,15 @@ export default function ChosenTopicPage() {
       </div>
       <MainFooter page="main" />
       {selectedTranslator && (
-        <div className="modal-window-wrapper">
-          <TranslatorCall translator={selectedTranslator} />
+        <div
+          className="modal-window-wrapper"
+          onClick={(e) => {
+            if (e.target === e.currentTarget) {
+              setSelectedTranslator(null);
+            }
+          }}
+        >
+          <TranslatorCall translator={selectedTranslator} onClick={callHandler} />
         </div>
       )}
     </div>

@@ -10,8 +10,12 @@ export default function Profile() {
   const ChangePassword = () => {
     navigate("/change-password");
   };
+
+  const toNotifications = () => {
+    navigate("/notification");
+  };
   return (
-    <div className="profile-wrapper">
+    <div className="page-wrapper">
       <header className="profile-header">
         <h2>Мой профиль</h2>
         <div className="profile-header-info">
@@ -26,26 +30,18 @@ export default function Profile() {
               <p className="profile-phone">010 1234 56 78</p>
             </div>
           </div>
-          <button
-            type="button"
-            className="profile-change-button"
-            onClick={changeProfile}
-          >
+          <button type="button" className="profile-change-button" onClick={changeProfile}>
             Изменить
           </button>
         </div>
       </header>
-      <div className="profile-main">
+      <div className="profile-main scroll-content">
         <h3>Настройки</h3>
-        <button
-          type="button"
-          className="profile-main-option"
-          onClick={ChangePassword}
-        >
+        <button type="button" className="profile-main-option" onClick={ChangePassword}>
           <img src="/assets/signIcons/lock-valid.png" alt="change password" />
           <p>Изменить пароль</p>
         </button>
-        <button type="button" className="profile-main-option">
+        <button type="button" className="profile-main-option" onClick={toNotifications}>
           <img src="/assets/profile/notification.png" alt="notification" />
           <p>Уведомления</p>
         </button>

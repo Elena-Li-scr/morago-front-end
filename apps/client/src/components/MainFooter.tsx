@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { useTopicStore } from "@shared/store/useTopicStore";
+import { useTopicStore } from "@shared/store/useStore";
 
 interface Props {
   page: string;
@@ -15,6 +15,10 @@ export default function MainFooter({ page }: Props) {
     navigate("/profile");
     setChosenTopic("");
   };
+
+  const toHistoryCalls = () => {
+    navigate("/calls-history");
+  };
   return (
     <footer className="main-footer">
       <button type="button" onClick={toHomePage}>
@@ -28,7 +32,7 @@ export default function MainFooter({ page }: Props) {
         />
         <h3 className={page === "main" ? "main-footer-active" : ""}>Главная</h3>
       </button>
-      <button type="button">
+      <button type="button" onClick={toHistoryCalls}>
         <img
           src={
             page === "phone"

@@ -2,15 +2,16 @@ import "@shared/styles/signUp.css";
 import { useForm, Controller } from "react-hook-form";
 import Cleave from "cleave.js/react";
 import { Link, useNavigate } from "react-router-dom";
-import { newUser } from "@shared/services/api";
+import { newUser } from "@shared/services/clientApi";
 import { phonePattern } from "@shared/utils/validationRules";
 import { useState } from "react";
 import MainButton from "@shared/components/MainButton";
 
 interface FormData {
-  phone: string;
   password: string;
-  repeatPassword: string;
+  confirmPassword: string;
+  phone: string;
+  role: string;
 }
 
 export default function SignUp() {
@@ -25,26 +26,28 @@ export default function SignUp() {
   const navigate = useNavigate();
   const [show, setShow] = useState({
     password: false,
-    repeatPassword: false,
+    confirmPassword: false,
   });
   const phone = watch("phone");
   const phoneIsEmpty = !phone || phone.replace(/\s/g, "") === "";
   const password = watch("password");
-  const repeatPassword = watch("repeatPassword");
+  const confirmPassword = watch("confirmPassword");
 
   const isValid =
     !errors.phone &&
     !errors.password &&
-    !errors.repeatPassword &&
+    !errors.confirmPassword &&
     !phoneIsEmpty &&
     password?.trim() !== "" &&
-    repeatPassword?.trim() !== "";
+    confirmPassword?.trim() !== "";
 
   const onSubmit = async (data: FormData) => {
     const payload = {
       user: {
-        phone: data.phone,
         password: data.password,
+        confirmPassword: data.confirmPassword,
+        phone: data.phone,
+        role: "ROLE_USER",
       },
     };
 
@@ -57,7 +60,7 @@ export default function SignUp() {
     }
   };
 
-  const toggleVisibility = (field: "password" | "repeatPassword") => {
+  const toggleVisibility = (field: "password" | "confirmPassword") => {
     setShow((prev) => ({
       ...prev,
       [field]: !prev[field],
@@ -70,8 +73,7 @@ export default function SignUp() {
         Регистрация <br /> пользователя
       </h2>
       <p className="sign-form-text">
-        Зарегистрируйтесь, чтобы получить доступ ко всем преимуществам
-        приложения
+        Зарегистрируйтесь, чтобы получить доступ ко всем преимуществам приложения
       </p>
 
       {/* phone number  */}
@@ -83,8 +85,8 @@ export default function SignUp() {
             phoneIsEmpty
               ? "/assets/signIcons/call.png"
               : errors.phone
-              ? "/assets/signIcons/call-error.png"
-              : "/assets/signIcons/call-valid.png"
+                ? "/assets/signIcons/call-error.png"
+                : "/assets/signIcons/call-valid.png"
           }
           alt="call-img"
         />
@@ -105,9 +107,7 @@ export default function SignUp() {
                 numericOnly: true,
               }}
               placeholder="Введите номер телефона без “-”"
-              className={
-                errors.phone ? "main-input main-input-error" : "main-input"
-              }
+              className={errors.phone ? "main-input main-input-error" : "main-input"}
               autoComplete="tel"
             />
           )}
@@ -124,8 +124,8 @@ export default function SignUp() {
             password?.trim() === ""
               ? "/assets/signIcons/lock.png"
               : errors.password
-              ? "/assets/signIcons/lock-error.png"
-              : "/assets/signIcons/lock-valid.png"
+                ? "/assets/signIcons/lock-error.png"
+                : "/assets/signIcons/lock-valid.png"
           }
           alt="lock-img"
         />
@@ -133,9 +133,7 @@ export default function SignUp() {
           type={show.password ? "text" : "password"}
           placeholder="Введите ваш пароль"
           autoComplete="new-password"
-          className={
-            errors.password ? "main-input-error main-input" : "main-input"
-          }
+          className={errors.password ? "main-input-error main-input" : "main-input"}
           {...register("password", {
             required: true,
             minLength: {
@@ -154,8 +152,8 @@ export default function SignUp() {
               password?.trim() === ""
                 ? "/assets/signIcons/eye.png"
                 : errors.password
-                ? "/assets/signIcons/eye-error.png"
-                : "/assets/signIcons/eye-valid.png"
+                  ? "/assets/signIcons/eye-error.png"
+                  : "/assets/signIcons/eye-valid.png"
             }
             alt="eye"
           />
@@ -167,47 +165,43 @@ export default function SignUp() {
       <div className="input-wrapper">
         <img
           src={
-            repeatPassword?.trim() === ""
+            confirmPassword?.trim() === ""
               ? "/assets/signIcons/lock.png"
-              : errors.repeatPassword
-              ? "/assets/signIcons/lock-error.png"
-              : "/assets/signIcons/lock-valid.png"
+              : errors.confirmPassword
+                ? "/assets/signIcons/lock-error.png"
+                : "/assets/signIcons/lock-valid.png"
           }
           alt="lock-img"
         />
         <input
-          type={show.repeatPassword ? "text" : "password"}
+          type={show.confirmPassword ? "text" : "password"}
           placeholder="Повторите ещё раз"
           autoComplete="new-password"
-          className={
-            errors.repeatPassword ? "main-input-error main-input" : "main-input"
-          }
-          {...register("repeatPassword", {
+          className={errors.confirmPassword ? "main-input-error main-input" : "main-input"}
+          {...register("confirmPassword", {
             required: true,
             validate: (value) => value === password || "Пароли не совпадают",
           })}
         />
         <button
           type="button"
-          onClick={() => toggleVisibility("repeatPassword")}
+          onClick={() => toggleVisibility("confirmPassword")}
           className="password-toggle-button"
         >
           <img
             src={
-              repeatPassword?.trim() === ""
+              confirmPassword?.trim() === ""
                 ? "/assets/signIcons/eye.png"
-                : errors.repeatPassword
-                ? "/assets/signIcons/eye-error.png"
-                : "/assets/signIcons/eye-valid.png"
+                : errors.confirmPassword
+                  ? "/assets/signIcons/eye-error.png"
+                  : "/assets/signIcons/eye-valid.png"
             }
             alt="eye"
           />
         </button>
       </div>
 
-      {errors.repeatPassword && (
-        <p className="errors">{errors.repeatPassword.message}</p>
-      )}
+      {errors.confirmPassword && <p className="errors">{errors.confirmPassword.message}</p>}
 
       {/* Кнопка */}
 
@@ -224,8 +218,7 @@ export default function SignUp() {
         </Link>
       </p>
       <p className="personal-data-warning">
-        Нажимая на кнопку, вы даете согласие на обработку своих персональных
-        данных
+        Нажимая на кнопку, вы даете согласие на обработку своих персональных данных
       </p>
     </form>
   );
