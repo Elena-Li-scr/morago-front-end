@@ -1,3 +1,5 @@
+import type { Call } from "../types/types";
+
 function getRandomDate(start: Date, end: Date): Date {
   return new Date(
     start.getTime() + Math.random() * (end.getTime() - start.getTime())
@@ -7,10 +9,10 @@ const now = new Date();
 const twoWeeksAgo = new Date();
 twoWeeksAgo.setDate(now.getDate() - 7);
 
-export const callData = [
+export const callData: Call[] = [
   {
     id: 1,
-    avatarUrl: "/assets/images/user.png",
+    avatarUrl: "/assets/images/user2.png",
     name: "Пугачева Алла",
     topic: "Банк",
     time: "1460",
@@ -28,7 +30,7 @@ export const callData = [
   },
   {
     id: 3,
-    avatarUrl: "/assets/images/user.png",
+    avatarUrl: "/assets/images/user2.png",
     name: "Юзер Второй",
     topic: "Завод",
     time: "860",
@@ -44,4 +46,36 @@ export const callData = [
     price: 1000,
     date: getRandomDate(twoWeeksAgo, now).toISOString(),
   },
+
+  {
+    id: 5,
+    avatarUrl: "/assets/images/user.png",
+    name: "Юзер Третий",
+    topic: "Аптека",
+    time: "80",
+    price: 1000,
+    date: getRandomDate(twoWeeksAgo, now).toISOString(),
+  },
+
+  {
+    id: 6,
+    avatarUrl: "/assets/images/user.png",
+    name: "Юзер Третий",
+    topic: "Аптека",
+    time: "80",
+    price: 1000,
+    date: getRandomDate(twoWeeksAgo, now).toISOString(),
+  },
+
+  {
+    id: 7,
+    avatarUrl: "/assets/images/user.png",
+    name: "Юзер Третий",
+    topic: "Аптека",
+    time: "80",
+    price: 1000,
+    date: getRandomDate(twoWeeksAgo, now).toISOString(),
+  },
 ];
+
+export const callMissed: Call[] = [];

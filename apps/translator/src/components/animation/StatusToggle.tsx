@@ -15,7 +15,7 @@ export const StatusToggle = () => {
         Доступен
       </button>
       <button
-        className={`toggle-option ${!isAvailable ? "active red" : ""}`}
+        className={`toggle-option ${!isAvailable ? "active" : ""}`}
         onClick={() => setIsAvailable(false)}
       >
         Не доступен

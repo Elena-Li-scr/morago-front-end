@@ -12,7 +12,6 @@
 
 .call-card {
     display: flex;
-    gap: 14px;
     padding: 10px;
     justify-content: space-between;
     border: 1px solid #F3F3F3;
@@ -59,4 +58,22 @@
 .call-time-time {
     line-height: 180%;
     color: #A7A9B7;
+}
+
+.all-user-avatar {
+    width: 50px;
+    margin-right: 10px;
+    border-radius: 10px;
+}
+
+@media (max-width: 270px) {
+    .call-card {
+        flex-direction: column;
+    }
+
+    .call-info,
+    .call-time {
+        margin-top: 10px;
+        width: 100%;
+    }
 }

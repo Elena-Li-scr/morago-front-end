@@ -3,27 +3,31 @@ import type { RegisterOptions, UseFormGetValues } from "react-hook-form";
 export type RegisterFormValues = {
   phone: string;
   password: string;
-  confirmPassword: string;
+  confirmPassword?: string;
+  role?: string;
 };
 
 export type UserProfileExtra = {
-  phone: string;
-  fullName: string;
-  birthDate: string;
-  topikLevel: string;
-  profilePhoto?: File | null;
-  translationTopics: string[];
-  availableLanguages: string[];
+  phone?: string;
+  fullName?: string;
+  firstName?: string;
+  lastName?: string;
+  dateOfBirth?: string;
+  levelOfKorean?: string;
+  imageUrl?: string | null;
+  themeIds?: string[];
+  languageIds?: string[];
 };
 
 export type ChangePasswordData = {
-  currentPassword: string;
+  oldPassword: string;
   newPassword: string;
-  confirmNewPassword: string;
+  confirmPassword: string;
 };
 
 export type InputFieldConfig = {
   name: keyof UserProfileExtra;
+  key?: string;
   label: string;
   placeholder: string;
   icon?: React.ReactNode;
@@ -31,10 +35,14 @@ export type InputFieldConfig = {
   format?: (val: string) => string;
 };
 
+export type CheckboxOption = {
+  id: number;
+  label: string;
+};
 export type CheckboxGroupConfig = {
   label: string;
   field: keyof UserProfileExtra;
-  options: string[];
+  options: CheckboxOption[];
   useButtons?: boolean;
 };
 
@@ -53,9 +61,8 @@ export type FormField = {
 export type NavItem = {
   name: string;
   label: string;
-  icon: string;
+  icon: React.ReactNode;
   route: string;
-  iconActive: string;
   onClick?: () => void;
 };
 
@@ -64,3 +71,13 @@ export type WithdrawalForm = {
   bankName: string;
   balance: string;
 };
+
+export interface Call {
+  id: number;
+  avatarUrl: string;
+  name: string;
+  topic: string;
+  time: string;
+  price: number;
+  date: string;
+}

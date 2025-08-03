@@ -1,6 +1,6 @@
 import MainButton from "@shared/components/MainButton";
 import { useNavigate, useLocation } from "react-router-dom";
-import LogoHeader from "../logoHeader/LogoHeader";
+import LogoHeader from "./LogoHeader";
 import { StatusToggle } from "../animation/StatusToggle";
 import { GrNext } from "react-icons/gr";
 
@@ -16,6 +16,7 @@ export default function BalanceHeader() {
 
   const isHomePage = location.pathname === "/my-home-translator-page";
   const isBalancePage = location.pathname === "/my-balance-translator-page";
+  const isCallHistory = location.pathname === "/my-call-history";
 
   return (
     <div
@@ -24,17 +25,22 @@ export default function BalanceHeader() {
         backgroundImage: `url(/assets/balanceHeader/background.png)`,
       }}
     >
-      <LogoHeader notifiIcon={true} backIcon={isBalancePage && true} />
-      <div className="header-balance header-balance-block">
-        <div>
-          <p>Мой баланс</p>
-          <div className="balance-count balance-count-block">
-            <img src="/assets/icons/coin-icon.png" alt="coin-icon" />
-            <div className="balance">300.000 вон </div>
+      <LogoHeader
+        notifiIcon={!isCallHistory && true}
+        backIcon={isBalancePage && true}
+      />
+      {!isCallHistory && (
+        <div className="header-balance header-balance-block">
+          <div>
+            <p>Мой баланс</p>
+            <div className="balance-count balance-count-block">
+              <img src="/assets/icons/coin-icon.png" alt="coin-icon" />
+              <div className="balance">300.000 вон </div>
+            </div>
           </div>
+          {isHomePage && <GrNext className="next-icon" onClick={changePage} />}
         </div>
-        {isHomePage && <GrNext className="next-icon" onClick={changePage} />}
-      </div>
+      )}
       {isHomePage && <StatusToggle />}
       {isBalancePage && (
         <MainButton

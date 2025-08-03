@@ -1,9 +1,8 @@
-import { useState } from "react";
 import { ControlledCheckboxGroup } from "../components/registration_translator/CheckboxGroup";
 import "../assets/style/newTranslator.css";
 import { LanguageToggleButtons } from "../components/registration_translator/LanguageToggleButtons";
 import AvatarUpload from "../components/registration_translator/AvatarUpload";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { CHECKBOX_GROUPS, INPUT_FIELDS_CONFIG } from "../constans/constans";
 import SucessActionModal from "@shared/components/SucessActionModal";
 import { ControlledInputField } from "../components/registration_translator/ControlledInputField";
@@ -11,27 +10,60 @@ import { FormProvider, useForm } from "react-hook-form";
 import { rules } from "../utils/rules";
 import { auth } from "../utils/auth";
 import type { UserProfileExtra } from "../types/types";
-
+import { newTranslatorData } from "../api/services/services";
+import { formatPhone } from "../utils/formatInput";
+import { useModalStore } from "../components/loading/useModalStore";
+import { useEffect } from "react";
 export default function NewTrasnlator() {
+  const { success, setSuccess } = useModalStore();
+  useEffect(() => {
+    if (success) {
+      const timeout = setTimeout(() => {
+        setSuccess(false);
+        document.body.style.overflow = "scroll";
+        navigate("/my-home-translator-page");
+      }, 3000);
+      return () => clearTimeout(timeout);
+    }
+  }, [success]);
+
+  const { phone } = useParams();
   const methods = useForm<UserProfileExtra>({
     mode: "onChange",
+    defaultValues: {
+      phone: formatPhone(phone || ""),
+    },
   });
-
   const { control, handleSubmit, formState } = methods;
-  const [success, setSuccess] = useState(false);
   const navigate = useNavigate();
 
-  const onSubmit = (data: any) => {
-    console.log("Отправка данных:", data);
-    document.body.style.overflow = "hidden";
-    auth.setProfileFilled();
-    setSuccess(true);
-    // fetch('/api/register', { method: 'POST', body: formData });
+  const onSubmit = async (data: any) => {
+    const fullName = data.fullName.split(" ");
+    const firstName = fullName[0];
+    const lastName = fullName[fullName.length - 1];
+    const translatorData = {
+      firstName: firstName,
+      lastName: lastName,
+      dateOfBirth: data.dateOfBirth.replace(/\./g, "-"),
+      levelOfKorean: data.levelOfKorean,
+      imageUrl: data.imageUrl,
+      themeIds: data.themeIds,
+      languageIds: data.languageIds,
+    };
+    try {
+      await newTranslatorData(translatorData);
+      document.body.style.overflow = "hidden";
+      auth.setProfileFilled();
+      auth.setNewTranslator(translatorData);
+    } catch (err: any) {
+      const serverMessage = err.response?.data.error;
+      console.log(serverMessage);
+    }
   };
 
   const successSubmit = () => {
-    setSuccess(false);
     document.body.style.overflow = "scroll";
+    setSuccess(false);
     navigate("/my-home-translator-page");
   };
 
@@ -41,7 +73,7 @@ export default function NewTrasnlator() {
       <FormProvider {...methods}>
         <form className="new-traslator-form" onSubmit={handleSubmit(onSubmit)}>
           <AvatarUpload
-            onChange={(file) => methods.setValue("profilePhoto", file)}
+            onChange={(file) => methods.setValue("imageUrl", file)}
           />
           {INPUT_FIELDS_CONFIG.map(
             ({ name, label, placeholder, icon, format, type }) => (

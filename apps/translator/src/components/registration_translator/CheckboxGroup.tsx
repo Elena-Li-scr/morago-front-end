@@ -1,9 +1,14 @@
 import { useController, useFormContext } from "react-hook-form";
 
+type Option = {
+  id: number;
+  label: string;
+};
+
 type Props = {
   name: string;
   label: string;
-  options: string[];
+  options: Option[];
   rules?: any;
   single?: boolean;
 };
@@ -20,12 +25,12 @@ export const ControlledCheckboxGroup = ({
     field: { value, onChange },
   } = useController({ name, control, rules });
 
-  const handleChange = (option: string) => {
+  const handleChange = (option: number) => {
     if (single) {
       onChange(!value ? true : !value);
     } else {
       const newValue = value?.includes(option)
-        ? value.filter((v: string) => v !== option)
+        ? value.filter((v: number) => v !== option)
         : [...(value || []), option];
       onChange(newValue);
     }
@@ -35,18 +40,18 @@ export const ControlledCheckboxGroup = ({
       <p className="tranalator-checkbox-title">{label}</p>
       <div className="tranalator-checkbox-block">
         {options.map((option) => (
-          <label key={option}>
+          <label key={option.id}>
             <input
               type="checkbox"
               checked={
                 single
                   ? !!value
-                  : Array.isArray(value) && value.includes(option)
+                  : Array.isArray(value) && value.includes(option.id)
               }
-              onChange={() => handleChange(option)}
+              onChange={() => handleChange(option.id)}
               className="checkbox"
             />
-            <span className="tranalator-option">{option}</span>
+            <span className="tranalator-option">{option.label}</span>
           </label>
         ))}
       </div>

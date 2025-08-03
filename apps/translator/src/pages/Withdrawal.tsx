@@ -41,9 +41,7 @@ export default function Withdrawal() {
       <FormProvider {...methods}>
         <form className="verification" onSubmit={handleSubmit(onSubmit)}>
           <ChangePageBtn page="withdrawalIkconBack" />
-          <h2 className="verification-title" style={{ fontSize: "30px" }}>
-            Вывод средств
-          </h2>
+          <h2 className="verification-title">Вывод средств</h2>
           <p className="verification-text">
             Минимальная сумма вывода 50.000 вон. Введите номер своего счёта и в
             течении рабочего дня вам поступят средства.

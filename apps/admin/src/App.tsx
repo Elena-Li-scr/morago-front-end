@@ -4,7 +4,7 @@ import LoginPage from "./pages/LoginPage";
 import ForgotPassword from "./pages/ForgotPassword";
 import NewPassword from "./pages/NewPassword";
 import HomePage from "./pages/HomePage";
-import User from "./pages/User";
+import { GenericTablePage } from "./pages/GenericTablePage";
 
 function App() {
   return (
@@ -16,7 +16,7 @@ function App() {
             <Route path="forgot-password" element={<ForgotPassword />} />
             <Route path="new-password" element={<NewPassword />} />
             <Route path="/home" element={<HomePage />}>
-              <Route path="user" element={<User />} />
+              <Route path="lists/:type" element={<GenericTablePage />} />
             </Route>
           </Route>
         </Routes>
