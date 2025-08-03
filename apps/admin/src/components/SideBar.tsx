@@ -12,7 +12,7 @@ export default function SideBar() {
 
   const selectHandler = (text: string) => {
     setSelected(text);
-    navigate(`/home/${text}`);
+    navigate(`lists/${text}`);
   };
 
   return (
@@ -36,7 +36,7 @@ export default function SideBar() {
                   : "admin-selectors"
               }
               type="button"
-              onClick={() => selectHandler("user-list")}
+              onClick={() => selectHandler("user")}
             >
               User
             </button>
@@ -47,7 +47,7 @@ export default function SideBar() {
                   : "admin-selectors"
               }
               type="button"
-              onClick={() => selectHandler("translator-list")}
+              onClick={() => selectHandler("translator")}
             >
               Translator
             </button>

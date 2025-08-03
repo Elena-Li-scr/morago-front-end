@@ -4,8 +4,7 @@ import LoginPage from "./pages/LoginPage";
 import ForgotPassword from "./pages/ForgotPassword";
 import NewPassword from "./pages/NewPassword";
 import HomePage from "./pages/HomePage";
-import UserList from "./pages/UserList";
-import TranslatorList from "./pages/TranslatorList";
+import { GenericTablePage } from "./pages/GenericTablePage";
 
 function App() {
   return (
@@ -17,8 +16,7 @@ function App() {
             <Route path="forgot-password" element={<ForgotPassword />} />
             <Route path="new-password" element={<NewPassword />} />
             <Route path="/home" element={<HomePage />}>
-              <Route path="user-list" element={<UserList />} />
-              <Route path="translator-list" element={<TranslatorList />} />
+              <Route path="lists/:type" element={<GenericTablePage />} />
             </Route>
           </Route>
         </Routes>
