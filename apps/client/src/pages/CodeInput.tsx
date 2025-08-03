@@ -1,10 +1,10 @@
-import { useForm } from "react-hook-form";
-import { useRef, useState } from "react";
+import { useState } from "react";
 import SucessActionModal from "@shared/components/SucessActionModal";
-import MainButton from "@shared/components/MainButton";
 import BackButton from "@shared/components/BackButton";
+import CodeForm from "../components/CodeForm";
 
 import "@shared/styles/signUp.css";
+import { useNavigate } from "react-router-dom";
 
 interface Code {
   num1: string;
@@ -14,22 +14,9 @@ interface Code {
 }
 
 export default function CodeInput() {
-  const { register, handleSubmit, setValue, getValues, watch } = useForm<Code>({
-    mode: "onChange",
-  });
-
   const [success, setSuccess] = useState(false);
-
-  const inputRefs = [
-    useRef<HTMLInputElement | null>(null),
-    useRef<HTMLInputElement | null>(null),
-    useRef<HTMLInputElement | null>(null),
-    useRef<HTMLInputElement | null>(null),
-  ];
-
+  const navigate = useNavigate();
   const fieldNames = ["num1", "num2", "num3", "num4"] as const;
-  const watchedValues = watch(["num1", "num2", "num3", "num4"]);
-  const isComplete = watchedValues.every((v) => v && v.length === 1);
 
   const onSubmit = (data: Code) => {
     const code = fieldNames.map((key) => data[key]).join("");
@@ -37,30 +24,8 @@ export default function CodeInput() {
     console.log("Verification code:", code);
   };
 
-  const handleChange = (
-    index: number,
-    e: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    const value = e.target.value;
-    if (!/^\d?$/.test(value)) return;
-
-    setValue(fieldNames[index], value);
-
-    if (value && index < inputRefs.length - 1) {
-      inputRefs[index + 1].current?.focus();
-    }
-  };
-
-  const handleKeyDown = (
-    index: number,
-    e: React.KeyboardEvent<HTMLInputElement>
-  ) => {
-    if (e.key === "Backspace") {
-      const current = getValues(fieldNames[index]);
-      if (!current && index > 0) {
-        inputRefs[index - 1].current?.focus();
-      }
-    }
+  const successHandler = () => {
+    navigate("/home");
   };
 
   return (
@@ -70,37 +35,7 @@ export default function CodeInput() {
       <p className="sign-form-text">
         Мы отправили проверочный <br /> код на ваш номер телефона{" "}
       </p>
-      <form className="code-form" onSubmit={handleSubmit(onSubmit)}>
-        <div className="code-form-inputs">
-          {fieldNames.map((name, index) => (
-            <input
-              key={name}
-              type="text"
-              maxLength={1}
-              inputMode="numeric"
-              autoComplete="one-time-code"
-              className="code-form-input"
-              {...register(name, { required: true })}
-              ref={(el) => {
-                inputRefs[index].current = el;
-              }}
-              onChange={(e) => handleChange(index, e)}
-              onKeyDown={(e) => handleKeyDown(index, e)}
-            />
-          ))}
-        </div>
-
-        <MainButton
-          type="submit"
-          text="Подтвердить"
-          className={isComplete ? "button button-active" : "button"}
-        />
-
-        <div className="code-repeat">
-          <p>Не получили код? </p>
-          <button type="button">Ещё раз</button>
-        </div>
-      </form>
+      <CodeForm onSubmit={onSubmit} />
 
       {success && (
         <SucessActionModal
@@ -110,6 +45,7 @@ export default function CodeInput() {
           btn="Здорово!"
           bgImg="/assets/signIcons/success-note.png"
           className="button button-active"
+          onClick={successHandler}
         />
       )}
     </div>

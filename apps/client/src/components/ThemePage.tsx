@@ -1,7 +1,7 @@
 import Theme from "@shared/components/Theme";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useTopicStore } from "@shared/store/useTopicStore";
+import { useTopicStore } from "@shared/store/useStore";
 
 import "@shared/styles/homePage.css";
 import "@shared/styles/theme.css";
@@ -39,10 +39,12 @@ export default function ThemePage() {
           <Theme key={index} theme={theme} onClick={handleThemeClick} />
         ))}
         {!showAllThemes && (
-          <button type="button" className="theme" onClick={handleShowAll}>
-            <img src="/assets/theme-icons/all.png" alt="theme-icon" />
-            <h5>Остальные</h5>
-          </button>
+          <div className="theme-wrapper">
+            <button type="button" className="theme" onClick={handleShowAll}>
+              <img src="/assets/theme-icons/all.png" alt="theme-icon" />
+              <h5>Остальные</h5>
+            </button>
+          </div>
         )}
       </div>
     </div>

@@ -1,4 +1,4 @@
-import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import SignUp from "./pages/SignUp";
 import CodeInput from "./pages/CodeInput";
 import HomePage from "./pages/HomePage";
@@ -9,13 +9,22 @@ import BalanceWithdraw from "./pages/BalanceWithdraw";
 import Profile from "./pages/Profile";
 import ChangeProfile from "./pages/ChangeProfile";
 import ChangePassword from "./pages/ChangePassword";
+import CallPage from "./pages/CallPage";
+import CallsHistory from "./pages/CallsHistory";
+import Notification from "./pages/Notification";
+import ForgotPassword from "./pages/ForgotPassword";
+import ForgotPasswordCode from "./pages/ForgotPasswordCode";
+import NewPassword from "./pages/NewPassword";
+import GreetingPage from "./pages/GreetingPage";
+import SignIn from "./pages/SignIn";
 function App() {
   return (
     <>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Navigate to="/sign-up" />} />
+          <Route path="/" element={<GreetingPage />} />
           <Route path="/sign-up" element={<SignUp />} />
+          <Route path="/sign-in" element={<SignIn />} />
           <Route path="/code" element={<CodeInput />} />
           <Route path="/home" element={<HomePage />} />
           <Route path="/call-selectors" element={<CallSelectors />} />
@@ -25,6 +34,12 @@ function App() {
           <Route path="/profile" element={<Profile />} />
           <Route path="/change-profile" element={<ChangeProfile />} />
           <Route path="/change-password" element={<ChangePassword />} />
+          <Route path="/call" element={<CallPage />} />
+          <Route path="/calls-history" element={<CallsHistory />} />
+          <Route path="/notification" element={<Notification />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/forgot-password-code" element={<ForgotPasswordCode />} />
+          <Route path="/new-password" element={<NewPassword />} />
         </Routes>
       </BrowserRouter>
     </>

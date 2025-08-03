@@ -1,6 +1,6 @@
 import "../styles/theme.css";
 import { iconMap } from "../utils/temporaryVar";
-import { useTopicStore } from "../store/useTopicStore";
+import { useTopicStore } from "../store/useStore";
 
 interface ThemeProps {
   theme: string;
