@@ -12,7 +12,7 @@ export default function SideBar() {
 
   const selectHandler = (text: string) => {
     setSelected(text);
-    navigate(`/home/${text}`);
+    navigate(`lists/${text}`);
   };
 
   return (
@@ -20,14 +20,21 @@ export default function SideBar() {
       <div className="side-bar-selectors">
         <div className="admin-list">
           <button type="button" onClick={() => setOpenList((prev) => !prev)}>
-            <img src={openList ? "/assets/close.png" : "/assets/open.png"} alt="open-button" />
+            <img
+              src={openList ? "/assets/close.png" : "/assets/open.png"}
+              alt="open-button"
+            />
+            Lists
           </button>
-          <h3>Lists</h3>
         </div>
         {openList && (
           <div className="admin-list-selectors">
             <button
-              className={selected === "user" ? "admin-selectors admin-selected" : "admin-selectors"}
+              className={
+                selected === "user"
+                  ? "admin-selectors admin-selected"
+                  : "admin-selectors"
+              }
               type="button"
               onClick={() => selectHandler("user")}
             >
@@ -35,7 +42,9 @@ export default function SideBar() {
             </button>
             <button
               className={
-                selected === "translator" ? "admin-selectors admin-selected" : "admin-selectors"
+                selected === "translator"
+                  ? "admin-selectors admin-selected"
+                  : "admin-selectors"
               }
               type="button"
               onClick={() => selectHandler("translator")}
@@ -46,15 +55,20 @@ export default function SideBar() {
         )}
         <div className="admin-list top-line">
           <button type="button" onClick={() => setOpenTopics((prev) => !prev)}>
-            <img src={openTopics ? "/assets/close.png" : "/assets/open.png"} alt="open-button" />
+            <img
+              src={openTopics ? "/assets/close.png" : "/assets/open.png"}
+              alt="open-button"
+            />
+            Translation topics
           </button>
-          <h3>Translation topics</h3>
         </div>
         {openTopics && (
           <div className="admin-list-selectors">
             <button
               className={
-                selected === "themes" ? "admin-selectors admin-selected" : "admin-selectors"
+                selected === "themes"
+                  ? "admin-selectors admin-selected"
+                  : "admin-selectors"
               }
               type="button"
               onClick={() => selectHandler("themes")}
@@ -63,7 +77,9 @@ export default function SideBar() {
             </button>
             <button
               className={
-                selected === "categories" ? "admin-selectors admin-selected" : "admin-selectors"
+                selected === "categories"
+                  ? "admin-selectors admin-selected"
+                  : "admin-selectors"
               }
               type="button"
               onClick={() => selectHandler("categories")}

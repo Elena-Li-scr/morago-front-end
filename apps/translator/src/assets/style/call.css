@@ -5,6 +5,8 @@
     width: 100%;
     height: 100%;
     z-index: 999;
+    padding-bottom: 173px;
+    overflow-y: auto;
 }
 
 .incoming-call-modal {
@@ -110,6 +112,8 @@
     background-repeat: no-repeat;
     background-size: cover;
     text-align: center;
+    padding-bottom: 60px;
+    overflow-y: auto;
 }
 
 .call-user-name {

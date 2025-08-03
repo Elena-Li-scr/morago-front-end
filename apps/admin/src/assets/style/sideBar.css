@@ -1,10 +1,21 @@
 .side-bar {
   background-color: #fff;
+  position: fixed;
+  top: 0;
+  left: 0;
+  padding-top: 100px;
   width: 320px;
   display: flex;
   justify-content: space-between;
   align-items: center;
   flex-direction: column;
+  z-index: 5;
+  overflow-y: auto;
+  height: 100%;
+}
+
+::-webkit-scrollbar {
+  display: none;
 }
 
 .side-bar-selectors {
@@ -31,6 +42,13 @@
 }
 
 .admin-list button {
+  font-size: 22px;
+  display: flex;
+  align-items: center;
+  font-weight: 700;
+}
+
+.admin-list button img {
   margin-right: 10px;
 }
 
@@ -56,6 +74,7 @@
 .admin-selected {
   background-color: #f0f5ff;
 }
+
 .side-bar-setting {
   display: flex;
   justify-content: center;

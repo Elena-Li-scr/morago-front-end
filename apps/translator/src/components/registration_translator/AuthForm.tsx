@@ -4,7 +4,12 @@ import { FORM_CONFIG } from "../../constans/constans";
 import MainButton from "@shared/components/MainButton";
 import { useNavigate } from "react-router-dom";
 import { auth } from "../../utils/auth";
-import { registerTranslator } from "../../api/services/services";
+import {
+  changePassword,
+  LoginTranslator,
+  registerTranslator,
+  sendVerificationCode,
+} from "../../api/services/services";
 
 export default function AuthForm({ type }: { type: keyof typeof FORM_CONFIG }) {
   const {
@@ -12,14 +17,20 @@ export default function AuthForm({ type }: { type: keyof typeof FORM_CONFIG }) {
     handleSubmit,
     getValues,
     formState: { isValid },
+    setError,
   } = useForm({ mode: "onChange" });
 
   const navigate = useNavigate();
   const onSubmit = async (data: any) => {
     switch (type) {
       case "login":
-        // await login(data.phone, data.password);
-        navigate("/my-home-translator-page");
+        try {
+          await LoginTranslator(data);
+          // navigate("/my-home-translator-page");
+        } catch (err: any) {
+          const serverMessage = err.response?.data.error;
+          console.log(serverMessage);
+        }
         break;
       case "register": {
         const cleanPhone = data.phone.replace(/[^0-9]/g, "");
@@ -29,17 +40,41 @@ export default function AuthForm({ type }: { type: keyof typeof FORM_CONFIG }) {
           confirmPassword: data.confirmPassword,
           role: "ROLE_TRANSLATOR",
         };
-        console.log(registerData);
-        // const res = await registerTranslator(registerData);
-
-        auth.setToken("fake-token");
-        navigate(`/verification/register/${data.phone}`);
+        try {
+          const res = await registerTranslator(registerData);
+          auth.setToken(res.token);
+          auth.setNewTranslator(registerData.phone);
+          await sendVerificationCode(res.phone);
+          navigate(`/verification/register/${cleanPhone}`);
+        } catch (err: any) {
+          const serverMessage = err.response?.data.error;
+          if (
+            err.response?.status === 400 &&
+            serverMessage === "User profile already exists"
+          ) {
+            setError("phone", {
+              type: "server",
+              message: "Этот номер уже зарегистрирован",
+            });
+          } else {
+            setError("root", {
+              type: "server",
+              message: serverMessage || "Ошибка регистрации",
+            });
+          }
+        }
         break;
       }
-      case "changePassword":
-        // await requestResetCode(data.phone);
-        navigate(-1);
+      case "changePassword": {
+        const changePasswordData = {
+          oldPassword: data.oldPassword,
+          newPassword: data.newPassword,
+          confirmPassword: data.confirmPassword,
+        };
+        await changePassword(changePasswordData);
+        // navigate(-1);
         break;
+      }
       case "newPassword":
         // await setNewPassword(data.password);
         navigate("/my-home-translator-page");

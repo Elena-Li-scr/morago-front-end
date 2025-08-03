@@ -1,6 +1,191 @@
 .admin-home-page {
   width: 100%;
-  height: 80vh;
   display: flex;
   justify-content: flex-start;
+}
+
+
+.container {
+  width: 100%;
+  height: 100vh;
+  padding-top: 101px;
+  padding-left: 320px;
+  overflow-y: auto;
+}
+
+.table {
+  height: 100%;
+}
+
+
+.table-header {
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 17.5px;
+  background: #F3F3F3;
+  display: flex;
+  padding: 10px 42px 10px 27px;
+  align-items: center;
+
+}
+
+.table-item {
+  overflow: auto;
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+  padding: 8px 16px;
+}
+
+
+
+.table-row {
+  position: relative;
+  color: #101828;
+  font-weight: 400;
+  line-height: 24px;
+  display: flex;
+  padding: 8px 42px 8px 27px;
+  align-items: center;
+  border-bottom: 1px solid #F4F4F4;
+}
+
+.view-btn {
+
+  align-items: center;
+  display: flex;
+  font-size: 16px;
+  line-height: 24px;
+}
+
+.view-btn.request {
+  padding: 8px 16px;
+  border-radius: 100px;
+  background: #F2F4F7;
+}
+
+.view-icon {
+  margin-left: 10px;
+  font-size: 16px;
+  color: #98A2B3;
+}
+
+.eye-icon {
+  position: absolute;
+  top: 35%;
+  right: 42px;
+  cursor: pointer;
+}
+
+.table-check-box {
+  width: 20px;
+  height: 20px;
+}
+
+.table-row-icon {
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+}
+
+
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 59px;
+  margin-right: 76px;
+}
+
+.page-block {
+  width: 50%;
+}
+
+.page-info {
+  margin-left: 9px;
+}
+
+.page-info-title {
+  padding-left: 17px;
+  font-size: 40px;
+  line-height: 24px;
+  font-weight: 700;
+}
+
+.bread-crumbs {
+  padding: 17px 16px;
+  margin-top: 37px;
+}
+
+.bread-crumbs-type {
+  color: #7749F8;
+  padding: 0 6px;
+  font-size: 16px;
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.bread-crumbs-type.active {
+  color: #68717A;
+
+}
+
+.page-search {
+  width: 552px;
+}
+
+.page-search input {
+  border: 1px solid #98A2B3;
+  border-radius: 4px;
+}
+
+.page-search-name {
+  position: relative;
+  margin-bottom: 16px;
+}
+
+.page-search-name input {
+  width: 475px;
+  line-height: 24px;
+  font-size: 16px;
+  padding: 8px 48px;
+
+
+}
+
+.search-icon {
+  position: absolute;
+  top: 9px;
+  left: 19px;
+  font-size: 24px;
+  color: #667085;
+}
+
+.page-search-filter {
+  display: flex;
+  gap: 12px;
+}
+
+.page-search-filter input {
+
+  padding: 5.5px 8px;
+  font-size: 14px;
+  line-height: 21px;
+
+}
+
+.page-search-filter input:first-child {
+  width: 223px;
+
+
+}
+
+.page-search-filter input:last-of-type {
+  width: 240px;
+}
+
+.page-search-btn {
+  width: 65px;
+  background: #414141;
+  border-radius: 4px;
+  color: #fff;
 }

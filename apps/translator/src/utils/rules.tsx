@@ -8,7 +8,7 @@ export const rules = {
       message: "Неверный формат номера",
     },
   },
-  profilePhoto: {
+  imageUrl: {
     required: "Загрузите фото",
   },
 
@@ -19,7 +19,7 @@ export const rules = {
       message: "Пароль должен быть не менее 9 цифр ",
     },
   },
-  currentPassword: {
+  oldPassword: {
     required: "Введите пароль",
     minLength: {
       value: 9,
@@ -61,7 +61,7 @@ export const rules = {
     },
   },
 
-  birthDate: {
+  dateOfBirth: {
     required: "Введите дату рождения",
     validate: (val: string) => {
       const regex = /^\d{4}\.\d{2}\.\d{2}$/;
@@ -86,7 +86,7 @@ export const rules = {
     },
   },
 
-  topikLevel: {
+  levelOfKorean: {
     required: "Введите уровень TOPIK",
     pattern: {
       value: /^[1-6]$/,
@@ -112,20 +112,16 @@ export const rules = {
     },
   },
 
-  translationTopics: {
+  themeIds: {
     validate: (val: string[]) => val.length > 0,
   },
 
-  availableLanguages: {
+  languageIds: {
     validate: (val: unknown) => {
       if (Array.isArray(val)) {
         return val.length > 0 || "Выберите хотя бы один язык";
       }
       return "Выберите хотя бы один язык";
     },
-  },
-
-  agree: {
-    required: "Необходимо согласие",
   },
 };

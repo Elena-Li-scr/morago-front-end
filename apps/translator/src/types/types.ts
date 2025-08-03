@@ -3,26 +3,26 @@ import type { RegisterOptions, UseFormGetValues } from "react-hook-form";
 export type RegisterFormValues = {
   phone: string;
   password: string;
-  confirmPassword: string;
-  role: string;
+  confirmPassword?: string;
+  role?: string;
 };
 
 export type UserProfileExtra = {
-  phone: string;
+  phone?: string;
   fullName?: string;
   firstName?: string;
   lastName?: string;
-  birthDate?: string;
-  topikLevel?: string;
-  profilePhoto?: string | null;
-  translationTopics?: string[];
-  availableLanguages?: string[];
+  dateOfBirth?: string;
+  levelOfKorean?: string;
+  imageUrl?: string | null;
+  themeIds?: string[];
+  languageIds?: string[];
 };
 
 export type ChangePasswordData = {
-  currentPassword: string;
+  oldPassword: string;
   newPassword: string;
-  confirmNewPassword: string;
+  confirmPassword: string;
 };
 
 export type InputFieldConfig = {
@@ -35,10 +35,14 @@ export type InputFieldConfig = {
   format?: (val: string) => string;
 };
 
+export type CheckboxOption = {
+  id: number;
+  label: string;
+};
 export type CheckboxGroupConfig = {
   label: string;
   field: keyof UserProfileExtra;
-  options: string[];
+  options: CheckboxOption[];
   useButtons?: boolean;
 };
 

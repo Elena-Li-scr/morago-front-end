@@ -15,13 +15,7 @@ export default defineConfig({
     emptyOutDir: true,
   },
   server: {
-    proxy: {
-      "/api": {
-        target: "https://morago.up.railway.app",
-        changeOrigin: true,
-        secure: false,
-        rewrite: (path) => path.replace(/^\/api/, ""),
-      },
-    },
+    open: true,
+    port: 5173,
   },
 });

@@ -18,6 +18,7 @@ import ProfileSubLayout from "./components/layout/ProfileSubLayout";
 import CallHistory from "./pages/CallHistory";
 import { IncomingCallModal } from "./components/call/IncomingCallModal";
 import { CallModal } from "./components/call/CallModal";
+import Loading from "./components/loading/Loading";
 
 function App() {
   return (
@@ -30,7 +31,7 @@ function App() {
           path="/verification/:process/:phone"
           element={<VerificationCode />}
         />
-        <Route path="/new-translator" element={<NewTrasnlator />} />
+        <Route path="/new-translator/:phone" element={<NewTrasnlator />} />
         <Route path="/reset-password" element={<ResetPassword />} />
         <Route path="/new-password" element={<NewPassword />} />
         <Route element={<ProtectedRoute />}>
@@ -46,10 +47,10 @@ function App() {
             <Route path="change-data" element={<ChangeDataTranslator />} />
             <Route path="change-password" element={<ChangePassword />} />
           </Route>
-
           <Route path="/withdrawal-page" element={<Withdrawal />} />
         </Route>
       </Routes>
+      <Loading />
       <IncomingCallModal />
       <CallModal />
     </BrowserRouter>
