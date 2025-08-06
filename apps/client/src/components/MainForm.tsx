@@ -5,6 +5,7 @@ import Cleave from "cleave.js/react";
 import { phonePattern } from "@shared/utils/validationRules";
 import { useState } from "react";
 import MainButton from "@shared/components/MainButton";
+import { useNavigate } from "react-router-dom";
 
 interface Props {
   onSubmit: (data: any) => void | Promise<void>; // eslint-disable-line
@@ -19,6 +20,7 @@ interface Props {
 
 interface FormData {
   password?: string;
+  oldPassword?: string;
   confirmPassword?: string;
   phone?: string;
   role?: string;
@@ -44,12 +46,15 @@ export default function MainForm({
 
   const [show, setShow] = useState({
     password: false,
+    oldPassword: false,
     confirmPassword: false,
   });
 
   const phone = watch("phone");
   const password = watch("password");
   const confirmPassword = watch("confirmPassword");
+  const oldPassword = watch("oldPassword");
+  const navigate = useNavigate();
 
   const toggleVisibility = (field: keyof typeof show) => {
     setShow((prev) => ({ ...prev, [field]: !prev[field] }));
@@ -59,11 +64,14 @@ export default function MainForm({
     if (!value?.trim()) return `/assets/signIcons/${base}.png`;
     return error ? `/assets/signIcons/${base}-error.png` : `/assets/signIcons/${base}-valid.png`;
   };
+  const toRecoveryPassword = () => {
+    navigate("/forgot-password");
+  };
 
   return (
     <form className="sign-form" onSubmit={handleSubmit(onSubmit)}>
-      <h2 className="sign-form-header">{header}</h2>
-      <p className="sign-form-text">{text}</p>
+      {!fields.includes("oldPassword") && <h2 className="sign-form-header">{header}</h2>}
+      {!fields.includes("oldPassword") && <p className="sign-form-text">{text}</p>}
 
       {fields.includes("phone") && (
         <div>
@@ -93,14 +101,50 @@ export default function MainForm({
           {errors.phone && <p className="errors">{errors.phone.message}</p>}
         </div>
       )}
+      {fields.includes("oldPassword") && (
+        <div>
+          <label className="input-label">Текущий пароль</label>
+          <div className="input-wrapper">
+            <img src={getIcon(oldPassword, !!errors.oldPassword, "lock")} alt="lock-img" />
+            <input
+              type={show.oldPassword ? "text" : "password"}
+              placeholder="Введите текущий пароль"
+              autoComplete="new-password"
+              className={errors.oldPassword ? "main-input-error main-input" : "main-input"}
+              {...register("oldPassword", {
+                required: "Текущий пароль обязателен",
+                minLength: {
+                  value: 9,
+                  message: "Пароль должен быть не менее 9 цифр",
+                },
+              })}
+            />
+            <button
+              type="button"
+              onClick={() => toggleVisibility("oldPassword")}
+              className="password-toggle-button"
+            >
+              <img src={getIcon(oldPassword, !!errors.oldPassword, "eye")} alt="eye" />
+            </button>
+          </div>
+          {errors.oldPassword && <p className="errors">{errors.oldPassword.message}</p>}
+          <button type="button" className="forgot-password" onClick={toRecoveryPassword}>
+            Забыл пароль
+          </button>
+        </div>
+      )}
       {fields.includes("password") && (
         <div>
-          <label className="input-label">Пароль</label>
+          <label className="input-label">
+            {fields.includes("oldPassword") ? "Новый пароль" : "Пароль"}
+          </label>
           <div className="input-wrapper">
             <img src={getIcon(password, !!errors.password, "lock")} alt="lock-img" />
             <input
               type={show.password ? "text" : "password"}
-              placeholder="Введите ваш пароль"
+              placeholder={
+                fields.includes("oldPassword") ? "Введите новый пароль" : "Введите ваш пароль"
+              }
               autoComplete="new-password"
               className={errors.password ? "main-input-error main-input" : "main-input"}
               {...register("password", {
@@ -126,11 +170,16 @@ export default function MainForm({
 
       {fields.includes("confirmPassword") && (
         <div>
+          {fields.includes("oldPassword") && (
+            <label className="input-label">Повторите новый пароль</label>
+          )}
           <div className="input-wrapper">
             <img src={getIcon(confirmPassword, !!errors.confirmPassword, "lock")} alt="lock-img" />
             <input
               type={show.confirmPassword ? "text" : "password"}
-              placeholder="Повторите ещё раз"
+              placeholder={
+                fields.includes("oldPassword") ? "Повторите новый пароль" : "Повторите ещё раз"
+              }
               autoComplete="new-password"
               className={errors.confirmPassword ? "main-input-error main-input" : "main-input"}
               {...register("confirmPassword", {

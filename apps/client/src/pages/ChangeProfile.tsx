@@ -3,25 +3,62 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import MainButton from "@shared/components/MainButton";
 import BackButton from "@shared/components/BackButton";
+import SucessActionModal from "@shared/components/SucessActionModal";
+import { updateAvatar } from "@shared/services/clientApi";
+import { updateName } from "@shared/services/clientApi";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 interface FormData {
-  lastName: string;
-  firstName: string;
-  image: FileList;
+  lastName?: string;
+  firstName?: string;
+  image?: FileList;
 }
 
 export default function ChangeProfile() {
-  const { register, handleSubmit } = useForm<FormData>({ mode: "onChange" });
+  const { register, handleSubmit, setValue } = useForm<FormData>({ mode: "onChange" });
+  const [success, setSuccess] = useState(false);
+  const [serverError, setServerError] = useState("");
+  const navigate = useNavigate();
 
   const [fileName, setFileName] = useState<string>("");
-  const onSubmit = (data: FormData) => {
-    console.log(data);
+  const onSubmit = async (data: FormData) => {
+    console.log("Форма:", data);
+    const payload = {
+      lastName: data.lastName,
+      firstName: data.firstName,
+    };
+    try {
+      let isSuccess;
+      if (data.image?.[0]) {
+        const formData = new FormData();
+        formData.append("file", data.image[0]);
+        const imageRes = await updateAvatar(formData);
+        if (imageRes.status === 200 || imageRes.status === 204) {
+          isSuccess = true;
+        }
+      }
+
+      const res = await updateName(payload);
+      if (res.status === 200 || res.status === 204) {
+        isSuccess = true;
+      }
+
+      if (isSuccess) {
+        setSuccess(true);
+      }
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        const errorMessage = error.response?.data?.error;
+        setServerError(errorMessage || "Произошла ошибка. Попробуйте снова.");
+      } else {
+        setServerError("Что-то пошло не так. Попробуйте снова.");
+      }
+    }
   };
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files?.length) {
-      setFileName(e.target.files[0].name);
-    }
+  const successHandler = () => {
+    navigate("/profile");
   };
 
   return (
@@ -39,7 +76,7 @@ export default function ChangeProfile() {
               type="text"
               placeholder="Введите Вашу фамилию"
               className="main-input"
-              {...register("lastName", { required: true })}
+              {...register("lastName")}
             />
           </div>
           <label className="input-label">Имя</label>
@@ -49,7 +86,7 @@ export default function ChangeProfile() {
               type="text"
               placeholder="Введите Ваше имя"
               className="main-input"
-              {...register("firstName", { required: true })}
+              {...register("firstName")}
             />
           </div>
           <div className="file-upload-wrapper">
@@ -61,15 +98,29 @@ export default function ChangeProfile() {
               id="avatar-upload"
               type="file"
               accept="image/*"
-              {...register("image")}
               className="hidden-file-input"
-              onChange={handleFileChange}
+              onChange={(e) => {
+                if (e.target.files?.length) {
+                  setFileName(e.target.files[0].name);
+                  setValue("image", e.target.files, { shouldValidate: true });
+                }
+              }}
             />
             {fileName && <p className="selected-file-name">Выбран файл: {fileName}</p>}
           </div>
         </div>
+        {serverError && <p className="errors">{serverError}</p>}
         <MainButton text="Сохранить изменения" type="submit" className="button button-active" />
       </form>
+      {success && (
+        <SucessActionModal
+          header="Изменения прошли успешно"
+          btn="Здорово!"
+          bgImg="/assets/signIcons/success-note.png"
+          className="button button-active"
+          onClick={successHandler}
+        />
+      )}
     </div>
   );
 }

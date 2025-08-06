@@ -6,6 +6,7 @@ import { dbData } from "../db/db";
 import { Breadcrumbs } from "../components/Breadcrumbs";
 import { titleMap } from "../constans/titleMap/titleMap";
 import { IoSearch } from "react-icons/io5";
+import PopUp from "../components/PopUp";
 
 const isTableType = (value: string): value is TableType => {
   return ["user", "translator", "call", "withdraw", "theme"].includes(value);
@@ -24,11 +25,11 @@ export const GenericTablePage = () => {
   return (
     <div className="container">
       <div className="page-header">
-        <div className="page-info page-block ">
+        <div className="page-info page-block">
           <h3 className="page-info-title">{titlePage}</h3>
           <Breadcrumbs />
         </div>
-        <div className="page-search page-block ">
+        <div className="page-search page-block">
           <div className="page-search-name">
             <IoSearch className="search-icon" />
             <input type="text" placeholder="Search by name or company "></input>
@@ -40,12 +41,8 @@ export const GenericTablePage = () => {
           </div>
         </div>
       </div>
-      <FlexTable
-        columns={columns}
-        data={data}
-        rowKey={(row) => row.id}
-        type={type}
-      />
+      <FlexTable columns={columns} data={data} rowKey={(row) => row.id} type={type} />
+      <PopUp type="categories" id="1" />
     </div>
   );
 };

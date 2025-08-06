@@ -14,21 +14,22 @@ export default function ForgotPassword() {
   const [serverError, setServerError] = useState("");
 
   const onSubmit = async (data: FormData) => {
-    const user = {
+    const payload = {
       phone: data.phone.replace(/\s+/g, ""),
     };
 
     try {
-      const response = await forgotPassword(user);
-      if (response?.data.id) {
-        localStorage.setItem("id", response.data.id);
-        navigate("/forgot-password-code");
-      }
+      const response = await forgotPassword(payload);
+      console.log(response);
+      // if (response?.data.id) {
+      //   localStorage.setItem("id", response.data.id);
+      //   navigate("/forgot-password-code");
+      // }
     } catch (error: unknown) {
       if (axios.isAxiosError(error)) {
         const errorMessage = error.response?.data?.error;
-        if (errorMessage === "User profile already exists") {
-          setServerError("Такой пользователь уже существует");
+        if (errorMessage === "User profile not found") {
+          setServerError("Такой пользователь не найден");
         } else {
           setServerError("Произошла ошибка. Попробуйте снова.");
         }

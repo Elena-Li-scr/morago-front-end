@@ -1,8 +1,8 @@
 import "@shared/styles/notification.css";
 import { formatDistanceToNowStrict } from "date-fns";
-
 import { notifications } from "@shared/utils/temporaryVar";
 import BackButton from "@shared/components/BackButton";
+import { clearAllNote } from "@shared/services/clientApi";
 import { useState } from "react";
 export default function Notification() {
   const [openedIndex, setOpenedIndex] = useState<number | null>(null);
@@ -13,6 +13,15 @@ export default function Notification() {
 
   const handleShowText = (index: number) => {
     setOpenedIndex((prev) => (prev === index ? null : index));
+  };
+
+  const clearAll = async () => {
+    try {
+      const res = await clearAllNote();
+      console.log(res.status);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -27,7 +36,7 @@ export default function Notification() {
             <h4>Последние</h4>
             <span>{notifications.length}</span>
           </div>
-          <button type="button" className="clean-notifications">
+          <button type="button" className="clean-notifications" onClick={clearAll}>
             Стереть всё
           </button>
         </div>
@@ -46,9 +55,7 @@ export default function Notification() {
                 </div>
                 <p className="item-time">{shortFormat(note.time)}</p>
               </div>
-              {openedIndex === index && (
-                <div className="item-body">{note.body}</div>
-              )}
+              {openedIndex === index && <div className="item-body">{note.body}</div>}
             </div>
           ))}
         </div>

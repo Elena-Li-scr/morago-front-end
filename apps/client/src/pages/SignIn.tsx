@@ -18,11 +18,11 @@ export default function SignIn() {
     const user = {
       password: data.password,
       phone: data.phone.replace(/\s+/g, ""),
-      role: "ROLE_USER",
     };
     try {
       const response = await login(user);
       if (response?.data.token && response?.data.id) {
+        localStorage.clear();
         localStorage.setItem("token", response.data.token);
         localStorage.setItem("id", response.data.id);
         navigate("/home");
@@ -30,8 +30,8 @@ export default function SignIn() {
     } catch (error: unknown) {
       if (axios.isAxiosError(error)) {
         const errorMessage = error.response?.data?.error;
-        if (errorMessage === "User profile already exists") {
-          setServerError("Такой пользователь уже существует");
+        if (errorMessage === "Invalid phone or password") {
+          setServerError("Неверный номер телефона или пароль");
         } else {
           setServerError("Произошла ошибка. Попробуйте снова.");
         }

@@ -17,8 +17,6 @@ export default function NewPassword() {
     console.log(data);
     const user = {
       password: data.password,
-      confirmPassword: data.confirmPassword,
-      role: "ROLE_USER",
     };
     try {
       const response = await newPassword(user);

@@ -30,7 +30,7 @@ export default function SignUp() {
       if (response?.data.token && response?.data.id) {
         localStorage.setItem("token", response.data.token);
         localStorage.setItem("id", response.data.id);
-        navigate("/code");
+        navigate("/home");
       }
     } catch (error: unknown) {
       if (axios.isAxiosError(error)) {
