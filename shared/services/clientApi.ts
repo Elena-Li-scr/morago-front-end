@@ -90,4 +90,25 @@ export function sendDeposit(payload: BalancePayload) {
 
 export function sendVerificationCode(payload: NewUserPayload) {
   return axiosInstance.post("/publicResetPassword/reset/request", payload);
+} //не можем получить код
+
+// export function getTranslatorsList(themeId: number) {
+//   return axiosInstance.get("/user/translators", {
+//     params: { themeId, page: 0, size: 5, sortBy: "id", sortDirection: "ASC" },
+//   });
+// }
+
+//получение уведомлений
+
+export function getNotifications() {
+  return axiosInstance.get("/profile/notifications", {
+    params: { page: 0, size: 5, sortBy: "id", sortDirection: "ASC" },
+  });
+}
+
+// получение колличества
+export function getNotificationsCount() {
+  return axiosInstance.get("/profile/notifications/count", {
+    params: { isUnread: true },
+  });
 }
