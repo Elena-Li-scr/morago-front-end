@@ -29,7 +29,9 @@ export default function ChangeDataTranslator() {
     };
 
     try {
-      await newTranslatorData(updatedUserData);
+      const res = await newTranslatorData(updatedUserData);
+      console.log(res);
+
       auth.setNewTranslator(updatedUserData);
       navigate("/my-profile-page");
     } catch (err) {
@@ -45,29 +47,24 @@ export default function ChangeDataTranslator() {
           <h2 className="change-password-title">Изменить профиль</h2>
         </div>
         <FormProvider {...methods}>
-          <form
-            className="new-traslator-form"
-            onSubmit={handleSubmit(onSubmit)}
-          >
+          <form className="new-traslator-form" onSubmit={handleSubmit(onSubmit)}>
             <AvatarUpload
               translatorAvatar={translator?.imageUrl}
               onChange={(file) => methods.setValue("imageUrl", file)}
             />
-            {CHANGE_DATA_INPUTS.map(
-              ({ name, key, label, placeholder, icon, format, type }) => (
-                <ControlledInputField
-                  key={key}
-                  name={name}
-                  control={control}
-                  label={label}
-                  placeholder={placeholder}
-                  icon={icon}
-                  format={format}
-                  type={type}
-                  rules={rules[name]}
-                />
-              )
-            )}
+            {CHANGE_DATA_INPUTS.map(({ name, key, label, placeholder, icon, format, type }) => (
+              <ControlledInputField
+                key={key}
+                name={name}
+                control={control}
+                label={label}
+                placeholder={placeholder}
+                icon={icon}
+                format={format}
+                type={type}
+                rules={rules[name]}
+              />
+            ))}
             <button
               type="submit"
               disabled={!formState.isValid}

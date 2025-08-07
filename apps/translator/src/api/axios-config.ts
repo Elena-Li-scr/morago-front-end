@@ -14,9 +14,7 @@ axiosInstance.interceptors.request.use((config) => {
   setLoading(true);
   const token = localStorage.getItem("accessToken");
   const publicEndpoints = ["/auth/register", "/auth/login"];
-  const isPublic = publicEndpoints.some((endpoint) =>
-    config.url?.includes(endpoint)
-  );
+  const isPublic = publicEndpoints.some((endpoint) => config.url?.includes(endpoint));
 
   if (token && !isPublic) {
     config.headers.Authorization = `Bearer ${token}`;
@@ -27,17 +25,14 @@ axiosInstance.interceptors.request.use((config) => {
 axiosInstance.interceptors.response.use(
   (response) => {
     const { setLoading, setSuccess } = useModalStore.getState();
-
     // 1. Показываем loading
     setLoading(true);
-
     setTimeout(() => {
       // 2. Убираем loading
       setLoading(false);
       // 3. Показываем success
       setSuccess(true);
     }, 2000); // Задержка для лоадера
-
     return response;
   },
   (error) => {
@@ -45,7 +40,7 @@ axiosInstance.interceptors.response.use(
       useModalStore.getState().setLoading(false);
     }, 2000);
     return Promise.reject(error);
-  }
+  },
 );
 
 export default axiosInstance;

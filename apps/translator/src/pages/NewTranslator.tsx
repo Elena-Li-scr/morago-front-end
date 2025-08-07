@@ -17,15 +17,8 @@ import { useEffect } from "react";
 export default function NewTrasnlator() {
   const { success, setSuccess } = useModalStore();
   useEffect(() => {
-    if (success) {
-      const timeout = setTimeout(() => {
-        setSuccess(false);
-        document.body.style.overflow = "scroll";
-        navigate("/my-home-translator-page");
-      }, 3000);
-      return () => clearTimeout(timeout);
-    }
-  }, [success]);
+    if (success) setSuccess(false);
+  }, []);
 
   const { phone } = useParams();
   const methods = useForm<UserProfileExtra>({
@@ -72,28 +65,22 @@ export default function NewTrasnlator() {
       <h2 className="new-traslator-title">Заполните свой профайл</h2>
       <FormProvider {...methods}>
         <form className="new-traslator-form" onSubmit={handleSubmit(onSubmit)}>
-          <AvatarUpload
-            onChange={(file) => methods.setValue("imageUrl", file)}
-          />
-          {INPUT_FIELDS_CONFIG.map(
-            ({ name, label, placeholder, icon, format, type }) => (
-              <ControlledInputField
-                key={name}
-                name={name}
-                control={control}
-                label={label}
-                placeholder={placeholder}
-                icon={icon}
-                format={format}
-                type={type}
-                rules={rules[name]}
-              />
-            )
-          )}
+          <AvatarUpload onChange={(file) => methods.setValue("imageUrl", file)} />
+          {INPUT_FIELDS_CONFIG.map(({ name, label, placeholder, icon, format, type }) => (
+            <ControlledInputField
+              key={name}
+              name={name}
+              control={control}
+              label={label}
+              placeholder={placeholder}
+              icon={icon}
+              format={format}
+              type={type}
+              rules={rules[name]}
+            />
+          ))}
           {CHECKBOX_GROUPS.map((group) => {
-            const Component = group.useButtons
-              ? LanguageToggleButtons
-              : ControlledCheckboxGroup;
+            const Component = group.useButtons ? LanguageToggleButtons : ControlledCheckboxGroup;
             return (
               <Component
                 name={group.field}
@@ -114,8 +101,7 @@ export default function NewTrasnlator() {
         </form>
       </FormProvider>
       <p className="new-traslator-text">
-        Нажимая на кнопку, вы даете согласие на обработку своих персональных
-        данных
+        Нажимая на кнопку, вы даете согласие на обработку своих персональных данных
       </p>
       {success && (
         <SucessActionModal

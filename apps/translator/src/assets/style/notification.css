@@ -1,0 +1,128 @@
+.notification-sub-title {
+    margin-top: 2px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.notification-sub-title-item {
+    display: flex;
+    align-items: center;
+}
+
+.notification-sub-title-last {
+    color: #191D31;
+    font-size: 16px;
+    line-height: 130%;
+    font-weight: 800;
+}
+
+.notification-sub-title-count {
+    margin-left: 8px;
+    position: relative;
+    padding: 1.5px 4px;
+    z-index: 5;
+    color: #ffff;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.notification-sub-title-count::after {
+    position: absolute;
+    top: 25%;
+    left: 0;
+    content: '';
+    border-radius: 50%;
+    width: 16px;
+    height: 16px;
+    background: #FD683D;
+    z-index: -1;
+}
+
+.notification-cleare {
+    color: #FD683D;
+    line-height: 180%;
+    font-size: 14px;
+}
+
+.notification-items {
+    margin-top: 7px;
+}
+
+.notification-item {
+    position: relative;
+    display: flex;
+    gap: 14px;
+    padding: 15px 0;
+    border-bottom: 1.5px solid #F3F3F3;
+    font-size: 14px;
+    align-items: center;
+}
+
+
+
+.notification-item-icons {
+    margin-right: 14px;
+    width: 44px;
+    height: 44px;
+    background: #015F76;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.notification-item-icons.isRead {
+    background: #A7A9B7;
+}
+
+.notification-item-icon {
+    font-size: 24px;
+    color: #fff;
+}
+
+
+.notification-item:last-of-type {
+    border-bottom: none;
+}
+
+.notification-title {
+    color: #191D31;
+    line-height: 130%;
+    font-weight: 500;
+}
+
+.notification-btn {
+    line-height: 180%;
+    font-weight: 400;
+    color: #A7A9B7;
+}
+
+.notification-time {
+    position: absolute;
+    top: 15px;
+    right: 0;
+    font-size: 12px;
+    line-height: 180%;
+    font-weight: 500;
+    color: #A7A9B7;
+}
+
+.is-notifi {
+    position: relative;
+}
+
+.is-notifi::after {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    background: #E50000;
+    content: '';
+    top: 12px;
+    right: 12px;
+    border-radius: 50%;
+    display: none;
+}
+
+.is-notifi.is-unread:after {
+    display: block;
+}

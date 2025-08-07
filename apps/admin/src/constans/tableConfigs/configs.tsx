@@ -1,6 +1,8 @@
 import { IoEyeOutline } from "react-icons/io5";
 import { MdArrowForwardIos } from "react-icons/md";
-import type { Column, Translator, User } from "../../types/types";
+import type { CallHistory, Column, Translator, User } from "../../types/types";
+import { Link } from "react-router-dom";
+import { StarRating } from "../../components/StarRating";
 
 // Тип одной колонки
 
@@ -37,10 +39,9 @@ export const translatorTableConfig: Column<Translator>[] = [
     width: "35%",
     render: (row) =>
       row.phone ? (
-        <button className="view-btn">
-          {" "}
+        <Link to={`/home/lists/callHistory?name=${encodeURIComponent(row.name)}&from=translator`} className="view-btn" >
           View <MdArrowForwardIos className="view-icon" />
-        </button>
+        </Link>
       ) : null,
   },
   {
@@ -50,7 +51,6 @@ export const translatorTableConfig: Column<Translator>[] = [
     render: (row) =>
       "withdrawRequest" in row && row.withdrawRequest ? (
         <button className="view-btn">
-          {" "}
           View <MdArrowForwardIos className="view-icon" />
         </button>
       ) : null,
@@ -96,9 +96,9 @@ export const UserTableConfig: Column<User>[] = [
     width: "35%",
     render: (row) =>
       row.name ? (
-        <button className="view-btn">
+        <Link to={`/home/lists/callHistory?name=${encodeURIComponent(row.name)}&from=user`} className="view-btn" >
           View <MdArrowForwardIos className="view-icon" />
-        </button>
+        </Link>
       ) : null,
   },
   {
@@ -120,4 +120,40 @@ export const UserTableConfig: Column<User>[] = [
       return <IoEyeOutline className="eye-icon" style={{ fontSize: "24px" }} />;
     },
   },
+];
+
+
+
+export const callHistoryTableConfig: Column<CallHistory>[] =[
+ {
+    key: "select",
+    renderHeader: () => <input type="checkbox" className="table-check-box" />,
+    render: () => <input type="checkbox" className="table-check-box" />,
+  },
+  { key: "call", title: "Call", width: "40%", marginLeft: "38px" },
+  { key: "date", title: "Data", width: "35%" },
+  { key: "duration", title: "Duration", width: "35%" },
+  { key: "coins", title: "Coins", width: "35%" },
+  { key: "theme", title: "Theme", width: "35%" },
+   {
+    key: "depositRequest",
+    title: "Deposit request",
+    width: "35%",
+    render: (row) => {
+      if ("depositRequest" in row && row.depositRequest === "Request") {
+        return (
+          <button className="view-btn request">
+            Request <MdArrowForwardIos className="view-icon" />
+          </button>
+        );
+      }
+      return <div className={`table-item`}>None</div>;
+    },
+  },
+  { key: "rating", title: "Rating", width: "40%", render: (row) => {
+        return (
+        <StarRating rating={Number(row.rating)}/>
+        );
+      }
+    }
 ];

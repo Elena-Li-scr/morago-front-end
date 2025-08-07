@@ -1,47 +1,57 @@
 import "../assets/style/callPage.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { CallCard } from "../components/user/CallCard";
-import { callData, callMissed } from "../constans/db";
-import { compareDesc, parseISO } from "date-fns";
+import { getCallHistory } from "../api/services/services";
+import type { CallHisrtoryTranslator } from "../types/types";
 
 export default function CallHistory() {
   const [isAvailable, setIsAvailable] = useState(true);
+  const [callData, setCallData] = useState<CallHisrtoryTranslator[]>([]);
 
-  const sortedCallData = [...callData].sort((a, b) =>
-    compareDesc(parseISO(a.date), parseISO(b.date))
-  );
-  const sortedMissedCalls = [...callMissed].sort((a, b) =>
-    compareDesc(parseISO(a.date), parseISO(b.date))
-  );
+  const fetchData = async () => {
+    try {
+      const response = await getCallHistory("isLast");
+      setCallData(response);
+    } catch (err) {
+      console.error("Ошибка при получении истории:", err);
+    }
+  };
+  useEffect(() => {
+    fetchData();
+  }, []);
 
-  const displayedCalls = isAvailable ? sortedCallData : sortedMissedCalls;
+  const switchStatusHandler = async () => {
+    const filter = isAvailable ? "isMissed" : "isLast";
+    const result = await getCallHistory(filter);
+    setCallData(result);
+    setIsAvailable(!isAvailable);
+  };
+
   return (
     <div className="container">
       <div className="call-page">
         <div className="toggle-call-background">
-          <div
-            className={`toggle-call-slider  ${isAvailable ? "left" : "right"}`}
-          ></div>
+          <div className={`toggle-call-slider  ${isAvailable ? "left" : "right"}`}></div>
 
           <button
             className={`toggle-call-option  ${isAvailable ? "active" : ""}`}
-            onClick={() => setIsAvailable(true)}
+            onClick={switchStatusHandler}
           >
             Все
           </button>
           <button
             className={`toggle-call-option  ${!isAvailable ? "active " : ""}`}
-            onClick={() => setIsAvailable(false)}
+            onClick={switchStatusHandler}
           >
             Пропущенные
           </button>
         </div>
         <h4 className="call-page-title">Недавние</h4>
         <div className="list-contact">
-          {displayedCalls.length === 0 ? (
+          {callData.length === 0 ? (
             <div className="list-contact-empty">Нет истории звонков</div>
           ) : (
-            displayedCalls.map((call) => (
+            callData.map((call) => (
               <CallCard
                 key={call.id}
                 avatarUrl={call.avatarUrl}

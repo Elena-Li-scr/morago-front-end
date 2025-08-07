@@ -1,17 +1,15 @@
-import type { Call } from "../types/types";
+import type { CallHisrtoryTranslator } from "../types/types";
 
 function getRandomDate(start: Date, end: Date): Date {
-  return new Date(
-    start.getTime() + Math.random() * (end.getTime() - start.getTime())
-  );
+  return new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()));
 }
 const now = new Date();
 const twoWeeksAgo = new Date();
 twoWeeksAgo.setDate(now.getDate() - 7);
 
-export const callData: Call[] = [
+export const callData: CallHisrtoryTranslator[] = [
   {
-    id: 1,
+    id: "1",
     avatarUrl: "/assets/images/user2.png",
     name: "Пугачева Алла",
     topic: "Банк",
@@ -20,7 +18,7 @@ export const callData: Call[] = [
     date: getRandomDate(twoWeeksAgo, now).toISOString(),
   },
   {
-    id: 2,
+    id: "2",
     avatarUrl: "/assets/images/user.png",
     name: "Юзер Первый",
     topic: "Почта",
@@ -29,7 +27,7 @@ export const callData: Call[] = [
     date: getRandomDate(twoWeeksAgo, now).toISOString(),
   },
   {
-    id: 3,
+    id: "3",
     avatarUrl: "/assets/images/user2.png",
     name: "Юзер Второй",
     topic: "Завод",
@@ -38,7 +36,7 @@ export const callData: Call[] = [
     date: getRandomDate(twoWeeksAgo, now).toISOString(),
   },
   {
-    id: 4,
+    id: "4",
     avatarUrl: "/assets/images/user.png",
     name: "Юзер Третий",
     topic: "Аптека",
@@ -48,7 +46,7 @@ export const callData: Call[] = [
   },
 
   {
-    id: 5,
+    id: "5",
     avatarUrl: "/assets/images/user.png",
     name: "Юзер Третий",
     topic: "Аптека",
@@ -58,7 +56,7 @@ export const callData: Call[] = [
   },
 
   {
-    id: 6,
+    id: "6",
     avatarUrl: "/assets/images/user.png",
     name: "Юзер Третий",
     topic: "Аптека",
@@ -68,7 +66,7 @@ export const callData: Call[] = [
   },
 
   {
-    id: 7,
+    id: "7",
     avatarUrl: "/assets/images/user.png",
     name: "Юзер Третий",
     topic: "Аптека",
@@ -78,4 +76,4 @@ export const callData: Call[] = [
   },
 ];
 
-export const callMissed: Call[] = [];
+export const callMissed: CallHisrtoryTranslator[] = [];

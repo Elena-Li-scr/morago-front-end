@@ -7,7 +7,7 @@ const NEW_TRANSLATOR_DATA = "newTranslator";
 
 export const auth = {
   // Проверки
-  isAuthenticated: () => !!localStorage.getItem(TOKEN_KEY),
+  isAuthenticated: () => localStorage.getItem(TOKEN_KEY),
   isVerified: () => localStorage.getItem(VERIFIED_KEY) === "true",
   isProfileFilled: () => localStorage.getItem(PROFILE_KEY) === "true",
   isNewTranslator: () => localStorage.getItem(NEW_TRANSLATOR_DATA),

@@ -1,4 +1,4 @@
-import type { TableType, Translator, User } from "../types/types";
+import type { CallHistory, TableType, Translator, User } from "../types/types";
 
 // Мок-данные
 export const translatorListMock: Translator[] = [
@@ -39,7 +39,29 @@ export const UserListMock: User[] = [
   },
 ];
 
+export const  callHistoryMock: CallHistory[] = [
+    {
+      id: '1',
+      call: "010 1234 5678",
+      date: "2023.02.15 18:13",
+      duration: "30 min",
+      coins: "-3000",
+      theme: 'Агентство недви...',
+      rating: '4'
+    },
+    {
+      id: '2',
+      call: "010 9876 5432",
+      date: "2022.12.27 16:43",
+      duration: "13 min",
+      coins: "-1300",
+      theme: 'Банковские вопр...',
+      rating: '3'
+    },
+  ]
+
 export const dbData: Record<TableType, any[]> = {
   user: UserListMock,
   translator: translatorListMock,
+  callHistory: callHistoryMock,
 };
