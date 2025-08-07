@@ -1,8 +1,11 @@
 import MainButton from "@shared/components/MainButton";
 import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { getBalance } from "@shared/services/clientApi";
 
 export default function BalanceHeader() {
   const navigate = useNavigate();
+  const [balance, setBalance] = useState<number>(0);
 
   const upBalance = () => {
     navigate("/balance-withdraw");
@@ -11,17 +14,25 @@ export default function BalanceHeader() {
   const toNotifications = () => {
     navigate("/notification");
   };
+
+  useEffect(() => {
+    try {
+      const server = async () => {
+        const res = await getBalance();
+        setBalance(res.data);
+      };
+      server();
+    } catch (error) {
+      console.log(error);
+    }
+  }, []);
   return (
     <div className="home-header-wrapper">
       <div className="home-header">
         <h2>
           <img src="/assets/home/morago.png" alt="morago" />
         </h2>
-        <button
-          type="button"
-          className="home-notification-bell"
-          onClick={toNotifications}
-        >
+        <button type="button" className="home-notification-bell" onClick={toNotifications}>
           <img src="/assets/home/notification-bell.png" alt="notification" />
         </button>
       </div>
@@ -30,7 +41,7 @@ export default function BalanceHeader() {
           <p>Мой баланс</p>
           <div className="balance-count">
             <img src="/assets/home/coin-icon.png" alt="coin-icon" />
-            <div className="balance">50.000</div>
+            <div className={balance > 0 ? "balance" : "balance minus-balance"}>{balance}</div>
           </div>
         </div>
       </div>

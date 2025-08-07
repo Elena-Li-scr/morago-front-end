@@ -1,10 +1,18 @@
 import "@shared/styles/notification.css";
 import { formatDistanceToNowStrict } from "date-fns";
-
-import { notifications } from "@shared/utils/temporaryVar";
 import BackButton from "@shared/components/BackButton";
-import { useState } from "react";
+import { clearAllNote, getNotifications } from "@shared/services/clientApi";
+import { useEffect, useState } from "react";
+
+interface Notification {
+  id: number;
+  title: string;
+  text: string;
+  date: string;
+  isRead: boolean;
+}
 export default function Notification() {
+  const [notifications, setNotifications] = useState<Notification[]>([]);
   const [openedIndex, setOpenedIndex] = useState<number | null>(null);
   const shortFormat = (dateString: string): string => {
     const date = new Date(dateString.replace(" ", "T"));
@@ -13,6 +21,27 @@ export default function Notification() {
 
   const handleShowText = (index: number) => {
     setOpenedIndex((prev) => (prev === index ? null : index));
+  };
+
+  useEffect(() => {
+    try {
+      const server = async () => {
+        const res = await getNotifications();
+        setNotifications(res.data.content);
+      };
+      server();
+    } catch (error) {
+      console.log(error);
+    }
+  }, []);
+
+  const clearAll = async () => {
+    try {
+      const res = await clearAllNote();
+      console.log(res.status);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -27,7 +56,7 @@ export default function Notification() {
             <h4>Последние</h4>
             <span>{notifications.length}</span>
           </div>
-          <button type="button" className="clean-notifications">
+          <button type="button" className="clean-notifications" onClick={clearAll}>
             Стереть всё
           </button>
         </div>
@@ -44,11 +73,9 @@ export default function Notification() {
                     {openedIndex === index ? " закрыть" : " просмотреть"}
                   </button>
                 </div>
-                <p className="item-time">{shortFormat(note.time)}</p>
+                <p className="item-time">{shortFormat(note.date)}</p>
               </div>
-              {openedIndex === index && (
-                <div className="item-body">{note.body}</div>
-              )}
+              {openedIndex === index && <div className="item-body">{note.text}</div>}
             </div>
           ))}
         </div>

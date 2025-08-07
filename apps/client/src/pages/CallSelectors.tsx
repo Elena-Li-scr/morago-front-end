@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useTopicStore } from "@shared/store/useStore";
 import { servicesGroup } from "@shared/utils/temporaryVar";
@@ -8,6 +8,7 @@ import Theme from "@shared/components/Theme";
 import MainButton from "@shared/components/MainButton";
 import { IoIosArrowDown } from "react-icons/io";
 import { IoIosArrowUp } from "react-icons/io";
+import { getCategories } from "@shared/services/clientApi";
 
 import "@shared/styles/homePage.css";
 
@@ -38,6 +39,18 @@ export default function CallSelectors() {
 
   const getFilteredThemes = (themes: readonly string[]) =>
     themes.filter((theme) => theme.toLowerCase().includes(searchTerm.toLowerCase()));
+
+  useEffect(() => {
+    try {
+      const server = async () => {
+        const res = await getCategories();
+        console.log(res.data);
+      };
+      server();
+    } catch (error) {
+      console.log(error);
+    }
+  }, []);
 
   return (
     <div className="page-wrapper">

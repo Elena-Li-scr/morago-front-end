@@ -4,8 +4,9 @@ import TranslatorInfoSimple from "../components/TranslatorInfoSimple";
 import TranslatorCall from "../components/TranslatorCall";
 import { useTranslatorStore } from "@shared/store/useStore";
 import { translators, missed } from "@shared/utils/temporaryVar";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { getMissedCalls, getLastCalls } from "@shared/services/clientApi";
 export default function CallsHistory() {
   const [allCalls, setAllCalls] = useState(true);
   const { selectedTranslator, setSelectedTranslator } = useTranslatorStore();
@@ -14,6 +15,19 @@ export default function CallsHistory() {
   const callHandler = () => {
     navigate("/call");
   };
+
+  useEffect(() => {
+    try {
+      const server = async () => {
+        const lastCalls = await getLastCalls();
+        const missedCalls = await getMissedCalls();
+        console.log(lastCalls.data, missedCalls.data);
+      };
+      server();
+    } catch (error) {
+      console.log(error);
+    }
+  });
 
   return (
     <div className="call-history-wrapper">
