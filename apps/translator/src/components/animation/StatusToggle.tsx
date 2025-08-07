@@ -1,8 +1,15 @@
 import { useState } from "react";
 import "../../assets/style/statusToggle.css";
+import { switchTranslatorStatus } from "../../api/services/services";
 
 export const StatusToggle = () => {
   const [isAvailable, setIsAvailable] = useState(true);
+
+  const switchStatusHandler = () => {
+    if (isAvailable) setIsAvailable(false);
+    if (!isAvailable) setIsAvailable(true);
+    switchTranslatorStatus();
+  };
 
   return (
     <div className="toggle-background">
@@ -10,13 +17,13 @@ export const StatusToggle = () => {
 
       <button
         className={`toggle-option ${isAvailable ? "active" : ""}`}
-        onClick={() => setIsAvailable(true)}
+        onClick={switchStatusHandler}
       >
         Доступен
       </button>
       <button
         className={`toggle-option ${!isAvailable ? "active" : ""}`}
-        onClick={() => setIsAvailable(false)}
+        onClick={switchStatusHandler}
       >
         Не доступен
       </button>

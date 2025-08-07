@@ -1,16 +1,31 @@
 import "@shared/styles/homePage.css";
 import "../assets/style/listContacts.css";
 import { CallCard } from "../components/user/CallCard";
-import { callData } from "../constans/db";
-import { useState } from "react";
-import { compareDesc, parseISO } from "date-fns";
+import { useEffect, useState } from "react";
 import { TestCallButton } from "../components/call/TestCallButton";
+import { getCallHistory } from "../api/services/services";
+import type { CallHisrtoryTranslator } from "../types/types";
 
 export default function Home() {
   const [empyContact, setEmptyContact] = useState<boolean>(false);
-  const sortedCallData = [...callData].sort((a, b) =>
-    compareDesc(parseISO(a.date), parseISO(b.date))
-  );
+  const [callData, setCallData] = useState<CallHisrtoryTranslator[]>([]);
+  const fetchData = async () => {
+    try {
+      const response = await getCallHistory();
+      if (response.length === 0) {
+        setEmptyContact(true);
+        return;
+      }
+      setCallData(response);
+    } catch (err) {
+      console.error("Ошибка при получении истории:", err);
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
   return (
     <div className="container">
       <div className="home-page">
@@ -19,7 +34,7 @@ export default function Home() {
           <div className="list-contact-empty">Нет истории звонков</div>
         ) : (
           <div className="list-contact">
-            {sortedCallData.map((call) => (
+            {callData.map((call) => (
               <CallCard
                 key={call.id}
                 avatarUrl={call.avatarUrl}

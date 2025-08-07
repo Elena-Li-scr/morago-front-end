@@ -2,7 +2,7 @@ import "@shared/styles/signUp.css";
 import { useNavigate } from "react-router-dom";
 import MainForm from "../components/MainForm";
 import { useState } from "react";
-import { forgotPassword } from "@shared/services/clientApi";
+import { sendVerificationCode } from "@shared/services/clientApi";
 import axios from "axios";
 
 interface FormData {
@@ -19,12 +19,12 @@ export default function ForgotPassword() {
     };
 
     try {
-      const response = await forgotPassword(payload);
+      const response = await sendVerificationCode(payload);
       console.log(response);
-      // if (response?.data.id) {
-      //   localStorage.setItem("id", response.data.id);
-      //   navigate("/forgot-password-code");
-      // }
+      if (response.status === 200 || response.status === 204) {
+        console.log(response.data);
+        navigate("/forgot-password-code");
+      }
     } catch (error: unknown) {
       if (axios.isAxiosError(error)) {
         const errorMessage = error.response?.data?.error;

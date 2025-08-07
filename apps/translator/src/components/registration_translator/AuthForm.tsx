@@ -25,12 +25,29 @@ export default function AuthForm({ type }: { type: keyof typeof FORM_CONFIG }) {
     switch (type) {
       case "login":
         try {
-          await LoginTranslator(data);
-          // navigate("/my-home-translator-page");
+          const cleanPhone = data.phone.replace(/[^0-9]/g, "");
+          const registerData = {
+            phone: cleanPhone,
+            password: data.password,
+          };
+          const res = await LoginTranslator(registerData);
+          const translatorData = {
+            firstName: res.data.firstName,
+            lastName: res.data.lastName,
+          };
+          auth.setToken(res.data.token);
+          auth.setNewTranslator(translatorData);
+          navigate("/my-home-translator-page");
         } catch (err: any) {
           const serverMessage = err.response?.data.error;
-          console.log(serverMessage);
+          if (serverMessage === "Internal server error: User profile not found") {
+            setError("phone", {
+              type: "server",
+              message: "Профиль пользователя не найден",
+            });
+          }
         }
+
         break;
       case "register": {
         const cleanPhone = data.phone.replace(/[^0-9]/g, "");
@@ -48,10 +65,7 @@ export default function AuthForm({ type }: { type: keyof typeof FORM_CONFIG }) {
           navigate(`/verification/register/${cleanPhone}`);
         } catch (err: any) {
           const serverMessage = err.response?.data.error;
-          if (
-            err.response?.status === 400 &&
-            serverMessage === "User profile already exists"
-          ) {
+          if (err.response?.status === 400 && serverMessage === "User profile already exists") {
             setError("phone", {
               type: "server",
               message: "Этот номер уже зарегистрирован",
@@ -67,12 +81,30 @@ export default function AuthForm({ type }: { type: keyof typeof FORM_CONFIG }) {
       }
       case "changePassword": {
         const changePasswordData = {
-          oldPassword: data.oldPassword,
-          newPassword: data.newPassword,
+          oldPassword: data.currontPassword,
+          newPassword: data.password,
           confirmPassword: data.confirmPassword,
         };
-        await changePassword(changePasswordData);
-        // navigate(-1);
+        try {
+          await changePassword(changePasswordData);
+          navigate(-1);
+        } catch (err: any) {
+          const serverMessage = err.response?.data.error;
+          if (
+            err.response?.status === 500 &&
+            serverMessage === "Internal server error: Passwords don't match"
+          ) {
+            setError("currontPassword", {
+              type: "server",
+              message: "Не верный пароль",
+            });
+          } else {
+            setError("root", {
+              type: "server",
+              message: serverMessage || "Ошибка регистрации",
+            });
+          }
+        }
         break;
       }
       case "newPassword":
@@ -86,8 +118,7 @@ export default function AuthForm({ type }: { type: keyof typeof FORM_CONFIG }) {
     }
   };
 
-  const fields =
-    typeof FORM_CONFIG[type] === "function" ? FORM_CONFIG[type](getValues) : [];
+  const fields = typeof FORM_CONFIG[type] === "function" ? FORM_CONFIG[type](getValues) : [];
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="register-form">
@@ -101,11 +132,7 @@ export default function AuthForm({ type }: { type: keyof typeof FORM_CONFIG }) {
           placeholder={field.placeholder}
           type={field.type}
           format={field.format}
-          rules={
-            typeof field.rules === "function"
-              ? field.rules(getValues)
-              : field.rules
-          }
+          rules={typeof field.rules === "function" ? field.rules(getValues) : field.rules}
         />
       ))}
 
@@ -117,12 +144,12 @@ export default function AuthForm({ type }: { type: keyof typeof FORM_CONFIG }) {
           type === "login" || type === "newPassword"
             ? "Войти"
             : type === "register"
-            ? "Получить код"
-            : type === "changePassword"
-            ? "Сохранить изменения"
-            : type === "resetPassword"
-            ? "Сбросить пароль"
-            : "Сменить пароль"
+              ? "Получить код"
+              : type === "changePassword"
+                ? "Сохранить изменения"
+                : type === "resetPassword"
+                  ? "Сбросить пароль"
+                  : "Сменить пароль"
         }
       />
     </form>

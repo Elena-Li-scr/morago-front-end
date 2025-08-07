@@ -1,83 +1,40 @@
-import axios from "axios";
-const API_URL = "https://morago.up.railway.app";
-const token = localStorage.getItem("token");
-
-interface NewUserPayload {
-  password?: string;
-  confirmPassword?: string;
-  phone?: string;
-  role?: string;
-}
-
-interface ProfilePayload {
-  lastName?: string;
-  firstName?: string;
-  imageUrl?: FileList;
-}
+import axiosInstance from "./axiosInstance";
+import type { NewUserPayload, ProfilePayload, BalancePayload } from "../types/types";
 
 export function newUser(payload: NewUserPayload) {
-  return axios.post(`${API_URL}/auth/register`, payload);
+  return axiosInstance.post("/auth/register", payload);
 }
+
 export function login(payload: NewUserPayload) {
-  return axios.post(`${API_URL}/auth/login`, payload);
+  return axiosInstance.post("/auth/login", payload);
 }
-export function forgotPassword(payload: NewUserPayload) {
-  return axios.post(`${API_URL}/publicResetPassword/reset/request`, payload, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  });
-}
+
 export function newPassword(payload: NewUserPayload) {
-  return axios.post(`${API_URL}/profile/password/update`, payload, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  });
+  return axiosInstance.post("/profile/password/update", payload);
 }
+
 export function updatePassword(payload: NewUserPayload) {
-  return axios.post(`${API_URL}/profile/password/update`, payload, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  });
+  return axiosInstance.post("/profile/password/update", payload); //нерабочая
 }
 
 export function clearAllNote() {
-  return axios.post(
-    `${API_URL}/profile/notifications/clear`,
-    {},
-    {
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
-      },
-    },
-  );
+  return axiosInstance.post("/profile/notifications/clear", {});
 }
 
 export function updateAvatar(formData: FormData) {
-  return axios.post(`${API_URL}/profile/avatar/upload`, formData, {
+  return axiosInstance.post("/profile/avatar/upload", formData, {
     headers: {
-      Authorization: `Bearer ${token}`,
       "Content-Type": "multipart/form-data",
     },
   });
 }
 
 export function updateName(payload: ProfilePayload) {
-  return axios.put(`${API_URL}/user`, payload, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  });
+  return axiosInstance.put("/user", payload);
 }
 
 export function getPopularThemes() {
-  return axios.get(`${API_URL}/profile/themes/popular`, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
+  return axiosInstance.get("/profile/themes/popular", {
     params: {
       page: 0,
       size: 5,
@@ -88,10 +45,7 @@ export function getPopularThemes() {
 }
 
 export function getCategories() {
-  return axios.get(`${API_URL}/profile/categories`, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
+  return axiosInstance.get("/profile/categories", {
     params: {
       page: 0,
       size: 5,
@@ -100,13 +54,10 @@ export function getCategories() {
       isActive: true,
     },
   });
-}
+} // приходит пустым
 
 export function getLastCalls() {
-  return axios.get(`${API_URL}/profile/calls/history`, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
+  return axiosInstance.get("/profile/calls/history", {
     params: {
       isLast: true,
       page: 0,
@@ -118,10 +69,7 @@ export function getLastCalls() {
 }
 
 export function getMissedCalls() {
-  return axios.get(`${API_URL}/profile/calls/history`, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
+  return axiosInstance.get("/profile/calls/history", {
     params: {
       isMissed: true,
       page: 0,
@@ -133,9 +81,13 @@ export function getMissedCalls() {
 }
 
 export function getBalance() {
-  return axios.get(`${API_URL}/profile/balance`, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  });
+  return axiosInstance.get("/profile/balance");
+}
+
+export function sendDeposit(payload: BalancePayload) {
+  return axiosInstance.post("/user/deposit", payload);
+}
+
+export function sendVerificationCode(payload: NewUserPayload) {
+  return axiosInstance.post("/publicResetPassword/reset/request", payload);
 }

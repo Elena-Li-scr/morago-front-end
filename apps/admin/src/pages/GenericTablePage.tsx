@@ -6,10 +6,9 @@ import { dbData } from "../db/db";
 import { Breadcrumbs } from "../components/Breadcrumbs";
 import { titleMap } from "../constans/titleMap/titleMap";
 import { IoSearch } from "react-icons/io5";
-import PopUp from "../components/PopUp";
 
 const isTableType = (value: string): value is TableType => {
-  return ["user", "translator", "call", "withdraw", "theme"].includes(value);
+  return ["user", "translator", "call", "withdraw", "theme", "callHistory"].includes(value);
 };
 
 export const GenericTablePage = () => {
@@ -18,6 +17,10 @@ export const GenericTablePage = () => {
   if (!type || !isTableType(type)) {
     return <div>Not found</div>;
   }
+  const searchParams = new URLSearchParams(location.search);
+  const from = searchParams.get("from") || undefined;
+  const name = searchParams.get("name");
+
   const columns = tableConfigs[type];
   const data = dbData[type];
   const titlePage = titleMap[type];
@@ -25,11 +28,13 @@ export const GenericTablePage = () => {
   return (
     <div className="container">
       <div className="page-header">
-        <div className="page-info page-block">
-          <h3 className="page-info-title">{titlePage}</h3>
-          <Breadcrumbs />
+        <div className="page-info page-block ">
+          <h3 className="page-info-title">
+            {titlePage} {name}
+          </h3>
+          <Breadcrumbs from={from} />
         </div>
-        <div className="page-search page-block">
+        <div className="page-search page-block ">
           <div className="page-search-name">
             <IoSearch className="search-icon" />
             <input type="text" placeholder="Search by name or company "></input>
@@ -42,7 +47,6 @@ export const GenericTablePage = () => {
         </div>
       </div>
       <FlexTable columns={columns} data={data} rowKey={(row) => row.id} type={type} />
-      <PopUp type="categories" id="1" />
     </div>
   );
 };

@@ -16,7 +16,13 @@ interface FormData {
 }
 
 export default function ChangeProfile() {
-  const { register, handleSubmit, setValue } = useForm<FormData>({ mode: "onChange" });
+  const { register, handleSubmit, setValue } = useForm<FormData>({
+    mode: "onChange",
+    defaultValues: {
+      lastName: localStorage.getItem("lastName") || "",
+      firstName: localStorage.getItem("firstName") || "",
+    },
+  });
   const [success, setSuccess] = useState(false);
   const [serverError, setServerError] = useState("");
   const navigate = useNavigate();
@@ -25,8 +31,8 @@ export default function ChangeProfile() {
   const onSubmit = async (data: FormData) => {
     console.log("Форма:", data);
     const payload = {
-      lastName: data.lastName,
-      firstName: data.firstName,
+      lastName: data.lastName || localStorage.getItem("lastName") || "",
+      firstName: data.firstName || localStorage.getItem("firstName") || "",
     };
     try {
       let isSuccess;
@@ -40,7 +46,10 @@ export default function ChangeProfile() {
       }
 
       const res = await updateName(payload);
+      console.log(res);
       if (res.status === 200 || res.status === 204) {
+        localStorage.setItem("lastName", res.data.lastName);
+        localStorage.setItem("firstName", res.data.firstName);
         isSuccess = true;
       }
 

@@ -23,6 +23,18 @@ export type User = {
   deposit?: string;
   eye?: string;
 };
+export type CallHistory = {
+  id: string;
+  select?: string;
+  call: string;
+  date: string;
+  duration: string;
+  coins: string;
+  theme: string;
+  depositRequest?: string;
+  rating: string;
+};
+
 
 export type Column<T> = {
   key: keyof T;
@@ -33,4 +45,7 @@ export type Column<T> = {
   render?: (row: T) => React.ReactNode;
 };
 
-export type TableType = "user" | "translator";
+export type TableType = "user" | "translator"| 'callHistory';
+
+
+// Call history [username]

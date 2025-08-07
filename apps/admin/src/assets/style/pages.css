@@ -34,7 +34,8 @@
   display: flex;
   align-items: center;
   white-space: nowrap;
-  padding: 8px 16px;
+  padding: 8px 0;
+  margin: 0 16px;
 }
 
 
@@ -51,7 +52,8 @@
 }
 
 .view-btn {
-
+  color: #101828;
+  text-decoration: none;
   align-items: center;
   display: flex;
   font-size: 16px;
@@ -107,7 +109,6 @@
 .page-info-title {
   padding-left: 17px;
   font-size: 40px;
-  line-height: 24px;
   font-weight: 700;
 }
 
@@ -188,4 +189,15 @@
   background: #414141;
   border-radius: 4px;
   color: #fff;
+}
+
+
+
+.star-icon {
+  font-size: 19.33px;
+  color: #D7D7D7;
+}
+
+.star-icon.active {
+  color: #FBB500;
 }

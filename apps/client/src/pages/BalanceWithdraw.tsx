@@ -3,14 +3,12 @@ import { useEffect } from "react";
 import MainButton from "@shared/components/MainButton";
 import SucessActionModal from "@shared/components/SucessActionModal";
 import BackButton from "@shared/components/BackButton";
+import type { BalancePayload } from "@shared/types/types";
+import { sendDeposit } from "@shared/services/clientApi";
+// import axios from "axios";
 
 import "@shared/styles/balanceWithdraw.css";
 import { useState } from "react";
-
-interface FormData {
-  fullName: string;
-  amount: number;
-}
 
 export default function BalanceWithdraw() {
   const [isSuccess, setIsSuccess] = useState(false);
@@ -23,11 +21,28 @@ export default function BalanceWithdraw() {
     watch,
     setValue,
     formState: { errors },
-  } = useForm<FormData>({ mode: "onTouched" });
+  } = useForm<BalancePayload>({ mode: "onTouched" });
 
-  const onSubmit = (data: FormData) => {
-    console.log("Отправленные данные:", data);
-    setIsSuccess(true);
+  const onSubmit = async (data: BalancePayload) => {
+    const payload = {
+      accountHolder: data.accountHolder,
+      nameOfBank: "Hana",
+      won: data.won,
+    };
+    try {
+      const res = await sendDeposit(payload);
+      if (res.status === 200 || res.status === 204) {
+        setIsSuccess(true);
+      }
+    } catch (error) {
+      console.log(error);
+      // if (axios.isAxiosError(error)) {
+      //   const errorMessage = error.response?.data?.error;
+      //   setServerError(errorMessage || "Произошла ошибка. Попробуйте снова.");
+      // } else {
+      //   setServerError("Что-то пошло не так. Попробуйте снова.");
+      // }
+    }
   };
 
   const successAction = () => {
@@ -35,13 +50,11 @@ export default function BalanceWithdraw() {
   };
 
   useEffect(() => {
-    register("amount", { required: "Выберите сумму пополнения" });
+    register("won", { required: "Выберите сумму пополнения" });
   }, [register]);
 
-  const selectedAmount = watch("amount");
-  // const fullName = watch("fullName");
+  const selectedAmount = watch("won");
 
-  // const isValid = selectedAmount && fullName?.trim() !== "" && !errors.fullName && !errors.amount;
   return (
     <div className="balance-withdraw-wrapper">
       <BackButton icon="/assets/arrow-left.png" />
@@ -63,10 +76,10 @@ export default function BalanceWithdraw() {
           <input
             type="text"
             placeholder="Фамилия Имя"
-            {...register("fullName", { required: "Укажите фамилию и имя отправителя" })}
+            {...register("accountHolder", { required: "Укажите фамилию и имя отправителя" })}
           />
         </div>
-        {errors.fullName && <p className="errors">{errors.fullName.message}</p>}
+        {errors.accountHolder && <p className="errors">{errors.accountHolder.message}</p>}
         <label>Сумма для пополнения</label>
         <div className="balance-withdraw-amounts">
           {amounts.map((amount) => (
@@ -74,7 +87,7 @@ export default function BalanceWithdraw() {
               type="button"
               key={amount}
               className={selectedAmount === amount ? "selected-amount" : ""}
-              onClick={() => setValue("amount", amount, { shouldValidate: true })}
+              onClick={() => setValue("won", amount, { shouldValidate: true })}
             >
               <div>
                 <img className="coin-image" src="/assets/home/coin-icon.png" alt="coin" />
@@ -84,13 +97,8 @@ export default function BalanceWithdraw() {
             </button>
           ))}
         </div>
-        {errors.amount && <p className="errors">{errors.amount.message}</p>}
-        <MainButton
-          type="submit"
-          text="Запросить пополнение"
-          className="button button-active"
-          // disabled={!isValid}
-        />
+        {errors.won && <p className="errors">{errors.won.message}</p>}
+        <MainButton type="submit" text="Запросить пополнение" className="button button-active" />
       </form>
       <button className="withdraw-support">Поддержка</button>
       {isSuccess && (

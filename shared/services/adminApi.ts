@@ -1,35 +1,17 @@
-import axios from "axios";
-const API_URL = "https://morago.up.railway.app";
-const token = localStorage.getItem("token");
+import axiosInstance from "./axiosInstance";
 
 export function getUser(id: string) {
-  return axios.get(`${API_URL}/admin/users/${id}`, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  });
+  return axiosInstance.get(`/admin/users/${id}`);
 }
 
 export function getTranslator(id: string) {
-  return axios.get(`${API_URL}/admin/translators/${id}`, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  });
+  return axiosInstance.get(`/admin/translators/${id}`);
 }
 
 export function getTheme(id: string) {
-  return axios.get(`${API_URL}/admin/themes/${id}`, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  });
+  return axiosInstance.get(`/admin/themes/${id}`);
 }
 
 export function getCategory(id: string) {
-  return axios.get(`${API_URL}/admin/categories/${id}`, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  });
+  return axiosInstance.get(`/admin/categories/${id}`);
 }

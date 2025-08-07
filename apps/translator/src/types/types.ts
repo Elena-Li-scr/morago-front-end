@@ -53,9 +53,7 @@ export type FormField = {
   type?: string;
   icon?: React.ReactNode;
   format?: (val: string) => string;
-  rules?:
-    | RegisterOptions
-    | ((getValues: UseFormGetValues<any>) => RegisterOptions);
+  rules?: RegisterOptions | ((getValues: UseFormGetValues<any>) => RegisterOptions);
 };
 
 export type NavItem = {
@@ -72,12 +70,39 @@ export type WithdrawalForm = {
   balance: string;
 };
 
-export interface Call {
-  id: number;
-  avatarUrl: string;
+export interface CallHisrtoryTranslator {
+  id: string;
   name: string;
+  avatarUrl: string;
   topic: string;
   time: string;
   price: number;
   date: string;
+  rating?: string;
+}
+
+export type CallFromApi = {
+  date: string;
+  phone: string;
+  duration: number;
+  coins: number;
+  theme: string;
+  rating: string;
+  hasRequest: boolean;
+};
+
+export interface NotificationType {
+  id: number;
+  title: string;
+  text: string;
+  date: string;
+  isRead: boolean;
+}
+
+export interface NotificationResponse {
+  content: NotificationType[];
+  totalElements: number;
+  totalPages: number;
+  number: number;
+  size: number;
 }
