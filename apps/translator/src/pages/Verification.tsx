@@ -80,9 +80,7 @@ export default function VerificationPage() {
   };
 
   const successSubmit = () => {
-    navigate(
-      process === "register" ? `/new-translator/${phone}` : "/new-password"
-    );
+    navigate(process === "register" ? `/new-translator/${phone}` : "/new-password");
   };
 
   const handleResend = async () => {
@@ -92,19 +90,14 @@ export default function VerificationPage() {
     setRemaining(180); // Сбросить таймер
   };
 
-  const formattedTimer = `${Math.floor(remaining / 60)}:${(
-    "0" +
-    (remaining % 60)
-  ).slice(-2)}`;
+  const formattedTimer = `${Math.floor(remaining / 60)}:${("0" + (remaining % 60)).slice(-2)}`;
 
   return (
     <div className="container">
       <div className="verification">
         <ChangePageBtn page="changePasswordIkconBack" />
         <h2 className="verification-title">{TITLES[process]}</h2>
-        <p className="verification-text">
-          Мы отправили проверочный код на ваш номер телефона
-        </p>
+        <p className="verification-text">Мы отправили проверочный код на ваш номер телефона</p>
         <div className="verification-code">
           {code.map((digit, index) => (
             <input

@@ -19,6 +19,7 @@ import CallHistory from "./pages/CallHistory";
 import { IncomingCallModal } from "./components/call/IncomingCallModal";
 import { CallModal } from "./components/call/CallModal";
 import Loading from "./components/loading/Loading";
+import NotificationTranslator from "./pages/NotificationTranslator";
 
 function App() {
   return (
@@ -27,10 +28,7 @@ function App() {
         <Route index element={<Navigate to="/logIn" />} />
         <Route path="/logIn" element={<LogIn />} />
         <Route path="/register" element={<RegisterForm />} />
-        <Route
-          path="/verification/:process/:phone"
-          element={<VerificationCode />}
-        />
+        <Route path="/verification/:process/:phone" element={<VerificationCode />} />
         <Route path="/new-translator/:phone" element={<NewTrasnlator />} />
         <Route path="/reset-password" element={<ResetPassword />} />
         <Route path="/new-password" element={<NewPassword />} />
@@ -48,6 +46,7 @@ function App() {
             <Route path="change-password" element={<ChangePassword />} />
           </Route>
           <Route path="/withdrawal-page" element={<Withdrawal />} />
+          <Route path="/my-notification-page" element={<NotificationTranslator />} />
         </Route>
       </Routes>
       <Loading />
