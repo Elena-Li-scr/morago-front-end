@@ -1,7 +1,8 @@
 import Theme from "@shared/components/Theme";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useTopicStore } from "@shared/store/useStore";
+import { getPopularThemes } from "@shared/services/clientApi";
 
 import "@shared/styles/homePage.css";
 import "@shared/styles/theme.css";
@@ -26,6 +27,18 @@ export default function ThemePage() {
   const handleShowAll = () => {
     setShowAllThemes(true);
   };
+
+  useEffect(() => {
+    const server = async () => {
+      try {
+        const res = await getPopularThemes();
+        console.log(res.data);
+      } catch (err) {
+        console.error("Ошибка при загрузке популярных тем:", err);
+      }
+    };
+    server();
+  }, []);
 
   const handleThemeClick = (theme: string) => {
     setChosenTopic(theme);

@@ -26,8 +26,11 @@ export default function Profile() {
               className="profile-image"
             />
             <div>
-              <p className="profile-name">Имя Фамилия</p>
-              <p className="profile-phone">010 1234 56 78</p>
+              <p className="profile-name">
+                {localStorage.getItem("firstName") || "Имя"}{" "}
+                {localStorage.getItem("lastName") || "Фамилия"}
+              </p>
+              <p className="profile-phone">{localStorage.getItem("phone")}</p>
             </div>
           </div>
           <button type="button" className="profile-change-button" onClick={changeProfile}>

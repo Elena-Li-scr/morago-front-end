@@ -71,6 +71,10 @@
   color: #191d31;
 }
 
+.minus-balance {
+  color: #b50000;
+}
+
 .up-balance {
   display: flex;
   justify-content: flex-end;
