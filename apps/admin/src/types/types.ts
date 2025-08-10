@@ -35,6 +35,33 @@ export type CallHistory = {
   rating: string;
 };
 
+export type RequestPage = {
+  id: string;
+  select?: string;
+  request?: string;
+  date: string;
+  coins: string;
+  status?: string;
+  eye?: string;
+};
+
+export type Categories = {
+  id: string;
+  select?: string;
+  name: string;
+  status?: string;
+  eye?: string;
+};
+export type Themes = {
+  id: string;
+  select?: string;
+  name: string;
+  categorie: string;
+  status: string;
+  icon: string;
+  imgIcon: string;
+  eye?: string;
+};
 
 export type Column<T> = {
   key: keyof T;
@@ -45,7 +72,11 @@ export type Column<T> = {
   render?: (row: T) => React.ReactNode;
 };
 
-export type TableType = "user" | "translator"| 'callHistory';
+export type ListsType =
+  | "user"
+  | "translator"
+  | "callHistory"
+  | "withdrawHistory"
+  | "depositHistory";
 
-
-// Call history [username]
+export type TopicsType = "themes" | "categories";

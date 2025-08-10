@@ -1,36 +1,43 @@
 import { useParams } from "react-router-dom";
-import { tableConfigs } from "../constans/tableConfigs/tableConfigs";
+import { listsTableConfigs, topicTableConfigs } from "../constans/tableConfigs/tableConfigs";
 import FlexTable from "../components/FlexTable";
-import type { TableType } from "../types/types";
 import { dbData } from "../db/db";
 import { Breadcrumbs } from "../components/Breadcrumbs";
-import { titleMap } from "../constans/titleMap/titleMap";
+import { titleMapLists, titleMapTopics } from "../constans/titleMap/titleMap";
 import { IoSearch } from "react-icons/io5";
+import { isListsTableType, isTopicsType } from "../constans/tableConfigs/configs";
+import type { ListsType, TopicsType } from "../types/types";
 
-const isTableType = (value: string): value is TableType => {
-  return ["user", "translator", "call", "withdraw", "theme", "callHistory"].includes(value);
-};
-
-export const GenericTablePage = () => {
+type Props = { section: string };
+export default function GenericTablePage({ section }: Props) {
   const { type } = useParams();
 
-  if (!type || !isTableType(type)) {
-    return <div>Not found</div>;
-  }
+  if (!type) return <div>Not found</div>;
+
+  const isValid = section === "lists" ? isListsTableType(type) : isTopicsType(type);
+
+  if (!isValid) return <div>Not found</div>;
   const searchParams = new URLSearchParams(location.search);
   const from = searchParams.get("from") || undefined;
   const name = searchParams.get("name");
 
-  const columns = tableConfigs[type];
+  const columns =
+    section === "lists"
+      ? listsTableConfigs[type as ListsType]
+      : topicTableConfigs[type as TopicsType];
+
+  const title =
+    section === "lists" ? titleMapLists[type as ListsType] : titleMapTopics[type as TopicsType];
+
   const data = dbData[type];
-  const titlePage = titleMap[type];
 
   return (
     <div className="container">
       <div className="page-header">
         <div className="page-info page-block ">
           <h3 className="page-info-title">
-            {titlePage} {name}
+            {title} {name}
+
           </h3>
           <Breadcrumbs from={from} />
         </div>
@@ -49,4 +56,4 @@ export const GenericTablePage = () => {
       <FlexTable columns={columns} data={data} rowKey={(row) => row.id} type={type} />
     </div>
   );
-};
+}

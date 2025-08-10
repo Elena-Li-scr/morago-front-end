@@ -1,8 +1,22 @@
-import type { TableType } from "../../types/types";
-import { callHistoryTableConfig, translatorTableConfig, UserTableConfig } from "./configs";
+import {
+  callHistoryTableConfig,
+  withdrawRequestTableConfig,
+  depositRequestTableConfig,
+  translatorTableConfig,
+  userTableConfig,
+  themesTableConfig,
+  categoriesTableConfig,
+} from "./configs";
 
-export const tableConfigs: Record<TableType, any[]> = {
-  user: UserTableConfig,
+export const listsTableConfigs = {
+  user: userTableConfig,
   translator: translatorTableConfig,
   callHistory: callHistoryTableConfig,
-};
+  withdrawHistory: withdrawRequestTableConfig,
+  depositHistory: depositRequestTableConfig,
+} as const;
+
+export const topicTableConfigs = {
+  themes: themesTableConfig,
+  categories: categoriesTableConfig,
+} as const;
