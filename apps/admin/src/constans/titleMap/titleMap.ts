@@ -1,7 +1,14 @@
-export const titleMap: Record<string, string> = {
+import type { ListsType, TopicsType } from "../../types/types";
+
+export const titleMapLists: Record<ListsType, string> = {
   user: "Users list",
   translator: "Translators list",
-  callHistory: "Call History",
-  withdraw: "Withdraw Requests",
-  theme: "Themes",
+  callHistory: "Call history",
+  withdrawHistory: "Withdraw history",
+  depositHistory: "Deposit history",
+};
+
+export const titleMapTopics: Record<TopicsType, string> = {
+  themes: "Themes",
+  categories: "Categories",
 };
