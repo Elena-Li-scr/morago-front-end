@@ -34,14 +34,13 @@ export default function GenericTablePage({ section }: Props) {
   return (
     <div className="container">
       <div className="page-header">
-        <div className="page-info page-block ">
+        <div className="page-info page-block">
           <h3 className="page-info-title">
             {title} {name}
-
           </h3>
           <Breadcrumbs from={from} />
         </div>
-        <div className="page-search page-block ">
+        <div className="page-search page-block">
           <div className="page-search-name">
             <IoSearch className="search-icon" />
             <input type="text" placeholder="Search by name or company "></input>
