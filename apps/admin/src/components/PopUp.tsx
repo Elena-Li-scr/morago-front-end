@@ -4,7 +4,7 @@ import { getUser, getCategory, getTheme, getTranslator } from "@shared/services/
 import "../assets/style/popUp.css";
 
 interface Props {
-  id: string;
+  id: number;
   type: "user" | "translator" | "themes" | "categories";
 }
 
@@ -46,20 +46,20 @@ interface Translator {
 
 type PopUpData = User | Translator | Theme | Category;
 
-function isPerson(d: PopUpData | null): d is User | Translator {
-  return !!d && "firstName" in d;
+function isPerson(d: unknown): d is User | Translator {
+  return typeof d === "object" && d !== null && "firstName" in d;
 }
-function isTranslator(d: PopUpData | null): d is Translator {
-  return !!d && "email" in d;
+function isTranslator(d: unknown): d is Translator {
+  return typeof d === "object" && d !== null && "email" in d;
 }
-function isTheme(d: PopUpData | null): d is Theme {
-  return !!d && "iconId" in d;
+function isTheme(d: unknown): d is Theme {
+  return typeof d === "object" && d !== null && "iconId" in d;
 }
-function isCategory(d: PopUpData | null): d is Category {
-  return !!d && "name" in d && !("iconId" in d);
+function isCategory(d: unknown): d is Category {
+  return typeof d === "object" && d !== null && "name" in d && !("iconId" in d);
 }
 
-export default function PopUp({ id, type }: Props) {
+export default function PopUp({ id = 2, type }: Props) {
   const [data, setData] = useState<PopUpData | null>(null);
 
   useEffect(() => {
@@ -76,6 +76,7 @@ export default function PopUp({ id, type }: Props) {
                 : await getCategory(id);
 
         if (!cancelled) setData(res.data as PopUpData);
+        console.log(res.data);
       } catch (e) {
         console.log(e);
         if (!cancelled) setData(null);
