@@ -1,11 +1,9 @@
 import MainButton from "@shared/components/MainButton";
-
 import { useNavigate } from "react-router-dom";
-import { Swiper, SwiperSlide } from "swiper/react";
+import { Swiper, SwiperSlide, useSwiper } from "swiper/react";
 import { Pagination } from "swiper/modules";
-import "swiper/css/pagination";
 import "swiper/css";
-
+import "swiper/css/pagination";
 import "@shared/styles/greetingPage.css";
 
 const bgData = [
@@ -25,6 +23,21 @@ const bgData = [
     image: "/assets/background-3.png",
   },
 ];
+
+function SkipButton({ onLast }: { onLast: () => void }) {
+  const swiper = useSwiper();
+  const handleSkip = () => {
+    const isLast = swiper.activeIndex >= swiper.slides.length - 1;
+    if (isLast) onLast();
+    else swiper.slideNext();
+  };
+  return (
+    <button type="button" className="skip-button" onClick={handleSkip}>
+      Пропустить
+    </button>
+  );
+}
+
 export default function GreetingPage() {
   const navigate = useNavigate();
 
@@ -50,10 +63,9 @@ export default function GreetingPage() {
             </div>
           </SwiperSlide>
         ))}
+
+        <SkipButton onLast={() => navigate("/sign-in")} />
       </Swiper>
-      <button type="button" className="skip-button">
-        Пропустить
-      </button>
 
       <div className="greeting-buttons">
         <MainButton
