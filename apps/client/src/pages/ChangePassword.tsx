@@ -1,49 +1,51 @@
 import "@shared/styles/profile.css";
 import BackButton from "@shared/components/BackButton";
-import MainButton from "@shared/components/MainButton";
-import { useForm } from "react-hook-form";
+import SucessActionModal from "@shared/components/SucessActionModal";
+import MainForm from "../components/MainForm";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { updatePassword } from "@shared/services/clientApi";
+import axios from "axios";
 
 interface FormData {
+  oldPassword: string;
   password: string;
-  newPassword: string;
   confirmPassword: string;
 }
 
 export default function ChangePassword() {
-  const {
-    register,
-    handleSubmit,
-    watch,
-    formState: { errors },
-  } = useForm<FormData>({
-    mode: "onChange",
-  });
   const navigate = useNavigate();
-  const onSubmit = (data: FormData) => {
-    console.log(data);
-  };
-  const [show, setShow] = useState({
-    password: false,
-    newPassword: false,
-    confirmPassword: false,
-  });
+  const [success, setSuccess] = useState(false);
+  const [serverError, setServerError] = useState("");
 
-  const newPassword = watch("newPassword");
-  const password = watch("password");
-  const confirmPassword = watch("confirmPassword");
+  const onSubmit = async (data: FormData) => {
+    const payload = {
+      oldPassword: data.oldPassword,
+      newPassword: data.password,
+      confirmPassword: data.confirmPassword,
+    };
 
-  const toggleVisibility = (field: "password" | "confirmPassword" | "newPassword") => {
-    setShow((prev) => ({
-      ...prev,
-      [field]: !prev[field],
-    }));
+    try {
+      const res = await updatePassword(payload);
+      console.log(payload);
+      if (res.status === 200 || res.status === 204) {
+        setSuccess(true);
+      }
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        const errorMessage = error.response?.data?.error;
+        if (errorMessage === "Internal server error: Passwords don't match") {
+          setServerError("Неверно указан текущий пароль");
+        } else {
+          setServerError("Произошла ошибка. Попробуйте снова.");
+        }
+      } else {
+        setServerError("Что-то пошло не так. Попробуйте снова.");
+      }
+    }
   };
 
-  const toRecoveryPassword = () => {
-    navigate("/forgot-password");
-  };
+  const successHandler = () => navigate("/profile");
 
   return (
     <div className="page-wrapper change-profile-wrapper">
@@ -51,152 +53,25 @@ export default function ChangePassword() {
         <BackButton icon="/assets/arrow-left.png" />
         <h3>Изменить пароль</h3>
       </div>
-      <form className="change-profile-form" onSubmit={handleSubmit(onSubmit)}>
-        <div>
-          {/* Текущий пароль */}
 
-          <label className="input-label">Текущий пароль</label>
-          <div className="input-wrapper">
-            <img
-              src={
-                password?.trim() === ""
-                  ? "/assets/signIcons/lock.png"
-                  : errors.password
-                    ? "/assets/signIcons/lock-error.png"
-                    : "/assets/signIcons/lock-valid.png"
-              }
-              alt="lock-img"
-            />
-            <input
-              type={show.password ? "text" : "password"}
-              placeholder="Введите текущий пароль"
-              autoComplete="new-password"
-              className={errors.password ? "main-input-error main-input" : "main-input"}
-              {...register("password", {
-                required: true,
-                minLength: {
-                  value: 9,
-                  message: "Пароль должен быть не менее 9 цифр",
-                },
-              })}
-            />
-            <button
-              type="button"
-              onClick={() => toggleVisibility("password")}
-              className="password-toggle-button"
-            >
-              <img
-                src={
-                  password?.trim() === ""
-                    ? "/assets/signIcons/eye.png"
-                    : errors.password
-                      ? "/assets/signIcons/eye-error.png"
-                      : "/assets/signIcons/eye-valid.png"
-                }
-                alt="eye"
-              />
-            </button>
-          </div>
+      <MainForm
+        onSubmit={onSubmit}
+        serverError={serverError}
+        header=""
+        text=""
+        fields={["oldPassword", "password", "confirmPassword"]}
+        button="Сохранить изменения"
+      />
 
-          {errors.password && <p className="errors">{errors.password.message}</p>}
-
-          <button type="button" className="forgot-password" onClick={toRecoveryPassword}>
-            Забыл пароль
-          </button>
-
-          {/* Новый пароль */}
-
-          <label className="input-label">Новый пароль</label>
-          <div className="input-wrapper">
-            <img
-              src={
-                newPassword?.trim() === ""
-                  ? "/assets/signIcons/lock.png"
-                  : errors.newPassword
-                    ? "/assets/signIcons/lock-error.png"
-                    : "/assets/signIcons/lock-valid.png"
-              }
-              alt="lock-img"
-            />
-            <input
-              type={show.newPassword ? "text" : "password"}
-              placeholder="Введите ваш пароль"
-              autoComplete="new-password"
-              className={errors.newPassword ? "main-input-error main-input" : "main-input"}
-              {...register("newPassword", {
-                required: true,
-                minLength: {
-                  value: 9,
-                  message: "Пароль должен быть не менее 9 цифр",
-                },
-              })}
-            />
-            <button
-              type="button"
-              onClick={() => toggleVisibility("newPassword")}
-              className="password-toggle-button"
-            >
-              <img
-                src={
-                  newPassword?.trim() === ""
-                    ? "/assets/signIcons/eye.png"
-                    : errors.newPassword
-                      ? "/assets/signIcons/eye-error.png"
-                      : "/assets/signIcons/eye-valid.png"
-                }
-                alt="eye"
-              />
-            </button>
-          </div>
-
-          {errors.newPassword && <p className="errors">{errors.newPassword.message}</p>}
-          {/* Повторите новый пароль */}
-
-          <label className="input-label">Повторите новый пароль</label>
-
-          <div className="input-wrapper">
-            <img
-              src={
-                confirmPassword?.trim() === ""
-                  ? "/assets/signIcons/lock.png"
-                  : errors.confirmPassword
-                    ? "/assets/signIcons/lock-error.png"
-                    : "/assets/signIcons/lock-valid.png"
-              }
-              alt="lock-img"
-            />
-            <input
-              type={show.confirmPassword ? "text" : "password"}
-              placeholder="Повторите ещё раз"
-              autoComplete="new-password"
-              className={errors.confirmPassword ? "main-input-error main-input" : "main-input"}
-              {...register("confirmPassword", {
-                required: true,
-                validate: (value) => value === newPassword || "Пароли не совпадают",
-              })}
-            />
-            <button
-              type="button"
-              onClick={() => toggleVisibility("confirmPassword")}
-              className="password-toggle-button"
-            >
-              <img
-                src={
-                  confirmPassword?.trim() === ""
-                    ? "/assets/signIcons/eye.png"
-                    : errors.confirmPassword
-                      ? "/assets/signIcons/eye-error.png"
-                      : "/assets/signIcons/eye-valid.png"
-                }
-                alt="eye"
-              />
-            </button>
-          </div>
-
-          {errors.confirmPassword && <p className="errors">{errors.confirmPassword.message}</p>}
-        </div>
-        <MainButton text="Сохранить изменения" type="submit" className="button button-active" />
-      </form>
+      {success && (
+        <SucessActionModal
+          header="Пароль изменен успешно"
+          btn="Здорово!"
+          bgImg="/assets/signIcons/success-note.png"
+          className="button button-active"
+          onClick={successHandler}
+        />
+      )}
     </div>
   );
 }
