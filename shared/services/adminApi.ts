@@ -1,17 +1,17 @@
-import axiosInstance from "./axiosInstance";
+import axios from "axios";
 
-export function getUser(id: string) {
-  return axiosInstance.get(`/admin/users/${id}`);
+export function getUser(id: number) {
+  return axios.get(`/admin/users/${id}`);
 }
 
-export function getTranslator(id: string) {
-  return axiosInstance.get(`/admin/translators/${id}`);
+export function getTranslator(id: number) {
+  return axios.get(`/admin/translators/${id}`);
 }
 
-export function getTheme(id: string) {
-  return axiosInstance.get(`/admin/themes/${id}`);
+export function getTheme(id: number) {
+  return axios.get(`/admin/themes/${id}`);
 }
 
-export function getCategory(id: string) {
-  return axiosInstance.get(`/admin/categories/${id}`);
+export function getCategory(id: number) {
+  return axios.get(`/admin/categories/${id}`);
 }

@@ -75,7 +75,6 @@ export default function GenericTablePage({ section }: Props) {
         <div className="page-info page-block">
           <h3 className="page-info-title">
             {title} {name}
-
           </h3>
           <Breadcrumbs from={from} />
         </div>
