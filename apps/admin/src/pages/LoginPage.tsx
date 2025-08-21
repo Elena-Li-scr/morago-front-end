@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { LoginAdmin } from "../api/services/services";
 
 interface FormData {
-  email: string;
+  phone: string;
   password: string;
 }
 export default function LoginPage() {
@@ -15,14 +15,20 @@ export default function LoginPage() {
   const [error, setError] = useState<string | null>(null);
 
   const onSubmit = async (data: FormData) => {
+    const admin = {
+      password: data.password,
+      phone: data.phone.replace(/\s+/g, ""),
+    };
     try {
-      const res = await LoginAdmin(data);
-      console.log(res);
-      // if (data.email === "admin@gmail.com" && data.password === "admin") {
-      //   navigate("/home");
-      // } else {
-      //   throw new Error("Incorrect password or Email");
-      // }
+      const response = await LoginAdmin(admin);
+      console.log(response);
+      if (response?.token && response?.phone) {
+        localStorage.clear();
+        localStorage.setItem("token", response.token);
+        localStorage.setItem("phone", response.phone);
+        navigate("/home");
+        setError(null);
+      }
     } catch (error) {
       if (error instanceof Error) {
         setError(error.message);
@@ -35,10 +41,10 @@ export default function LoginPage() {
         <h2>Login</h2>
 
         <input
-          type="number"
-          placeholder="Email"
+          type="tel"
+          placeholder="Phone"
           className="sign-input"
-          {...register("email", {
+          {...register("phone", {
             required: true,
           })}
         />

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getUser, getCategory, getTheme, getTranslator } from "@shared/services/adminApi";
+// import { getUser, getCategory, getTheme, getTranslator } from "@shared/services/adminApi";
 
 import "../../assets/style/popUp.css";
 import { usePopUp, type PopUpInfo } from "./usePopUp";

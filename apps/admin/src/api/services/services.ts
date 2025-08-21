@@ -9,14 +9,14 @@ export type AuthResponse = {
 };
 
 export type RegisterAdmin = {
-  email: string;
+  phone: string;
   password: string;
 };
 
 // Login
 export const LoginAdmin = async (data: RegisterAdmin) => {
   console.log(data);
-  return axiosInstance.post("/auth/login", { ...data, role: "ROLE_ADMIN" });
+  return axiosInstance.post("/auth/login", { ...data });
 };
 
 type AdminUsersParams = {
