@@ -5,8 +5,8 @@ import ForgotPassword from "./pages/ForgotPassword";
 import NewPassword from "./pages/NewPassword";
 import HomePage from "./pages/HomePage";
 import GenericTablePage from "./pages/GenericTablePage";
-import AddTheme from "./pages/AddTheme";
-import AddCategory from "./pages/AddCategory";
+import AddPage from "./components/AddPage";
+import PopUp from "./components/PopUp/PopUp";
 
 function App() {
   return (
@@ -28,11 +28,11 @@ function App() {
                 path="translationTopics/:type/:id"
                 element={<GenericTablePage section="topics" />}
               />
-              <Route path="translationTopics/:type/addTheme" element={<AddTheme />} />
-              <Route path="translationTopics/:type/addCategory" element={<AddCategory />} />
+              <Route path="translationTopics/:type/newPage" element={<AddPage />} />
             </Route>
           </Route>
         </Routes>
+        <PopUp />
       </BrowserRouter>
     </>
   );

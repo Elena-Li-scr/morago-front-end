@@ -16,9 +16,7 @@ type CallContextType = {
   setCallStatus: (status: CallStatus) => void;
 };
 
-export const CallContext = createContext<CallContextType | undefined>(
-  undefined
-);
+export const CallContext = createContext<CallContextType | undefined>(undefined);
 export const useCall = () => {
   const context = useContext(CallContext);
   if (!context) {

@@ -46,7 +46,7 @@ export default function BalanceHeader() {
             <p>Мой баланс</p>
             <div className="balance-count balance-count-block">
               <img src="/assets/icons/coin-icon.png" alt="coin-icon" />
-              <div className="balance">{balance} вон </div>
+              <div className="balance">{balance ? balance : 0} вон </div>
             </div>
           </div>
           {isHomePage && <GrNext className="next-icon" onClick={changePage} />}

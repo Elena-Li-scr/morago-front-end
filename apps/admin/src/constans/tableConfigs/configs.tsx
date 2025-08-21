@@ -13,6 +13,7 @@ import type {
 } from "../../types/types";
 import { Link } from "react-router-dom";
 import { StarRating } from "../../components/StarRating";
+import { TestCallButton } from "../../components/PopUp/PopUpBtn";
 
 // Тип одной колонки
 
@@ -27,7 +28,7 @@ const baseListsColumns = [
     title: "",
     render: (row) => {
       if (!row) return null;
-      return <IoEyeOutline className="eye-icon" style={{ fontSize: "24px" }} />;
+      return TestCallButton(row);
     },
   },
 ] as const;
@@ -35,7 +36,12 @@ const baseListsColumns = [
 // Конфиг колонок Translator
 export const translatorTableConfig: Column<Translator>[] = [
   ...baseListsColumns,
-  { key: "name", title: "Name", width: "40%", marginLeft: "38px" },
+  {
+    key: "name",
+    title: "Name",
+    width: "40%",
+    marginLeft: "38px",
+  },
   { key: "phone", title: "Phone", width: "35%" },
   { key: "email", title: "Email", width: "35%" },
   { key: "topik", title: "TOPIK", width: "35%" },

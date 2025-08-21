@@ -3,6 +3,7 @@ import { useState } from "react";
 import BigButton from "../components/BigButton";
 import "../assets/style/startPage.css";
 import { useNavigate } from "react-router-dom";
+import { LoginAdmin } from "../api/services/services";
 
 interface FormData {
   email: string;
@@ -13,13 +14,15 @@ export default function LoginPage() {
   const navigate = useNavigate();
   const [error, setError] = useState<string | null>(null);
 
-  const onSubmit = (data: FormData) => {
+  const onSubmit = async (data: FormData) => {
     try {
-      if (data.email === "admin@gmail.com" && data.password === "admin") {
-        navigate("/home");
-      } else {
-        throw new Error("Incorrect password or Email");
-      }
+      const res = await LoginAdmin(data);
+      console.log(res);
+      // if (data.email === "admin@gmail.com" && data.password === "admin") {
+      //   navigate("/home");
+      // } else {
+      //   throw new Error("Incorrect password or Email");
+      // }
     } catch (error) {
       if (error instanceof Error) {
         setError(error.message);
@@ -32,7 +35,7 @@ export default function LoginPage() {
         <h2>Login</h2>
 
         <input
-          type="email"
+          type="number"
           placeholder="Email"
           className="sign-input"
           {...register("email", {

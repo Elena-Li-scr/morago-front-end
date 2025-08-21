@@ -7,5 +7,5 @@ import { CallProvider } from "./components/call/CallContext.tsx";
 createRoot(document.getElementById("root")!).render(
   <CallProvider>
     <App />
-  </CallProvider>
+  </CallProvider>,
 );

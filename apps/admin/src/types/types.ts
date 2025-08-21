@@ -63,8 +63,8 @@ export type Themes = {
   eye?: string;
 };
 
-export type Column<T> = {
-  key: keyof T;
+export type Column<T, Extra extends string = never> = {
+  key: keyof T | Extra;
   title?: string;
   width?: string;
   marginLeft?: string;
@@ -72,6 +72,15 @@ export type Column<T> = {
   render?: (row: T) => React.ReactNode;
 };
 
+export type GenericTypeMap = {
+  // id?: string;
+  user: User;
+  translator: Translator;
+  callHistory: CallHistory;
+  themes: Themes;
+  requestPage: RequestPage;
+  categories: Categories;
+};
 export type ListsType =
   | "user"
   | "translator"

@@ -4,8 +4,8 @@ import { ru } from "date-fns/locale";
 type Props = {
   avatarUrl: string;
   name: string;
-  topic: string;
-  time: string;
+  theme: string;
+  time: number;
   price: number;
   date?: string;
 };
@@ -13,23 +13,14 @@ type Props = {
 const formatTime = (totalSeconds: number): string => {
   const minutes = Math.floor(totalSeconds / 60);
   const seconds = totalSeconds % 60;
-  const minLabel =
-    minutes === 1 ? "мин." : minutes >= 2 && minutes <= 4 ? "мин." : "мин.";
-  const secLabel =
-    seconds === 1 ? "сек" : seconds >= 2 && seconds <= 4 ? "сек" : "сек";
+  const minLabel = minutes === 1 ? "мин." : minutes >= 2 && minutes <= 4 ? "мин." : "мин.";
+  const secLabel = seconds === 1 ? "сек" : seconds >= 2 && seconds <= 4 ? "сек" : "сек";
   const minText = minutes > 0 ? `${minutes} ${minLabel}` : "";
   const secText = seconds > 0 ? `${seconds} ${secLabel}` : "";
   return [minText, secText].filter(Boolean).join(" ");
 };
 
-export const CallCard = ({
-  avatarUrl,
-  name,
-  topic,
-  time,
-  price,
-  date,
-}: Props) => {
+export const CallCard = ({ avatarUrl, name, theme, time, price, date }: Props) => {
   const formatCallDate = (dateString: string): string => {
     const newDate = new Date(dateString);
     if (isToday(newDate)) {
@@ -50,7 +41,7 @@ export const CallCard = ({
       </div>
       <div className="call-info">
         <p className="call-info-username">{name}</p>
-        <p className="call-info-topic">{topic}</p>
+        <p className="call-info-topic">{theme}</p>
       </div>
       {date ? (
         <div className="call-time">

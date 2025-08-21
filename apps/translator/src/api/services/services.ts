@@ -8,6 +8,13 @@ import type {
 } from "../../types/types";
 import axiosInstance from "../axios-config";
 
+export type AuthResponse = {
+  token: string;
+  id: number;
+  role: string;
+  phone: string;
+};
+
 // Login
 export const LoginTranslator = async (data: RegisterFormValues) => {
   return axiosInstance.post("/auth/login", data);
@@ -15,7 +22,8 @@ export const LoginTranslator = async (data: RegisterFormValues) => {
 
 // регистрация
 export const registerTranslator = async (data: RegisterFormValues) => {
-  return axiosInstance.post("/auth/register", data).then((res) => res.data);
+  const res = await axiosInstance.post<AuthResponse>("/auth/register", data);
+  return res;
 };
 
 // отправка кода (по номеру телефона)
@@ -68,16 +76,19 @@ export const getCallHistory = async (filter?: "isMissed" | "isLast") => {
     if (filter === "isLast") {
       params.isLast = true;
     }
+
     const response = await axiosInstance.get("/profile/calls/history", {
       params,
     });
+    console.log(response);
+
     const content: CallFromApi[] = response.data.content;
     const transformed = content.map((call) => ({
       id: `${call.date}-${call.phone}`,
       name: call.phone,
       avatarUrl: "",
-      topic: call.theme,
-      time: `${call.duration} сек`,
+      theme: call.theme,
+      time: call.duration,
       price: call.coins,
       date: call.date,
       rating: call.rating,
@@ -109,7 +120,6 @@ export const getNotifications = async () => {
       sortDirection: "ASC", // или 'DESC'
     },
   });
-
   return response.data;
 };
 

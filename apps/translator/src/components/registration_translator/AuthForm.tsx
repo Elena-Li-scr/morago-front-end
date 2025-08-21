@@ -31,12 +31,14 @@ export default function AuthForm({ type }: { type: keyof typeof FORM_CONFIG }) {
             password: data.password,
           };
           const res = await LoginTranslator(registerData);
+          console.log(res.token);
           const translatorData = {
-            firstName: res.data.firstName,
-            lastName: res.data.lastName,
+            firstName: res.firstName,
+            lastName: res.lastName,
           };
-          auth.setToken(res.data.token);
+          auth.setToken(res.token);
           auth.setNewTranslator(translatorData);
+          auth.setProfileFilled();
           navigate("/my-home-translator-page");
         } catch (err: any) {
           const serverMessage = err.response?.data.error;
@@ -59,11 +61,13 @@ export default function AuthForm({ type }: { type: keyof typeof FORM_CONFIG }) {
         };
         try {
           const res = await registerTranslator(registerData);
+          console.log(res);
           auth.setToken(res.token);
           auth.setNewTranslator(registerData.phone);
           await sendVerificationCode(res.phone);
           navigate(`/verification/register/${cleanPhone}`);
         } catch (err: any) {
+          console.log(err);
           const serverMessage = err.response?.data.error;
           if (err.response?.status === 400 && serverMessage === "User profile already exists") {
             setError("phone", {

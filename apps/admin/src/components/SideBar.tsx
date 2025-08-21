@@ -7,7 +7,6 @@ export default function SideBar() {
   const [openList, setOpenList] = useState(false);
   const [openTopics, setOpenTopics] = useState(false);
   const [addType, setAddType] = useState<string>("");
-
   const [selected, setSelected] = useState("");
   const navigate = useNavigate();
 
@@ -19,11 +18,11 @@ export default function SideBar() {
 
   const addHandler = (text: string) => {
     if (text === "translationTopics/themes") {
-      navigate(`translationTopics/themes/addTheme`);
-      setAddType("");
+      navigate(`translationTopics/themes/newPage`);
+      // setAddType("");
     } else if (text === "translationTopics/categories") {
-      navigate(`translationTopics/categories/addCategory`);
-      setAddType("");
+      navigate(`translationTopics/categories/newPage`);
+      // setAddType("");
     }
   };
 
@@ -95,7 +94,7 @@ export default function SideBar() {
       </div>
       <div className="side-bar-setting">
         <SmallButton text="Add" icon="/assets/add-icon.png" onClick={() => addHandler(addType)} />
-        <button type="button" className="setting-button">
+        <button type="button" className="setting-button" onClick={() => navigate("poup")}>
           <img src="/assets/setting.png" alt="settings" />
         </button>
       </div>

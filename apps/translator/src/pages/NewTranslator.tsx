@@ -50,7 +50,7 @@ export default function NewTrasnlator() {
       auth.setNewTranslator(translatorData);
     } catch (err: any) {
       const serverMessage = err.response?.data.error;
-      console.log(serverMessage);
+      console.log(err);
     }
   };
 
