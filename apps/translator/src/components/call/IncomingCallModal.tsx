@@ -2,8 +2,7 @@ import { useCall } from "./useCall";
 import "../../assets/style/call.css";
 
 export const IncomingCallModal = () => {
-  const { incomingCall, setIncomingCall, setCallStatus, callStatus } =
-    useCall();
+  const { incomingCall, setIncomingCall, setCallStatus, callStatus } = useCall();
 
   if (!incomingCall || callStatus === "active") return null;
 
@@ -16,7 +15,6 @@ export const IncomingCallModal = () => {
 
   const handleDecline = () => {
     console.log("Отклонён звонок");
-
     document.body.style.overflow = "scroll";
     setIncomingCall(null);
   };
@@ -30,11 +28,7 @@ export const IncomingCallModal = () => {
             <p className="incoming-call-theme">Тема: {incomingCall.topic}</p>
           </div>
           <div className="incoming-call-block">
-            <img
-              src={incomingCall.photoUrl}
-              className="incoming-call-img"
-              alt="Аватар"
-            />
+            <img src={incomingCall.photoUrl} className="incoming-call-img" alt="Аватар" />
             <p className="incoming-call-block-user">{incomingCall.name}</p>
           </div>
           <div className="incoming-call-block">
@@ -43,9 +37,7 @@ export const IncomingCallModal = () => {
               <p className="incoming-call-block-text">Статус </p>
             </div>
             <div className="incoming-call-block-item">
-              <p className="incoming-call-block-title">
-                {incomingCall.coins} коинов
-              </p>
+              <p className="incoming-call-block-title">{incomingCall.coins} коинов</p>
               <p className="incoming-call-block-text">1 минута</p>
             </div>
           </div>

@@ -5,6 +5,8 @@ import ForgotPassword from "./pages/ForgotPassword";
 import NewPassword from "./pages/NewPassword";
 import HomePage from "./pages/HomePage";
 import GenericTablePage from "./pages/GenericTablePage";
+import AddPage from "./components/AddPage";
+import PopUp from "./components/PopUp/PopUp";
 
 function App() {
   return (
@@ -26,9 +28,11 @@ function App() {
                 path="translationTopics/:type/:id"
                 element={<GenericTablePage section="topics" />}
               />
+              <Route path="translationTopics/:type/newPage" element={<AddPage />} />
             </Route>
           </Route>
         </Routes>
+        <PopUp />
       </BrowserRouter>
     </>
   );

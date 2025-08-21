@@ -7,16 +7,54 @@ import { titleMapLists, titleMapTopics } from "../constans/titleMap/titleMap";
 import { IoSearch } from "react-icons/io5";
 import { isListsTableType, isTopicsType } from "../constans/tableConfigs/configs";
 import type { ListsType, TopicsType } from "../types/types";
+import { getAdminTranslators } from "../api/services/services";
+import { useEffect, useState } from "react";
 
-type Props = { section: string };
+type Props = { section?: string };
+
+type ApiUser = {
+  id: number;
+  firstName: string;
+  lastName?: string;
+  phone: string;
+  levelOfKorean: string;
+  email: string;
+  dateOfBirth: string;
+  hasWithdrawalRequest: string;
+};
 export default function GenericTablePage({ section }: Props) {
+  const [rows, setRows] = useState<any[]>([]);
+  const [error, setError] = useState<string | null>(null);
   const { type } = useParams();
+
+  useEffect(() => {
+    // примеры: подставь нужные загрузчики под другие типы
+    async function load() {
+      try {
+        if (section === "lists" && type === "translator") {
+          const page = await getAdminTranslators();
+          const rows = (page.content ?? []).map((u: ApiUser) => ({
+            ...u,
+            name: [u.firstName, u.lastName].filter(Boolean).join(" ").trim(),
+            role: "translator",
+          }));
+          setRows(rows);
+          return;
+        }
+
+        // примеры для других страниц
+        // if (section === "lists" && type === "translator") { ... }
+        // if (section === "topics" && type === "themes") { ... }
+      } catch (e: any) {
+        setError(e?.message ?? "Load error");
+      }
+    }
+    load();
+  }, [section, type]);
 
   if (!type) return <div>Not found</div>;
 
   const isValid = section === "lists" ? isListsTableType(type) : isTopicsType(type);
-
-  if (!isValid) return <div>Not found</div>;
   const searchParams = new URLSearchParams(location.search);
   const from = searchParams.get("from") || undefined;
   const name = searchParams.get("name");
@@ -29,18 +67,18 @@ export default function GenericTablePage({ section }: Props) {
   const title =
     section === "lists" ? titleMapLists[type as ListsType] : titleMapTopics[type as TopicsType];
 
-  const data = dbData[type];
+  if (!isValid) return <div>Not found</div>;
 
   return (
     <div className="container">
       <div className="page-header">
-        <div className="page-info page-block ">
+        <div className="page-info page-block">
           <h3 className="page-info-title">
             {title} {name}
           </h3>
           <Breadcrumbs from={from} />
         </div>
-        <div className="page-search page-block ">
+        <div className="page-search page-block">
           <div className="page-search-name">
             <IoSearch className="search-icon" />
             <input type="text" placeholder="Search by name or company "></input>
@@ -52,7 +90,7 @@ export default function GenericTablePage({ section }: Props) {
           </div>
         </div>
       </div>
-      <FlexTable columns={columns} data={data} rowKey={(row) => row.id} type={type} />
+      <FlexTable columns={columns} data={rows} rowKey={(row) => row.id} tableType={type} />
     </div>
   );
 }

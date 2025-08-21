@@ -74,8 +74,8 @@ export interface CallHisrtoryTranslator {
   id: string;
   name: string;
   avatarUrl: string;
-  topic: string;
-  time: string;
+  theme: string;
+  time: number;
   price: number;
   date: string;
   rating?: string;

@@ -1,3 +1,6 @@
+import type { Column } from "../components/FlexTable";
+import type { PopUpInfo } from "../components/PopUp/usePopUp";
+import type { listsTableConfigs, topicTableConfigs } from "../constans/tableConfigs/tableConfigs";
 import type {
   CallHistory,
   Categories,
@@ -11,24 +14,24 @@ import type {
 
 // Мок-данные
 export const translatorListMock: Translator[] = [
-  {
-    id: "1",
-    name: "Name 1",
-    phone: "010 1234 5678",
-    email: "mail1@mail.com",
-    topik: "5 level",
-    status: "Verified",
-    withdrawRequest: "Request",
-  },
-  {
-    id: "2",
-    name: "Name 2",
-    phone: "010 2222 2222",
-    email: "mail2@mail.com",
-    topik: "3 level",
-    status: "Unverified",
-    withdrawRequest: "None",
-  },
+  // {
+  //   id: "1",
+  //   name: "Name 1",
+  //   phone: "010 1234 5678",
+  //   email: "mail1@mail.com",
+  //   topik: "5 level",
+  //   status: "Verified",
+  //   withdrawRequest: "Request",
+  // },
+  // {
+  //   id: "2",
+  //   name: "Name 2",
+  //   phone: "010 2222 2222",
+  //   email: "mail2@mail.com",
+  //   topik: "3 level",
+  //   status: "Unverified",
+  //   withdrawRequest: "None",
+  // },
 ];
 
 export const UserListMock: User[] = [
@@ -215,4 +218,27 @@ export const dbData: Record<ListsType | TopicsType, any[]> = {
   depositHistory: depositHistoryMock,
   categories: categoriesMock,
   themes: themesMock,
+};
+
+// Пользователи
+export const popUpUsersMock: PopUpInfo = {
+  id: 1,
+  firstName: "Ivan",
+  lastName: "Petrov",
+  phone: "+82-10-1234-5678",
+  balance: 1200,
+  hasDepositRequest: false,
+};
+
+// Переводчики
+export const popUpTranslatorsMock: PopUpInfo = {
+  // id: 101,
+  // firstName: "Minho",
+  // lastName: "Choi",
+  // phone: "+82-10-4567-8901",
+  // email: "minho.choi@example.com",
+  // isOnline: true,
+  // levelOfKorean: 6,
+  // dateOfBirth: "1995-04-12",
+  // hasWithdrawalRequest: false,
 };

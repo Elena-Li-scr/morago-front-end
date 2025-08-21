@@ -6,13 +6,24 @@ import { useNavigate } from "react-router-dom";
 export default function SideBar() {
   const [openList, setOpenList] = useState(false);
   const [openTopics, setOpenTopics] = useState(false);
-
+  const [addType, setAddType] = useState<string>("");
   const [selected, setSelected] = useState("");
   const navigate = useNavigate();
 
   const selectHandler = (text: string) => {
     setSelected(text);
+    setAddType(text);
     navigate(`${text}`);
+  };
+
+  const addHandler = (text: string) => {
+    if (text === "translationTopics/themes") {
+      navigate(`translationTopics/themes/newPage`);
+      // setAddType("");
+    } else if (text === "translationTopics/categories") {
+      navigate(`translationTopics/categories/newPage`);
+      // setAddType("");
+    }
   };
 
   return (
@@ -27,7 +38,9 @@ export default function SideBar() {
         {openList && (
           <div className="admin-list-selectors">
             <button
-              className={selected === "user" ? "admin-selectors admin-selected" : "admin-selectors"}
+              className={
+                selected === "lists/user" ? "admin-selectors admin-selected" : "admin-selectors"
+              }
               type="button"
               onClick={() => selectHandler("lists/user")}
             >
@@ -35,7 +48,9 @@ export default function SideBar() {
             </button>
             <button
               className={
-                selected === "translator" ? "admin-selectors admin-selected" : "admin-selectors"
+                selected === "lists/translator"
+                  ? "admin-selectors admin-selected"
+                  : "admin-selectors"
               }
               type="button"
               onClick={() => selectHandler("lists/translator")}
@@ -54,7 +69,9 @@ export default function SideBar() {
           <div className="admin-list-selectors">
             <button
               className={
-                selected === "themes" ? "admin-selectors admin-selected" : "admin-selectors"
+                selected === "translationTopics/themes"
+                  ? "admin-selectors admin-selected"
+                  : "admin-selectors"
               }
               type="button"
               onClick={() => selectHandler("translationTopics/themes")}
@@ -63,7 +80,9 @@ export default function SideBar() {
             </button>
             <button
               className={
-                selected === "categories" ? "admin-selectors admin-selected" : "admin-selectors"
+                selected === "translationTopics/categories"
+                  ? "admin-selectors admin-selected"
+                  : "admin-selectors"
               }
               type="button"
               onClick={() => selectHandler("translationTopics/categories")}
@@ -74,8 +93,8 @@ export default function SideBar() {
         )}
       </div>
       <div className="side-bar-setting">
-        <SmallButton text="Add" icon="/assets/add-icon.png" />
-        <button type="button" className="setting-button">
+        <SmallButton text="Add" icon="/assets/add-icon.png" onClick={() => addHandler(addType)} />
+        <button type="button" className="setting-button" onClick={() => navigate("poup")}>
           <img src="/assets/setting.png" alt="settings" />
         </button>
       </div>

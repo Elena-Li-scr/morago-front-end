@@ -1,14 +1,23 @@
 import { IoMdArrowDropdown } from "react-icons/io";
 import type { Column } from "../types/types";
 
+type WithId = { id: string };
+
 type Props<T> = {
   data: T[];
-  columns: Column<T>[];
-  rowKey: (row: T) => string;
-  type: string;
+  columns: Column<any>[];
+  rowKey?: (row: T) => string;
+  tableType: string;
 };
 
-export default function FlexTable<T>({ data, columns, rowKey, type }: Props<T>) {
+export default function FlexTable<T extends WithId>({
+  data,
+  columns,
+  rowKey,
+  tableType,
+}: Props<T>) {
+  const getKey = (r: T) => (rowKey ? rowKey(r) : String(r.id));
+
   return (
     <div className="table">
       {/* Хедер таблицы */}
@@ -25,7 +34,7 @@ export default function FlexTable<T>({ data, columns, rowKey, type }: Props<T>) 
                 <IoMdArrowDropdown
                   style={{
                     fontSize: "24px",
-                    ...(type === "translator" && { marginLeft: "10px" }),
+                    ...(tableType === "translator" && { marginLeft: "10px" }),
                   }}
                 />
               )}
@@ -37,7 +46,7 @@ export default function FlexTable<T>({ data, columns, rowKey, type }: Props<T>) 
       {data ? (
         <div>
           {data.map((row) => (
-            <div className="table-row" key={rowKey(row)}>
+            <div className="table-row" key={getKey(row)}>
               {columns.map((col) => (
                 <div
                   className={`${

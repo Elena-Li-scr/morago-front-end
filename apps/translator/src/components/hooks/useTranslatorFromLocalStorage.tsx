@@ -2,8 +2,7 @@ import { useEffect, useState } from "react";
 import type { UserProfileExtra } from "../../types/types";
 
 export const useTranslatorFromLocalStorage = () => {
-  const [translatorProfile, setTranslatorProfile] =
-    useState<UserProfileExtra | null>(null);
+  const [translatorProfile, setTranslatorProfile] = useState<UserProfileExtra | null>(null);
 
   useEffect(() => {
     const storeddata = localStorage.getItem("newTranslator");

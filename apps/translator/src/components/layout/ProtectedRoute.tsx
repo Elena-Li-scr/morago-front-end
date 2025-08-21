@@ -18,9 +18,9 @@ export default function ProtectedLayout() {
   }
   const payload = decodeToken(token);
 
-  if (!payload || payload.exp * 1000 < Date.now()) {
-    return <Navigate to="/login" replace />;
-  }
+  // if (!payload || payload.exp * 1000 < Date.now()) {
+  //   return <Navigate to="/login" replace />;
+  // }
   // 2. Код не подтверждён
   if (!auth.isVerified() && !pathname.startsWith("/verification")) {
     return <Navigate to="/verification/register/01000000000" replace />;

@@ -22,7 +22,7 @@ export default function NotificationTranslator() {
         <div className="notification-sub-title">
           <div className="notification-sub-title-item">
             <p className="notification-sub-title-last">Последние</p>
-            <p className="notification-sub-title-count">{unreadCount}</p>
+            <p className="notification-sub-title-count">{unreadCount ? unreadCount : 0}</p>
           </div>
           <div className="notification-sub-title-item">
             <button

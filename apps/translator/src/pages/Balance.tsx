@@ -5,18 +5,19 @@ import { useEffect, useState } from "react";
 import { compareDesc, parseISO } from "date-fns";
 import { getCallHistory } from "../api/services/services";
 import type { CallFromApi, CallHisrtoryTranslator } from "../types/types";
+import { transformedMockData } from "../utils/db";
 
 export default function Balance() {
   const [empyContact, setEmptyContact] = useState<boolean>(false);
   const [callData, setCallData] = useState<CallHisrtoryTranslator[]>([]);
   const fetchData = async () => {
     try {
-      const response = await getCallHistory();
-      if (response.length === 0) {
-        setEmptyContact(true);
-        return;
-      }
-      setCallData(response);
+      // const response = await getCallHistory();
+      // if (response.length === 0) {
+      //   setEmptyContact(true);
+      //   return;
+      // }
+      setCallData(transformedMockData);
     } catch (err) {
       console.error("Ошибка при получении истории:", err);
     }
@@ -36,7 +37,7 @@ export default function Balance() {
               key={call.id}
               avatarUrl={call.avatarUrl}
               name={call.name}
-              topic={call.topic}
+              theme={call.theme}
               time={call.time}
               price={call.price}
             />

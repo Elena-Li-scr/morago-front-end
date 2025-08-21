@@ -1,9 +1,9 @@
 import axios from "axios";
 import { useModalStore } from "../components/loading/useModalStore";
-import { useNavigate } from "react-router-dom";
 
+const baseURL = "http://localhost:8080";
 const axiosInstance = axios.create({
-  baseURL: "https://morago.up.railway.app",
+  baseURL: baseURL,
   headers: {
     "Content-Type": "application/json",
   },
@@ -33,7 +33,7 @@ axiosInstance.interceptors.response.use(
       // 3. Показываем success
       setSuccess(true);
     }, 2000); // Задержка для лоадера
-    return response;
+    return response.data;
   },
   (error) => {
     setTimeout(() => {

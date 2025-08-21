@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { TestCallButton } from "../components/call/TestCallButton";
 import { getCallHistory } from "../api/services/services";
 import type { CallHisrtoryTranslator } from "../types/types";
+import { transformedMockData } from "../utils/db";
 
 export default function Home() {
   const [empyContact, setEmptyContact] = useState<boolean>(false);
@@ -16,7 +17,9 @@ export default function Home() {
         setEmptyContact(true);
         return;
       }
-      setCallData(response);
+      console.log(response);
+
+      setCallData(transformedMockData);
     } catch (err) {
       console.error("Ошибка при получении истории:", err);
     }
@@ -39,7 +42,7 @@ export default function Home() {
                 key={call.id}
                 avatarUrl={call.avatarUrl}
                 name={call.name}
-                topic={call.topic}
+                theme={call.theme}
                 time={call.time}
                 price={call.price}
                 date={call.date}

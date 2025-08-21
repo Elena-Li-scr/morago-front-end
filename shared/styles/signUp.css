@@ -1,8 +1,13 @@
+.input-container {
+  width: 100%;
+  max-width: 430px;
+  margin: auto;
+}
 .sign-form,
 .code-container {
   width: 100%;
   max-width: 430px;
-  margin: auto;
+  margin: 0px auto;
   padding: 30px 24px;
   box-sizing: border-box;
 }
@@ -171,6 +176,7 @@
   color: #a7a9b7;
   font-size: 12px;
   text-align: center;
+  padding: 0px 30px;
 }
 
 .code-repeat {
@@ -265,8 +271,9 @@
 .password-back-button {
   color: #191d31;
   font-weight: 500;
-  margin-top: 0px;
+  margin-top: 0;
   border: none;
+  box-sizing: border-box;
 }
 
 .to-forgot-password-page {

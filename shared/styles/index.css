@@ -6,6 +6,11 @@
   box-sizing: border-box;
 }
 
+html,
+body {
+  touch-action: manipulation;
+}
+
 body {
   min-height: 100vh;
   font-family: "Montserrat", sans-serif;
