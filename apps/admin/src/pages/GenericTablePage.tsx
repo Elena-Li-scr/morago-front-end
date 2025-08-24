@@ -7,7 +7,13 @@ import { titleMapLists, titleMapTopics } from "../constans/titleMap/titleMap";
 import { IoSearch } from "react-icons/io5";
 import { isListsTableType, isTopicsType } from "../constans/tableConfigs/configs";
 import type { ListsType, TopicsType } from "../types/types";
-import { getAdminTranslators } from "../api/services/services";
+import {
+  getAdminCategories,
+  getAdminThemes,
+  getAdminTranslators,
+  getAdminUsers,
+  getCategoryById,
+} from "../api/services/services";
 import { useEffect, useState } from "react";
 
 type Props = { section?: string };
@@ -21,30 +27,49 @@ type ApiUser = {
   email: string;
   dateOfBirth: string;
   hasWithdrawalRequest: string;
+  categoryId: number;
 };
 export default function GenericTablePage({ section }: Props) {
   const [rows, setRows] = useState<any[]>([]);
   const [error, setError] = useState<string | null>(null);
   const { type } = useParams();
+  const [query, setQuery] = useState("");
 
   useEffect(() => {
     // примеры: подставь нужные загрузчики под другие типы
     async function load() {
       try {
+        if (section === "lists" && type === "user") {
+          const page = await getAdminUsers();
+          const rows = (page.content ?? []).map((u: ApiUser) => ({
+            ...u,
+            name: [u.firstName, u.lastName].filter(Boolean).join(" ").trim(),
+          }));
+          setRows(rows);
+        }
         if (section === "lists" && type === "translator") {
           const page = await getAdminTranslators();
           const rows = (page.content ?? []).map((u: ApiUser) => ({
             ...u,
             name: [u.firstName, u.lastName].filter(Boolean).join(" ").trim(),
-            role: "translator",
           }));
           setRows(rows);
           return;
         }
-
-        // примеры для других страниц
-        // if (section === "lists" && type === "translator") { ... }
-        // if (section === "topics" && type === "themes") { ... }
+        if (section === "topics" && type === "categories") {
+          const page = await getAdminCategories();
+          setRows(page.content ?? []);
+        }
+        if (section === "topics" && type === "themes") {
+          const page = await getAdminThemes();
+          const rows = await Promise.all(
+            page.content.map(async (u: ApiUser) => ({
+              ...u,
+              categories: await getCategoryById(u.categoryId),
+            })),
+          );
+          setRows(rows);
+        }
       } catch (e: any) {
         setError(e?.message ?? "Load error");
       }
@@ -69,6 +94,12 @@ export default function GenericTablePage({ section }: Props) {
 
   if (!isValid) return <div>Not found</div>;
 
+  const normalize = (s: string) => s.toLowerCase().replace(/\s+/g, " ").trim();
+
+  const filtered = rows.filter((item) => {
+    return normalize(item.name).startsWith(normalize(query));
+  });
+
   return (
     <div className="container">
       <div className="page-header">
@@ -81,7 +112,11 @@ export default function GenericTablePage({ section }: Props) {
         <div className="page-search page-block">
           <div className="page-search-name">
             <IoSearch className="search-icon" />
-            <input type="text" placeholder="Search by name or company "></input>
+            <input
+              type="text"
+              placeholder="Search by name or company "
+              onChange={(e) => setQuery(e.target.value)}
+            ></input>
           </div>
           <div className="page-search-filter">
             <input type="text" placeholder="Filter" />
@@ -90,7 +125,12 @@ export default function GenericTablePage({ section }: Props) {
           </div>
         </div>
       </div>
-      <FlexTable columns={columns} data={rows} rowKey={(row) => row.id} tableType={type} />
+      <FlexTable
+        columns={columns}
+        data={filtered || rows}
+        rowKey={(row) => row.id}
+        tableType={type}
+      />
     </div>
   );
 }

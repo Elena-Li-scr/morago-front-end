@@ -65,6 +65,7 @@
 }
 
 .pop-up-content {
+  text-transform: capitalize;
   width: 100%;
   padding: 20px;
   display: flex;

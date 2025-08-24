@@ -15,7 +15,7 @@
   flex-direction: column;
 }
 
-.add-item-form > label {
+.add-item-form>label {
   margin-top: 20px;
   font-weight: 500;
   font-size: 16px;
@@ -118,8 +118,14 @@
 }
 
 .add-item-ul li label {
-  display: "flex";
+  display: flex;
   gap: 8;
   padding: 6px 8px;
   cursor: pointer;
+  align-items: center;
+}
+
+.category-option {
+  margin-left: 5px;
+  text-transform: capitalize;
 }

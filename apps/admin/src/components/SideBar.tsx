@@ -1,7 +1,7 @@
 import SmallButton from "./SmallButton";
 import "../assets/style/sideBar.css";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 export default function SideBar() {
   const [openList, setOpenList] = useState(false);
@@ -10,6 +10,8 @@ export default function SideBar() {
   const [selected, setSelected] = useState("");
   const navigate = useNavigate();
 
+  const { type } = useParams();
+
   const selectHandler = (text: string) => {
     setSelected(text);
     setAddType(text);
@@ -17,10 +19,10 @@ export default function SideBar() {
   };
 
   const addHandler = (text: string) => {
-    if (text === "translationTopics/themes") {
+    if (type === "themes") {
       navigate(`translationTopics/themes/newPage`);
       // setAddType("");
-    } else if (text === "translationTopics/categories") {
+    } else if (type === "categories") {
       navigate(`translationTopics/categories/newPage`);
       // setAddType("");
     }
@@ -94,7 +96,7 @@ export default function SideBar() {
       </div>
       <div className="side-bar-setting">
         <SmallButton text="Add" icon="/assets/add-icon.png" onClick={() => addHandler(addType)} />
-        <button type="button" className="setting-button" onClick={() => navigate("poup")}>
+        <button type="button" className="setting-button">
           <img src="/assets/setting.png" alt="settings" />
         </button>
       </div>

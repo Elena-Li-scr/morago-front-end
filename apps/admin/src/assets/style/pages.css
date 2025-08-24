@@ -32,6 +32,7 @@
   align-items: center;
   white-space: nowrap;
   padding: 8px 0;
+  text-transform: capitalize;
 }
 
 

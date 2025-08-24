@@ -1,30 +1,21 @@
 import { IoEyeOutline } from "react-icons/io5";
 import { usePopUp } from "./usePopUp";
-import {
-  getCategoryById,
-  getThemeById,
-  getTranslatorById,
-  getUserById,
-} from "../../api/services/services";
+import { useParams } from "react-router-dom";
 
 export const TestCallButton = (data: any) => {
   const { setPopUpData } = usePopUp();
 
-  const eyeBtn = async (row: any) => {
-    try {
-      const data =
-        row.role === "user"
-          ? await getUserById(row.id)
-          : row.role === "translator"
-            ? await getTranslatorById(row.id)
-            : row.role === "themes"
-              ? await getThemeById(row.id)
-              : await getCategoryById(row.id);
-      setPopUpData(data);
-    } catch (e: any) {
-      console.log(e?.response?.data ?? "Network error");
+  const { type } = useParams();
+
+  const eyeBtn = (row: any) => {
+    let typePage: "user" | "translator" | "themes" | "categories" | null = null;
+    if (type === "translator") typePage = "translator";
+    else if (type === "user") typePage = "user";
+    else if (type === "themes") typePage = "themes";
+    else if (type === "categories") typePage = "categories";
+    if (typePage) {
+      setPopUpData({ type: typePage, id: row.row.id });
     }
-    // document.body.style.overflow = "hidden";
   };
   return (
     <button onClick={() => eyeBtn(data)}>
