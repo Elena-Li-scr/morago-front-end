@@ -9,7 +9,7 @@ export type AuthResponse = {
 };
 
 export type RegisterAdmin = {
-  email: string;
+  phone: string;
   password: string;
 };
 
@@ -19,6 +19,12 @@ export async function getAdminUsers() {
   });
   return res;
 }
+
+// Login
+export const LoginAdmin = async (data: RegisterAdmin) => {
+  console.log(data);
+  return axiosInstance.post("/auth/login", { ...data });
+};
 
 export const getUserById = (id: number | string) => {
   return axiosInstance.get(`/admin/users/${id}`);
