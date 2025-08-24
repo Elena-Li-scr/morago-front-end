@@ -3,7 +3,6 @@ import { useState } from "react";
 import BigButton from "../components/BigButton";
 import "../assets/style/startPage.css";
 import { useNavigate } from "react-router-dom";
-import { LoginAdmin } from "../api/services/services";
 
 interface FormData {
   email: string;
@@ -16,7 +15,7 @@ export default function LoginPage() {
 
   const onSubmit = async (data: FormData) => {
     try {
-      const res = await LoginAdmin(data);
+      // const res = await LoginAdmin(data);
       console.log(res);
       // if (data.email === "admin@gmail.com" && data.password === "admin") {
       //   navigate("/home");
