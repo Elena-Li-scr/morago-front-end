@@ -4,10 +4,8 @@ import type { Category } from "../../types/types";
 export type AuthResponse = {
   token: string;
   id: number;
-  roles: string;
+  role: string;
   phone: string;
-  firstName?: string | null;
-  lastName?: string | null;
 };
 
 export type RegisterAdmin = {
@@ -23,7 +21,7 @@ export async function getAdminUsers() {
 }
 
 // Login
-export const LoginAdmin = async (data: RegisterAdmin): Promise<AuthResponse> => {
+export const LoginAdmin = async (data: RegisterAdmin) => {
   console.log(data);
   return axiosInstance.post("/auth/login", { ...data });
 };
@@ -84,9 +82,8 @@ export async function postAdminThemes(data: AdminThemes) {
   const res = await axiosInstance.post("/admin/themes", data);
   return res;
 }
-export const getUserById = (id: number | string) =>
-  axiosInstance.get(`/admin/users/${id}`).then((r) => r.data);
-export const getThemeById = (id: number | string) =>
-  axiosInstance.get(`/admin/translation-topics/themes/${id}`).then((r) => r.data);
-export const getCategoryById = (id: number | string) =>
-  axiosInstance.get(`/admin/translation-topics/categories/${id}`).then((r) => r.data);
+
+export const getThemeById = (id: number | string) => {
+  const res = axiosInstance.get(`/admin/themes/${id}`);
+  return res;
+};

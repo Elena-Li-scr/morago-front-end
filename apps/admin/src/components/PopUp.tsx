@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getUser, getCategory, getTheme, getTranslator } from "@shared/services/adminApi";
+// import { getUser, getCategory, getTheme, getTranslator } from "../api/services/services";
 
 import "../assets/style/popUp.css";
 
@@ -62,30 +62,30 @@ function isCategory(d: unknown): d is Category {
 export default function PopUp({ id = 2, type }: Props) {
   const [data, setData] = useState<PopUpData | null>(null);
 
-  useEffect(() => {
-    let cancelled = false;
-    (async () => {
-      try {
-        const res =
-          type === "user"
-            ? await getUser(id)
-            : type === "translator"
-              ? await getTranslator(id)
-              : type === "themes"
-                ? await getTheme(id)
-                : await getCategory(id);
+  // useEffect(() => {
+  //   let cancelled = false;
+  //   (async () => {
+  //     try {
+  //       const res =
+  //         type === "user"
+  //           ? await getUser(id)
+  //           : type === "translator"
+  //             ? await getTranslator(id)
+  //             : type === "themes"
+  //               ? await getTheme(id)
+  //               : await getCategory(id);
 
-        if (!cancelled) setData(res.data as PopUpData);
-        console.log(res.data);
-      } catch (e) {
-        console.log(e);
-        if (!cancelled) setData(null);
-      }
-    })();
-    return () => {
-      cancelled = true;
-    };
-  }, [id, type]);
+  //       if (!cancelled) setData(res.data as PopUpData);
+  //       console.log(res.data);
+  //     } catch (e) {
+  //       console.log(e);
+  //       if (!cancelled) setData(null);
+  //     }
+  //   })();
+  //   return () => {
+  //     cancelled = true;
+  //   };
+  // }, [id, type]);
 
   return (
     <div className="pop-up-wrapper">
