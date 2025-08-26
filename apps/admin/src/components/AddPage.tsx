@@ -2,6 +2,7 @@ import { Breadcrumbs } from "./Breadcrumbs";
 import { useForm, Controller } from "react-hook-form";
 import { useState, useRef, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { addCategory } from "../api/services/services";
 import "../assets/style/addPage.css";
 
 interface Form {
@@ -56,8 +57,24 @@ export default function AddPage() {
     return () => document.removeEventListener("mousedown", onDoc);
   }, []);
 
-  const onSubmit = (data: Form) => {
+  const onSubmit = async (data: Form) => {
+    const newCategory = {
+      name: data.category,
+      isActive: true,
+    };
+
     console.log(data);
+    try {
+      let res;
+      if (type === "categories") {
+        res = await addCategory(newCategory);
+        if (res?.status === 200 || res?.status === 201) {
+          navigate(-1);
+        }
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
