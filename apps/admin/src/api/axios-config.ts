@@ -12,8 +12,7 @@ const axiosInstance = axios.create({
 axiosInstance.interceptors.request.use((config) => {
   // const { setLoading } = useModalStore.getState();
   // setLoading(true);
-  const token =
-    "eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwiYXV0aG9yaXRpZXMiOlsiUk9MRV9UUkFOU0xBVE9SIiwiUk9MRV9BRE1JTiJdLCJ1c2VybmFtZSI6IjAxMDAwMDAwMDA3Iiwic3ViIjoiMDEwMDAwMDAwMDciLCJpYXQiOjE3NTU3ODIzOTEsImV4cCI6MTc1NTg2ODc5MX0.alGRkXHSpjV76bDu5aRcH_KQT1lXfDth7K-DgFPPRqA";
+  const token = localStorage.getItem("accessToken");
   const publicEndpoints = ["/auth/register", "/auth/login"];
   const isPublic = publicEndpoints.some((endpoint) => config.url?.includes(endpoint));
 

@@ -4,6 +4,7 @@ import { useState, useRef, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { addCategory } from "../api/services/services";
 import "../assets/style/addPage.css";
+import { getAdminCategories, postAdminCategories, postAdminThemes } from "../api/services/services";
 
 interface Form {
   theme?: string;
@@ -17,14 +18,8 @@ interface Option {
   label: string;
 }
 
-const categoryOptions: Option[] = [
-  { id: 1, label: "Name Category 1" },
-  { id: 2, label: "Name Category 2" },
-  { id: 3, label: "Name Category 3" },
-  { id: 4, label: "Name Category 4" },
-];
-
 export default function AddPage() {
+  const [categoryOptions, setCategoryOptions] = useState<Option[]>([]);
   const {
     register,
     handleSubmit,
@@ -35,6 +30,14 @@ export default function AddPage() {
   } = useForm<Form>({ mode: "onChange", defaultValues: { categoryIds: [] } });
 
   useEffect(() => {
+    (async () => {
+      try {
+        const cats = await getAdminCategories();
+        setCategoryOptions(cats.content.map((c) => ({ id: c.id, label: c.name })));
+      } catch (e) {
+        console.error("Ну удалось загрузить данные", e);
+      }
+    })();
     register("image");
   }, [register]);
 
@@ -42,7 +45,6 @@ export default function AddPage() {
 
   const searchParams = new URLSearchParams(location.search);
   const from = searchParams.get("from") || type === "themes" ? "Themes" : "Categories";
-
   const navigate = useNavigate();
   const imageFiles = watch("image");
   const fileName = imageFiles?.[0]?.name ?? "";
@@ -58,23 +60,28 @@ export default function AddPage() {
   }, []);
 
   const onSubmit = async (data: Form) => {
-    const newCategory = {
-      name: data.category,
-      isActive: true,
-    };
+    if (type === "categories" && data.category) await postAdminCategories(data.category);
 
-    console.log(data);
-    try {
-      let res;
-      if (type === "categories") {
-        res = await addCategory(newCategory);
-        if (res?.status === 200 || res?.status === 201) {
-          navigate(-1);
-        }
+    if (type === "themes") {
+      const upData = {
+        name: data.theme,
+        title: data.theme,
+        price: 15000,
+        description: "string",
+        nightPrice: 18000,
+        isPopular: false,
+        isActive: true,
+        iconId: 0,
+        categoryId: Number(data.categoryIds),
+      };
+      try {
+        const res = await postAdminThemes(upData);
+        console.log(res);
+      } catch (e) {
+        console.log(e);
       }
-    } catch (error) {
-      console.log(error);
     }
+    navigate(-1);
   };
 
   return (
@@ -182,7 +189,7 @@ export default function AddPage() {
                                       checked={field.value.includes(o.id)}
                                       onChange={() => toggle(o.id)}
                                     />
-                                    <span>{o.label}</span>
+                                    <span className="category-option">{o.label}</span>
                                   </label>
                                 </li>
                               ))}

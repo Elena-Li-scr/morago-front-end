@@ -28,7 +28,7 @@ const baseListsColumns = [
     title: "",
     render: (row) => {
       if (!row) return null;
-      return TestCallButton(row);
+      return <TestCallButton row={row} />;
     },
   },
 ] as const;
@@ -43,15 +43,27 @@ export const translatorTableConfig: Column<Translator>[] = [
     marginLeft: "38px",
   },
   { key: "phone", title: "Phone", width: "35%" },
-  { key: "email", title: "Email", width: "35%" },
-  { key: "topik", title: "TOPIK", width: "35%" },
+  {
+    key: "email",
+    title: "Email",
+    width: "35%",
+    render: (row) => {
+      return row.email ? row.email : "не указон";
+    },
+  },
+  {
+    key: "levelOfKorean",
+    title: "TOPIK",
+    width: "35%",
+    render: (row) => <p>{row.levelOfKorean} Level</p>,
+  },
   { key: "status", title: "Status", width: "35%" },
   {
-    key: "withdrawRequest",
+    key: "hasWithdrawalRequest",
     title: "Withdraw request",
     width: "35%",
     render: (row) => {
-      if ("withdrawRequest" in row && row.withdrawRequest === "Request") {
+      if ("hasWithdrawalRequest" in row && row.hasWithdrawalRequest === "Request") {
         return (
           <button className="view-btn request">
             Request <MdArrowForwardIos className="view-icon" />
@@ -80,7 +92,7 @@ export const translatorTableConfig: Column<Translator>[] = [
     title: "Withdraw",
     width: "40%",
     render: (row) =>
-      "withdrawRequest" in row && row.withdrawRequest ? (
+      "hasWithdrawalRequest" in row ? (
         <Link
           to={`/home/lists/withdrawHistory?name=${encodeURIComponent(row.name)}&from=translator`}
           className="view-btn"
@@ -98,7 +110,7 @@ export const userTableConfig: Column<User>[] = [
   { key: "phone", title: "Phone", width: "35%" },
   { key: "balance", title: "Balance", width: "35%" },
   {
-    key: "depositRequest",
+    key: "hasDepositRequest",
     title: "Deposit Request",
     width: "40%",
     render: (row) => {
@@ -117,7 +129,7 @@ export const userTableConfig: Column<User>[] = [
     title: "Call",
     width: "35%",
     render: (row) =>
-      row.name ? (
+      "hasDepositRequest" in row ? (
         <Link
           to={`/home/lists/callHistory?name=${encodeURIComponent(row.name)}&from=user`}
           className="view-btn"
@@ -131,7 +143,7 @@ export const userTableConfig: Column<User>[] = [
     title: "Deposit",
     width: "40%",
     render: (row) =>
-      "depositRequest" in row && row.depositRequest ? (
+      "hasDepositRequest" in row ? (
         <Link
           to={`/home/lists/depositHistory?name=${encodeURIComponent(row.name)}&from=user`}
           className="view-btn"
@@ -249,15 +261,19 @@ export const themesTableConfig: Column<Themes>[] = [
     width: "25%",
   },
   {
-    key: "categorie",
+    key: "categories",
     title: "Categories",
     width: "25%",
+    render: (row) => {
+      return row.categories?.name ?? "-";
+    },
   },
 
   {
-    key: "status",
+    key: "isActive",
     title: "Status",
     width: "25%",
+    render: (row) => row.isActive && "Active",
   },
 
   {
@@ -285,9 +301,10 @@ export const categoriesTableConfig: Column<Categories>[] = [
     width: "25%",
   },
   {
-    key: "status",
+    key: "isActive",
     title: "Status",
     width: "70%",
+    render: (row) => row.isActive && "Active",
   },
 ];
 

@@ -3,9 +3,9 @@ export type Translator = {
   name: string;
   phone: string;
   email: string;
-  topik: string;
+  levelOfKorean: string;
   status: string;
-  withdrawRequest?: string;
+  hasWithdrawalRequest?: string;
   select?: string;
   call?: string;
   withdraw?: string;
@@ -18,7 +18,7 @@ export type User = {
   name: string;
   phone: string;
   balance: string;
-  depositRequest?: string;
+  hasDepositRequest?: string;
   call?: string;
   deposit?: string;
   eye?: string;
@@ -49,15 +49,21 @@ export type Categories = {
   id: string;
   select?: string;
   name: string;
-  status?: string;
+  isActive?: string;
   eye?: string;
 };
+
+export interface Category {
+  id: number;
+  name: string;
+  isActive: boolean;
+}
 export type Themes = {
   id: string;
   select?: string;
   name: string;
-  categorie: string;
-  status: string;
+  categories: Category;
+  isActive?: string;
   icon: string;
   imgIcon: string;
   eye?: string;

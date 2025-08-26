@@ -1,5 +1,5 @@
-import { compareDesc, parseISO } from "date-fns";
 import axiosInstance from "../axios-config";
+import type { Category } from "../../types/types";
 
 export type AuthResponse = {
   token: string;
@@ -15,13 +15,12 @@ export type RegisterAdmin = {
   password: string;
 };
 
-export type addItems = {
-  theme?: string;
-  name?: string;
-  image?: FileList;
-  categoryIds?: (number | string)[];
-  isActive?: boolean;
-};
+export async function getAdminUsers() {
+  const res = await axiosInstance.get("/admin/users", {
+    params: { page: 0, size: 5, sortBy: "id", sortDirection: "ASC" },
+  });
+  return res;
+}
 
 // Login
 export const LoginAdmin = async (data: RegisterAdmin): Promise<AuthResponse> => {
@@ -29,14 +28,8 @@ export const LoginAdmin = async (data: RegisterAdmin): Promise<AuthResponse> => 
   return axiosInstance.post("/auth/login", { ...data });
 };
 
-type AdminUsersParams = {
-  page?: number;
-  size?: number;
-  sortBy?: string;
-  sortDirection?: "ASC" | "DESC";
-  keyword?: string;
-  isDebtor?: boolean;
-  hasDeposit?: boolean;
+export const getUserById = (id: number | string) => {
+  return axiosInstance.get(`/admin/users/${id}`);
 };
 
 export async function getAdminTranslators() {
@@ -48,7 +41,47 @@ export async function getAdminTranslators() {
 
 export async function getTranslatorById(id: string | number) {
   const res = await axiosInstance.get(`/admin/translators/${id}`);
-  console.log(res);
+  return res;
+}
+
+export async function getAdminCategories() {
+  const res = await axiosInstance.get("/admin/categories", {
+    params: { page: 0, size: 5, sortBy: "id", sortDirection: "ASC" },
+  });
+  return res;
+}
+
+export const getCategoryById = (id: number) => {
+  const res = axiosInstance.get<Category>(`/admin/categories/${id}`);
+  return res;
+};
+
+export async function postAdminCategories(name: string) {
+  const res = await axiosInstance.post("/admin/categories", { name, isActive: "true" });
+  return res;
+}
+
+export async function getAdminThemes() {
+  const res = await axiosInstance.get("/admin/themes", {
+    params: { page: 0, size: 5, sortBy: "id", sortDirection: "ASC" },
+  });
+  return res;
+}
+
+type AdminThemes = {
+  name?: string;
+  title?: string;
+  description?: string;
+  price: number;
+  nightPrice: number;
+  isPopular: boolean;
+  isActive: boolean;
+  iconId?: number;
+  categoryId?: number;
+};
+
+export async function postAdminThemes(data: AdminThemes) {
+  const res = await axiosInstance.post("/admin/themes", data);
   return res;
 }
 export const getUserById = (id: number | string) =>
@@ -57,8 +90,3 @@ export const getThemeById = (id: number | string) =>
   axiosInstance.get(`/admin/translation-topics/themes/${id}`).then((r) => r.data);
 export const getCategoryById = (id: number | string) =>
   axiosInstance.get(`/admin/translation-topics/categories/${id}`).then((r) => r.data);
-
-//Add category
-export const addCategory = async (data: addItems) => {
-  return axiosInstance.post("/admin/categories", { ...data });
-};
