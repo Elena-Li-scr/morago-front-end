@@ -3,13 +3,18 @@ import { useState } from "react";
 import BigButton from "../components/BigButton";
 import "../assets/style/startPage.css";
 import { useNavigate } from "react-router-dom";
+import { LoginAdmin } from "../api/services/services";
 
+interface FormData {
+  phone: string;
+  password: string;
+}
 export default function LoginPage() {
-  const { register, handleSubmit } = useForm<RegisterAdmin>({ mode: "onChange" });
+  const { register, handleSubmit } = useForm<FormData>({ mode: "onChange" });
   const navigate = useNavigate();
   const [error, setError] = useState<string | null>(null);
 
-  const onSubmit = async (data: RegisterAdmin) => {
+  const onSubmit = async (data: FormData) => {
     const admin = {
       password: data.password,
       phone: data.phone.replace(/\s+/g, ""),

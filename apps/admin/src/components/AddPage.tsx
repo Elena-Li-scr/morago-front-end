@@ -2,7 +2,6 @@ import { Breadcrumbs } from "./Breadcrumbs";
 import { useForm, Controller } from "react-hook-form";
 import { useState, useRef, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { addCategory } from "../api/services/services";
 import "../assets/style/addPage.css";
 import { getAdminCategories, postAdminCategories, postAdminThemes } from "../api/services/services";
 

@@ -21,7 +21,7 @@ export async function getAdminUsers() {
 }
 
 // Login
-export const LoginAdmin = async (data: RegisterAdmin) => {
+export const LoginAdmin = async (data: RegisterAdmin): Promise<AuthResponse> => {
   console.log(data);
   return axiosInstance.post("/auth/login", { ...data });
 };
