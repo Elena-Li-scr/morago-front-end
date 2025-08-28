@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 
 import "../../assets/style/popUp.css";
 import { usePopUp, type PopUpInfo } from "./usePopUp";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import {
   getCategoryById,
   getThemeById,
@@ -71,6 +71,7 @@ export default function PopUp() {
   const last = segments[segments.length - 1];
   const { popUpData, setPopUpData, popUpStatus, setPopUpStatus } = usePopUp();
   const [data, setData] = useState<PopUpInfo | null>(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (popUpStatus == "open" || !popUpData) return;
@@ -116,7 +117,16 @@ export default function PopUp() {
         <div className="pop-up-header">
           <div className="pop-up-image"></div>
           <div className="pop-up-setting">
-            <button type="button" className="pop-up-setting-button">
+            <button
+              type="button"
+              className="pop-up-setting-button"
+              onClick={() => {
+                if (popUpData && last !== "user" && last !== "translator") {
+                  setPopUpData(null);
+                  navigate(`/home/translationTopics/${popUpData.type}/${popUpData.id}/upDate`);
+                }
+              }}
+            >
               <p>Edit</p> <img src="/assets/arrow-right.png" alt="arrow right" />
             </button>
 

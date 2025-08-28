@@ -258,12 +258,16 @@
   margin-right: 12px;
 }
 
+.pagination-row {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
 
 
 .pagination {
-  position: absolute;
-  left: 44%;
-  bottom: 56px;
+
+  margin-bottom: 56px;
   border-radius: 4px;
   width: max-content;
   display: flex;
@@ -282,4 +286,11 @@
   background: #414141;
   color: #ffff;
   border: #414141;
+}
+
+.generic-table-page {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
 }

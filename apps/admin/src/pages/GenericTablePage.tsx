@@ -136,65 +136,71 @@ export default function GenericTablePage({ section }: Props) {
 
   return (
     <div className="container">
-      <div className="page-header">
-        <div className="page-info page-block">
-          <h3 className="page-info-title">
-            {title} {name}
-          </h3>
-          <Breadcrumbs from={from} />
-        </div>
-        <div className="page-search page-block">
-          <div className="page-search-name">
-            <IoSearch className="search-icon" />
-            <input
-              type="text"
-              value={query}
-              placeholder="Search by name or company "
-              onChange={(e) => setQuery(e.target.value)}
-            ></input>
+      <div className="generic-table-page">
+        <div className="generic-table-data">
+          <div className="page-header">
+            <div className="page-info page-block">
+              <h3 className="page-info-title">
+                {title} {name}
+              </h3>
+              <Breadcrumbs from={from} />
+            </div>
+            <div className="page-search page-block">
+              <div className="page-search-name">
+                <IoSearch className="search-icon" />
+                <input
+                  type="text"
+                  value={query}
+                  placeholder="Search by name or company "
+                  onChange={(e) => setQuery(e.target.value)}
+                ></input>
+              </div>
+              <div className="page-search-filter">
+                <input type="text" placeholder="Filter" />
+                <label>
+                  Имя:
+                  <select
+                    value={sortDir}
+                    onChange={(e) => setSortDir(e.target.value as SortDir)}
+                    className={`select ${sortDir !== undefined ? "select-asc" : ""}`}
+                  >
+                    <option value="">Choose action</option>
+                    <option value="ASC">По возрастанию</option>
+                    <option value="DESC">По убыванию </option>
+                  </select>
+                </label>
+                <button
+                  className="page-search-btn"
+                  disabled={sortDir === undefined}
+                  onClick={handleSort}
+                >
+                  Apply
+                </button>
+              </div>
+            </div>
           </div>
-          <div className="page-search-filter">
-            <input type="text" placeholder="Filter" />
-            <label>
-              Имя:
-              <select
-                value={sortDir}
-                onChange={(e) => setSortDir(e.target.value as SortDir)}
-                className={`select ${sortDir !== undefined ? "select-asc" : ""}`}
-              >
-                <option value="">Choose action</option>
-                <option value="ASC">По возрастанию</option>
-                <option value="DESC">По убыванию </option>
-              </select>
-            </label>
-            <button
-              className="page-search-btn"
-              disabled={sortDir === undefined}
-              onClick={handleSort}
-            >
-              Apply
+          <FlexTable
+            columns={columns}
+            data={filtered || rows}
+            rowKey={(row) => row.id}
+            tableType={type}
+          />
+        </div>
+        <div className="pagination-row">
+          <div className="pagination">
+            <button onClick={prev} disabled={page === 0}>
+              Prev
+            </button>
+            {Array.from({ length: totalPages }, (_, i) => (
+              <button key={i} onClick={() => setPage(i)} className={i === page ? "active" : ""}>
+                {i + 1}
+              </button>
+            ))}
+            <button onClick={next} disabled={page + 1 >= totalPages}>
+              Next
             </button>
           </div>
         </div>
-      </div>
-      <FlexTable
-        columns={columns}
-        data={filtered || rows}
-        rowKey={(row) => row.id}
-        tableType={type}
-      />
-      <div className="pagination">
-        <button onClick={prev} disabled={page === 0}>
-          Prev
-        </button>
-        {Array.from({ length: totalPages }, (_, i) => (
-          <button key={i} onClick={() => setPage(i)} className={i === page ? "active" : ""}>
-            {i + 1}
-          </button>
-        ))}
-        <button onClick={next} disabled={page + 1 >= totalPages}>
-          Next
-        </button>
       </div>
     </div>
   );

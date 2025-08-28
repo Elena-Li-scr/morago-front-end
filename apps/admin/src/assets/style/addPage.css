@@ -15,7 +15,7 @@
   flex-direction: column;
 }
 
-.add-item-form>label {
+.add-item-form > label {
   margin-top: 20px;
   font-weight: 500;
   font-size: 16px;
@@ -128,4 +128,13 @@
 .category-option {
   margin-left: 5px;
   text-transform: capitalize;
+}
+
+.checkbox {
+  margin-top: 20px;
+}
+
+.checkbox label {
+  margin-left: 10px;
+  font-weight: 500;
 }

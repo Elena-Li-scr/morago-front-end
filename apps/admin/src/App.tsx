@@ -29,6 +29,7 @@ function App() {
                 element={<GenericTablePage section="topics" />}
               />
               <Route path="translationTopics/:type/newPage" element={<AddPage />} />
+              <Route path="translationTopics/:type/:id/upDate" element={<AddPage />} />
             </Route>
           </Route>
         </Routes>

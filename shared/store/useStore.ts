@@ -16,6 +16,20 @@ interface ListStore {
   setChosenList: (list: string) => void;
 }
 
+type ModalState = {
+  loading: boolean;
+  success: boolean;
+  setLoading: (val: boolean) => void;
+  setSuccess: (val: boolean) => void;
+};
+
+export const useModalStore = create<ModalState>((set) => ({
+  loading: false,
+  success: false,
+  setLoading: (val) => set({ loading: val }),
+  setSuccess: (val) => set({ success: val }),
+}));
+
 export const useTopicStore = create<TopicStore>((set) => ({
   chosenTopic: "",
   setChosenTopic: (topic) => set({ chosenTopic: topic }),
