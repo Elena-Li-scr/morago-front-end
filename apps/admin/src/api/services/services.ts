@@ -13,9 +13,9 @@ export type RegisterAdmin = {
   password: string;
 };
 
-export async function getAdminUsers() {
+export async function getAdminUsers(page: number, size: number, keyword: string) {
   const res = await axiosInstance.get("/admin/users", {
-    params: { page: 0, size: 5, sortBy: "id", sortDirection: "ASC" },
+    params: { page, size, sortBy: "id", keyword, sortDirection: "ASC" },
   });
   return res;
 }
@@ -30,9 +30,9 @@ export const getUserById = (id: number | string) => {
   return axiosInstance.get(`/admin/users/${id}`);
 };
 
-export async function getAdminTranslators() {
+export async function getAdminTranslators(page: number, size: number, keyword: string) {
   const res = await axiosInstance.get("/admin/translators", {
-    params: { page: 0, size: 5, sortBy: "id", sortDirection: "ASC" },
+    params: { page, size, sortBy: "id", keyword, sortDirection: "ASC" },
   });
   return res;
 }
@@ -42,9 +42,9 @@ export async function getTranslatorById(id: string | number) {
   return res;
 }
 
-export async function getAdminCategories() {
+export async function getAdminCategories(page?: number, size?: number, keyword?: string) {
   const res = await axiosInstance.get("/admin/categories", {
-    params: { page: 0, size: 9, sortBy: "id", sortDirection: "ASC" },
+    params: { page, size, sortBy: "id", keyword, sortDirection: "ASC" },
   });
   return res;
 }
@@ -59,24 +59,31 @@ export async function postAdminCategories(name: string) {
   return res;
 }
 
-export async function getAdminThemes() {
-  const res = await axiosInstance.get("/admin/themes", {
-    params: { page: 0, size: 5, sortBy: "id", sortDirection: "ASC" },
-  });
-  return res;
-}
-
 type AdminThemes = {
   name?: string;
   title?: string;
   description?: string;
-  price: number;
+  price?: number;
   nightPrice: number;
   isPopular: boolean;
   isActive: boolean;
   iconId?: number;
   categoryId?: number;
 };
+export type PageResponse<T> = {
+  content: T[];
+  number: number;
+  size: number;
+  totalElements: number;
+  totalPages: number;
+};
+
+export async function getAdminThemes(page: number, size: number, keyword: string) {
+  const res = await axiosInstance.get<PageResponse<AdminThemes>>("/admin/themes", {
+    params: { page, size, sortBy: "id", keyword, sortDirection: "ASC" },
+  });
+  return res;
+}
 
 export async function postAdminThemes(data: AdminThemes) {
   const res = await axiosInstance.post("/admin/themes", data);

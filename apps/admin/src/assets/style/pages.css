@@ -180,7 +180,8 @@
   gap: 12px;
 }
 
-.page-search-filter input {
+.page-search-filter input,
+.page-search-filter label {
 
   padding: 5.5px 8px;
   font-size: 14px;
@@ -188,10 +189,37 @@
 
 }
 
+.page-search-filter label {
+  border: 1px solid #98A2B3;
+  position: relative;
+  width: 240px;
+
+  border-radius: 4px;
+}
+
+.page-search-filter label select {
+  font-size: 14px;
+  cursor: pointer;
+  border-radius: 4px;
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+.select {
+  color: #6C757D;
+}
+
+.select-asc {
+  color: #000;
+}
+
+
 .page-search-filter input:first-child {
   width: 223px;
-
-
 }
 
 .page-search-filter input:last-of-type {
@@ -228,4 +256,41 @@
 .themes-icon {
   width: 34.884578704833984px;
   margin-right: 12px;
+}
+
+.pagination-row {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+
+.pagination {
+
+  margin-bottom: 56px;
+  border-radius: 4px;
+  width: max-content;
+  display: flex;
+
+}
+
+
+.pagination button {
+  padding: 12px 14px;
+  font-size: 16px;
+  line-height: 16px;
+  border: 1px solid #DEE2E6;
+}
+
+.pagination button.active {
+  background: #414141;
+  color: #ffff;
+  border: #414141;
+}
+
+.generic-table-page {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
 }

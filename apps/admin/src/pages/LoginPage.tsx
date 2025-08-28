@@ -20,6 +20,8 @@ export default function LoginPage() {
       phone: data.phone.replace(/\s+/g, ""),
     };
     try {
+      console.log(admin);
+
       const response = await LoginAdmin(admin);
       console.log(response);
       if (response?.token && response?.phone) {

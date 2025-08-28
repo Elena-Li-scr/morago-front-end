@@ -13,7 +13,7 @@ import type {
 } from "../../types/types";
 import { Link } from "react-router-dom";
 import { StarRating } from "../../components/StarRating";
-import { TestCallButton } from "../../components/PopUp/PopUpBtn";
+import { ViewButton } from "../../components/PopUp/PopUpBtn";
 
 // Тип одной колонки
 
@@ -28,7 +28,7 @@ const baseListsColumns = [
     title: "",
     render: (row) => {
       if (!row) return null;
-      return <TestCallButton row={row} />;
+      return <ViewButton row={row} />;
     },
   },
 ] as const;

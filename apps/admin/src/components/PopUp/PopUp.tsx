@@ -83,7 +83,6 @@ export default function PopUp() {
         switch (popUpData.type) {
           case "user": {
             res = await getUserById(popUpData.id);
-
             break;
           }
           case "translator": {
@@ -100,7 +99,7 @@ export default function PopUp() {
             break;
           }
         }
-        if (!cancelled) setData({ ...res, categoryId: themeCatogory?.name });
+        if (!cancelled) setData({ ...res, id: res?.id, categoryId: themeCatogory?.name });
       } catch (err) {
         console.error("Ошибка загрузки:", err);
       }

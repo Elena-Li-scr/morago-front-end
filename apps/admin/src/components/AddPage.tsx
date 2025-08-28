@@ -225,7 +225,6 @@ export default function AddPage() {
                           </span>
                           <img src="/assets/drop.png" alt="open" />
                         </button>
-
                         {openCat && (
                           <div className="ms-popover" role="listbox" aria-multiselectable="true">
                             <ul className="add-item-ul">

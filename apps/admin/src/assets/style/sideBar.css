@@ -57,7 +57,7 @@
   justify-content: flex-start;
   align-items: flex-start;
   flex-direction: column;
-  margin-left: 10px;
+  padding-left: 20px;
   margin-top: 10px;
   width: 100%;
 }
@@ -68,7 +68,6 @@
   cursor: pointer;
   width: 100%;
   text-align: left;
-  padding-left: 10px;
 }
 
 .admin-selected {
