@@ -2,7 +2,7 @@ import { IoEyeOutline } from "react-icons/io5";
 import { usePopUp } from "./usePopUp";
 import { useParams } from "react-router-dom";
 
-export const TestCallButton = (data: any) => {
+export const ViewButton = (data: any) => {
   const { setPopUpData } = usePopUp();
 
   const { type } = useParams();

@@ -12,7 +12,7 @@ const axiosInstance = axios.create({
 axiosInstance.interceptors.request.use((config) => {
   // const { setLoading } = useModalStore.getState();
   // setLoading(true);
-  const token = localStorage.getItem("accessToken");
+  const token = localStorage.getItem("token");
   const publicEndpoints = ["/auth/register", "/auth/login"];
   const isPublic = publicEndpoints.some((endpoint) => config.url?.includes(endpoint));
 

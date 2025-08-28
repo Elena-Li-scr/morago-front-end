@@ -3,6 +3,7 @@ import { useState } from "react";
 import BigButton from "../components/BigButton";
 import "../assets/style/startPage.css";
 import { useNavigate } from "react-router-dom";
+import { LoginAdmin } from "../api/services/services";
 
 interface FormData {
   phone: string;
@@ -19,6 +20,8 @@ export default function LoginPage() {
       phone: data.phone.replace(/\s+/g, ""),
     };
     try {
+      console.log(admin);
+
       const response = await LoginAdmin(admin);
       console.log(response);
       if (response?.token && response?.phone) {

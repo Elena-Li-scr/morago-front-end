@@ -3,7 +3,7 @@ import { createContext, useContext } from "react";
 export type PopUpInfo = {
   id: number;
   name?: string;
-  type: string;
+  type?: string;
   isActive?: boolean;
   role?: string;
   iconId?: number;
