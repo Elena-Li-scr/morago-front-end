@@ -17,6 +17,7 @@ import ForgotPasswordCode from "./pages/ForgotPasswordCode";
 import NewPassword from "./pages/NewPassword";
 import GreetingPage from "./pages/GreetingPage";
 import SignIn from "./pages/SignIn";
+import Loader from "./components/Loader";
 function App() {
   return (
     <>
@@ -41,6 +42,7 @@ function App() {
           <Route path="/forgot-password-code" element={<ForgotPasswordCode />} />
           <Route path="/new-password" element={<NewPassword />} />
         </Routes>
+        <Loader />
       </BrowserRouter>
     </>
   );

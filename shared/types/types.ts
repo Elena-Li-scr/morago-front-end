@@ -16,3 +16,7 @@ export interface BalancePayload {
   nameOfBank: string;
   won: number;
 }
+
+export interface GetById {
+  id: number | string;
+}

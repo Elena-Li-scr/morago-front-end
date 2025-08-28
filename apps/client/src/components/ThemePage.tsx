@@ -6,18 +6,17 @@ import { getPopularThemes } from "@shared/services/clientApi";
 
 import "@shared/styles/homePage.css";
 import "@shared/styles/theme.css";
+type Theme = {
+  id: number;
+  name: string;
+  isActive: boolean;
+  iconId: number | null;
+  categoryId: number;
+  isPopular: boolean;
+};
 
 export default function ThemePage() {
-  const popularThemes: string[] = [
-    "Банк",
-    "Рестораны",
-    "Аптека",
-    "Почта",
-    "Налоговая",
-    "Миграционный центр",
-    "Завод",
-  ];
-
+  const [popularThemes, setPopularThemes] = useState<string[]>([]);
   const [showAllThemes, setShowAllThemes] = useState(false);
   const navigate = useNavigate();
 
@@ -32,7 +31,8 @@ export default function ThemePage() {
     const server = async () => {
       try {
         const res = await getPopularThemes();
-        console.log(res.data);
+        const themes: string[] = (res.data.content as Theme[]).map((item) => item.name);
+        setPopularThemes(themes);
       } catch (err) {
         console.error("Ошибка при загрузке популярных тем:", err);
       }

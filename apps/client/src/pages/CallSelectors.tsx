@@ -1,56 +1,107 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useTopicStore } from "@shared/store/useStore";
-import { servicesGroup } from "@shared/utils/temporaryVar";
 import SimpleHeader from "../components/SimpleHeader";
 import MainFooter from "../components/MainFooter";
 import Theme from "@shared/components/Theme";
 import MainButton from "@shared/components/MainButton";
-import { IoIosArrowDown } from "react-icons/io";
-import { IoIosArrowUp } from "react-icons/io";
-import { getCategories } from "@shared/services/clientApi";
+import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
+import { getCategories, getThemesByCategory } from "@shared/services/clientApi";
 
 import "@shared/styles/homePage.css";
 
+type Category = {
+  id: number;
+  name: string;
+  isActive: boolean;
+};
+
+type CategoriesResponse = {
+  content: Category[];
+};
+
+type ThemeItem = {
+  id: number;
+  name: string;
+  isActive: boolean;
+  iconId: number;
+  categoryId: number;
+  isPopular: boolean;
+};
+
+type ThemesResponse = {
+  content: ThemeItem[];
+};
+
 export default function CallSelectors() {
-  const [openedGroups, setOpenedGroups] = useState<Record<string, boolean>>({});
-  const [searchTerm, setSearchTerm] = useState("");
-  const { chosenTopic, setChosenTopic } = useTopicStore();
   const navigate = useNavigate();
+  const { chosenTopic, setChosenTopic } = useTopicStore();
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [themesByCategory, setThemesByCategory] = useState<Record<number, ThemeItem[]>>({});
+  const [loadingThemes, setLoadingThemes] = useState<Record<number, boolean>>({});
+  const [openedGroups, setOpenedGroups] = useState<Record<number, boolean>>({});
+  const [searchTerm, setSearchTerm] = useState("");
 
-  const groupSelectorsToggle = (groupName: string) => {
-    setOpenedGroups((prev) => ({
-      ...prev,
-      [groupName]: !prev[groupName],
-    }));
+  useEffect(() => {
+    let ignore = false;
+    (async () => {
+      try {
+        const res = await getCategories();
+        const payload: CategoriesResponse = res.data;
+        const active = (payload.content || []).filter((c) => c.isActive !== false);
+        if (!ignore) setCategories(active);
+      } catch (e) {
+        console.error("getCategories error:", e);
+      }
+    })();
+    return () => {
+      ignore = true;
+    };
+  }, []);
+
+  const fetchThemesOnce = async (categoryId: number) => {
+    if (themesByCategory[categoryId] || loadingThemes[categoryId]) return;
+
+    setLoadingThemes((prev) => ({ ...prev, [categoryId]: true }));
+    try {
+      const res = await getThemesByCategory({ id: categoryId });
+      const payload: ThemesResponse = res.data;
+      const active = (payload.content || []).filter((t) => t.isActive !== false);
+      setThemesByCategory((prev) => ({ ...prev, [categoryId]: active }));
+    } catch (e) {
+      console.error(`getThemesByCategory(${categoryId}) error:`, e);
+      setThemesByCategory((prev) => ({ ...prev, [categoryId]: [] }));
+    } finally {
+      setLoadingThemes((prev) => ({ ...prev, [categoryId]: false }));
+    }
   };
 
-  const handleThemeClick = (theme: string) => {
-    setChosenTopic(theme);
+  const groupSelectorsToggle = (categoryId: number) => {
+    setOpenedGroups((prev) => {
+      const nextOpen = !prev[categoryId];
+      if (nextOpen) fetchThemesOnce(categoryId);
+      return { ...prev, [categoryId]: nextOpen };
+    });
   };
 
-  const handleBack = () => {
-    navigate(-1);
+  const handleThemeClick = (themeName: string) => {
+    setChosenTopic(themeName);
   };
 
+  const handleBack = () => navigate(-1);
   const handleNext = () => {
     if (chosenTopic) navigate("/chosen-topic");
   };
 
-  const getFilteredThemes = (themes: readonly string[]) =>
-    themes.filter((theme) => theme.toLowerCase().includes(searchTerm.toLowerCase()));
+  const getFilteredThemes = (themes: ThemeItem[]) =>
+    themes.filter((t) => t.name.toLowerCase().includes(searchTerm.toLowerCase()));
 
   useEffect(() => {
-    try {
-      const server = async () => {
-        const res = await getCategories();
-        console.log(res.data);
-      };
-      server();
-    } catch (error) {
-      console.log(error);
-    }
-  }, []);
+    if (!searchTerm.trim()) return;
+
+    categories.forEach((c) => fetchThemesOnce(c.id));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchTerm, categories.length]);
 
   return (
     <div className="page-wrapper">
@@ -65,33 +116,36 @@ export default function CallSelectors() {
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               className="selectors-search-input"
-            />
+            />{" "}
           </div>
 
-          {Object.entries(servicesGroup).map(([groupName, themes]) => {
-            const filteredThemes = getFilteredThemes(themes);
+          {categories.map((cat) => {
+            const themes = themesByCategory[cat.id] || [];
+            const filteredThemes = searchTerm ? getFilteredThemes(themes) : themes;
+
             const isGroupOpen =
-              searchTerm.length > 0 ? filteredThemes.length > 0 : openedGroups[groupName];
+              searchTerm.length > 0 ? filteredThemes.length > 0 : !!openedGroups[cat.id];
 
             return (
-              <div key={groupName} className="call-selectors">
+              <div key={cat.id} className="call-selectors">
                 <div
                   className="call-selectors-group-name"
-                  onClick={() => groupSelectorsToggle(groupName)}
+                  onClick={() => groupSelectorsToggle(cat.id)}
                 >
-                  <h3>{groupName}</h3>
+                  <h3>{cat.name}</h3>
                   <button type="button">
                     {isGroupOpen ? <IoIosArrowUp /> : <IoIosArrowDown />}
                   </button>
                 </div>
-                {isGroupOpen && (
+
+                {isGroupOpen && !loadingThemes[cat.id] && (
                   <div className="themes">
                     {(searchTerm ? filteredThemes : themes).map((theme) => (
                       <Theme
-                        key={theme}
-                        theme={theme}
+                        key={theme.id}
+                        theme={theme.name}
                         onClick={handleThemeClick}
-                        style={chosenTopic === theme ? { backgroundColor: "#EB9412" } : {}}
+                        style={chosenTopic === theme.name ? { backgroundColor: "#EB9412" } : {}}
                       />
                     ))}
                   </div>
@@ -100,6 +154,7 @@ export default function CallSelectors() {
             );
           })}
         </div>
+
         <div className="call-main-button">
           <MainButton
             text="Далее"
