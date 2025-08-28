@@ -1,60 +1,76 @@
 import axiosInstance from "./axiosInstance";
+
 import type { NewUserPayload, ProfilePayload, BalancePayload } from "../types/types";
+
+// registration
 
 export function newUser(payload: NewUserPayload) {
   return axiosInstance.post("/auth/register", payload);
 }
 
+//login
 export function login(payload: NewUserPayload) {
   return axiosInstance.post("/auth/login", payload);
 }
+
+//changing password
 
 export function newPassword(payload: NewUserPayload) {
   return axiosInstance.post("/profile/password/update", payload);
 }
 
 export function updatePassword(payload: NewUserPayload) {
-  return axiosInstance.post("/profile/password/update", payload); //нерабочая
+  return axiosInstance.post("/profile/password/update", payload); //don't work
 }
 
+// notification cleaner
 export function clearAllNote() {
   return axiosInstance.post("/profile/notifications/clear", {});
 }
 
+//adding or changing avatar
 export function updateAvatar(formData: FormData) {
-  return axiosInstance.post("/profile/avatar/upload", formData, {
+  return axiosInstance.post("http://localhost:8080/profile/avatar/upload", formData, {
     headers: {
       "Content-Type": "multipart/form-data",
     },
   });
 }
 
+//changing profile name
+
 export function updateName(payload: ProfilePayload) {
   return axiosInstance.put("/user", payload);
 }
+
+//geting popular themes
 
 export function getPopularThemes() {
   return axiosInstance.get("/profile/themes/popular", {
     params: {
       page: 0,
-      size: 5,
+      size: 10,
       sortBy: "id",
       sortDirection: "ASC",
     },
   });
 }
 
+//getting all categories
+
 export function getCategories() {
   return axiosInstance.get("/profile/categories", {
     params: {
       page: 0,
-      size: 5,
+      size: 9,
       sortBy: "id",
       sortDirection: "ASC",
       isActive: true,
     },
   });
-} // приходит пустым
+}
+
+//getting all last calls
 
 export function getLastCalls() {
   return axiosInstance.get("/profile/calls/history", {
@@ -68,6 +84,8 @@ export function getLastCalls() {
   });
 }
 
+//getting all missed calls
+
 export function getMissedCalls() {
   return axiosInstance.get("/profile/calls/history", {
     params: {
@@ -80,10 +98,13 @@ export function getMissedCalls() {
   });
 }
 
+//getting balance
+
 export function getBalance() {
   return axiosInstance.get("/profile/balance");
 }
 
+//sending deposit request
 export function sendDeposit(payload: BalancePayload) {
   return axiosInstance.post("/user/deposit", payload);
 }
@@ -110,5 +131,20 @@ export function getNotifications() {
 export function getNotificationsCount() {
   return axiosInstance.get("/profile/notifications/count", {
     params: { isUnread: true },
+  });
+}
+
+//get themes by category id
+
+export function getThemesByCategory({ id }: { id: number }) {
+  return axiosInstance.get(`/profile/categories/${id}/themes`, {
+    params: {
+      page: 0,
+      size: 10,
+      sortBy: "id",
+      sortDirection: "ASC",
+      isActive: true,
+      keyword: "string",
+    },
   });
 }

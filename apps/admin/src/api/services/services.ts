@@ -21,7 +21,7 @@ export async function getAdminUsers() {
 }
 
 // Login
-export const LoginAdmin = async (data: RegisterAdmin) => {
+export const LoginAdmin = async (data: RegisterAdmin): Promise<AuthResponse> => {
   console.log(data);
   return axiosInstance.post("/auth/login", { ...data });
 };
@@ -44,12 +44,12 @@ export async function getTranslatorById(id: string | number) {
 
 export async function getAdminCategories() {
   const res = await axiosInstance.get("/admin/categories", {
-    params: { page: 0, size: 5, sortBy: "id", sortDirection: "ASC" },
+    params: { page: 0, size: 9, sortBy: "id", sortDirection: "ASC" },
   });
   return res;
 }
 
-export const getCategoryById = (id: number) => {
+export const getCategoryById = (id: number | string) => {
   const res = axiosInstance.get<Category>(`/admin/categories/${id}`);
   return res;
 };
@@ -83,7 +83,36 @@ export async function postAdminThemes(data: AdminThemes) {
   return res;
 }
 
+type AddIcon = {
+  formData: FormData;
+  id: number | string;
+};
+
+export async function postAdminThemesIcon({ formData, id }: AddIcon) {
+  const res = await axiosInstance.post(`/admin/themes/${id}/icon`, formData, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
+  return res;
+}
+
 export const getThemeById = (id: number | string) => {
   const res = axiosInstance.get(`/admin/themes/${id}`);
+  return res;
+};
+
+export const updateTheme = (id: number | string, data: AdminThemes) => {
+  const res = axiosInstance.put(`/admin/themes/update/${id}`, data);
+  return res;
+};
+
+export type CategoryReq = {
+  name: string;
+  isActive: boolean;
+};
+
+export const updateCategory = (id: number | string, data: CategoryReq) => {
+  const res = axiosInstance.put(`/admin/categories/${id}`, data);
   return res;
 };
