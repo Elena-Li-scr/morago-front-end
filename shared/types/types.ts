@@ -1,8 +1,11 @@
 export interface NewUserPayload {
-  password?: string;
-  confirmPassword?: string;
-  phone?: string;
+  password?: number | string;
+  confirmPassword?: number | string;
+  phone?: number | string;
   role?: string;
+  code?: number | string;
+  resetToken?: number | string;
+  newPassword?: number | string;
 }
 
 export interface ProfilePayload {

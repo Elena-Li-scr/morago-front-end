@@ -34,7 +34,7 @@ export default function SignUp() {
           localStorage.setItem("firstName", response?.data.firstName);
           localStorage.setItem("lastName", response?.data.lastName);
         }
-        navigate("/home");
+        navigate("/code");
       }
     } catch (error: unknown) {
       if (axios.isAxiosError(error)) {

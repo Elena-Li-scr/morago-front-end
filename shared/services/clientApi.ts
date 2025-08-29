@@ -111,7 +111,15 @@ export function sendDeposit(payload: BalancePayload) {
 
 export function sendVerificationCode(payload: NewUserPayload) {
   return axiosInstance.post("/publicResetPassword/reset/request", payload);
-} //не можем получить код
+}
+
+export function Verification(payload: NewUserPayload) {
+  return axiosInstance.post("/publicResetPassword/reset/verify", payload);
+}
+
+export function sendNewPassword(payload: NewUserPayload) {
+  return axiosInstance.post("/publicResetPassword/reset/confirm", payload);
+}
 
 // export function getTranslatorsList(themeId: number) {
 //   return axiosInstance.get("/user/translators", {
@@ -148,3 +156,9 @@ export function getThemesByCategory({ id }: { id: number }) {
     },
   });
 }
+
+// export function getAvatar() {
+//   return axiosInstance.get(
+//     "/uploads/avatars/285d2068-cfc1-4f5b-9b0c-215b0410355d-istockphoto-1911641218-612x612.jpg",
+//   );
+// }

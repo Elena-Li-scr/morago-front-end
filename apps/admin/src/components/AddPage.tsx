@@ -11,6 +11,7 @@ import {
   getThemeById,
   updateCategory,
   updateTheme,
+  postAdminThemesIcon,
 } from "../api/services/services";
 
 interface Form {
@@ -115,15 +116,21 @@ export default function AddPage() {
       try {
         if (!id) {
           const res = await postAdminThemes(upData);
-          // if (data.image?.[0] && res?.id) {
-          //   const formData = new FormData();
-          //   formData.append("icon", data.image[0]);
-          //   const iconRes = await postAdminThemesIcon({ id: res.id, formData });
-          //   console.log(iconRes);
-          // }
+          if (data.image?.[0]) {
+            const formData = new FormData();
+            formData.append("icon", data.image[0]);
+            const iconRes = await postAdminThemesIcon({ id: res.id, formData });
+            console.log(iconRes);
+          }
           console.log(res);
         } else if (id) {
           await updateTheme(id, upData);
+          if (data.image?.[0]) {
+            const formData = new FormData();
+            formData.append("icon", data.image[0]);
+            const iconRes = await postAdminThemesIcon({ id, formData });
+            console.log(iconRes);
+          }
         }
       } catch (e) {
         console.log(e);
