@@ -4,7 +4,6 @@ export type Translator = {
   phone: string;
   email: string;
   levelOfKorean: string;
-  status: string;
   hasWithdrawalRequest?: string;
   select?: string;
   call?: string;
@@ -25,13 +24,14 @@ export type User = {
 };
 export type CallHistory = {
   id: string;
+  name: string;
   select?: string;
   call: string;
   date: string;
   duration: string;
   coins: string;
   theme: string;
-  depositRequest?: string;
+  hasRequest?: string;
   rating: string;
 };
 
@@ -40,9 +40,9 @@ export type RequestPage = {
   select?: string;
   request?: string;
   date: string;
-  coins: string;
+  amount: string;
+  name: string;
   status?: string;
-  eye?: string;
 };
 
 export type Categories = {

@@ -57,17 +57,19 @@ export const translatorTableConfig: Column<Translator>[] = [
     width: "35%",
     render: (row) => <p>{row.levelOfKorean} Level</p>,
   },
-  { key: "status", title: "Status", width: "35%" },
   {
     key: "hasWithdrawalRequest",
     title: "Withdraw request",
     width: "35%",
     render: (row) => {
-      if ("hasWithdrawalRequest" in row && row.hasWithdrawalRequest === "Request") {
+      if ("hasWithdrawalRequest" in row && row.hasWithdrawalRequest) {
         return (
-          <button className="view-btn request">
+          <Link
+            to={`/home/lists/translator/withdraw?name=${encodeURIComponent(row.name)}&id=${encodeURIComponent(row.id)}&from=translator`}
+            className="view-btn request"
+          >
             Request <MdArrowForwardIos className="view-icon" />
-          </button>
+          </Link>
         );
       }
       return <div className={`table-item`}>None</div>;
@@ -80,7 +82,7 @@ export const translatorTableConfig: Column<Translator>[] = [
     render: (row) =>
       row.phone ? (
         <Link
-          to={`/home/lists/callHistory?name=${encodeURIComponent(row.name)}&from=translator`}
+          to={`/home/lists/callHistory?name=${encodeURIComponent(row.name)}&id=${encodeURIComponent(row.id)}&from=translator`}
           className="view-btn"
         >
           View <MdArrowForwardIos className="view-icon" />
@@ -94,7 +96,7 @@ export const translatorTableConfig: Column<Translator>[] = [
     render: (row) =>
       "hasWithdrawalRequest" in row ? (
         <Link
-          to={`/home/lists/withdrawHistory?name=${encodeURIComponent(row.name)}&from=translator`}
+          to={`/home/lists/withdrawHistory?name=${encodeURIComponent(row.name)}&id=${encodeURIComponent(row.id)}&from=translator`}
           className="view-btn"
         >
           View <MdArrowForwardIos className="view-icon" />
@@ -114,11 +116,14 @@ export const userTableConfig: Column<User>[] = [
     title: "Deposit Request",
     width: "40%",
     render: (row) => {
-      if ("depositRequest" in row && row.depositRequest === "Request") {
+      if ("hasDepositRequest" in row && row.hasDepositRequest) {
         return (
-          <button className="view-btn request">
+          <Link
+            to={`/home/lists/user/deposit?name=${encodeURIComponent(row.name)}&phone=${encodeURIComponent(row.phone)}&id=${encodeURIComponent(row.id)}&from=user`}
+            className="view-btn request"
+          >
             Request <MdArrowForwardIos className="view-icon" />
-          </button>
+          </Link>
         );
       }
       return <div className={`table-item`}>None</div>;
@@ -131,7 +136,7 @@ export const userTableConfig: Column<User>[] = [
     render: (row) =>
       "hasDepositRequest" in row ? (
         <Link
-          to={`/home/lists/callHistory?name=${encodeURIComponent(row.name)}&from=user`}
+          to={`/home/lists/callHistory?name=${encodeURIComponent(row.name)}&id=${encodeURIComponent(row.id)}&from=user`}
           className="view-btn"
         >
           View <MdArrowForwardIos className="view-icon" />
@@ -145,7 +150,7 @@ export const userTableConfig: Column<User>[] = [
     render: (row) =>
       "hasDepositRequest" in row ? (
         <Link
-          to={`/home/lists/depositHistory?name=${encodeURIComponent(row.name)}&from=user`}
+          to={`/home/lists/depositHistory?name=${encodeURIComponent(row.name)}&id=${encodeURIComponent(row.id)}&phone=${encodeURIComponent(row.phone)}&from=user`}
           className="view-btn"
         >
           View <MdArrowForwardIos className="view-icon" />
@@ -160,17 +165,32 @@ export const callHistoryTableConfig: Column<CallHistory>[] = [
     renderHeader: () => <input type="checkbox" className="table-check-box" />,
     render: () => <input type="checkbox" className="table-check-box" />,
   },
-  { key: "call", title: "Call", width: "40%", marginLeft: "38px" },
+  {
+    key: "call",
+    title: "Call",
+    width: "30%",
+    marginLeft: "38px",
+    render: (row) => {
+      return <p>{row.name}</p>;
+    },
+  },
   { key: "date", title: "Data", width: "35%" },
-  { key: "duration", title: "Duration", width: "35%" },
-  { key: "coins", title: "Coins", width: "35%" },
+  {
+    key: "duration",
+    title: "Duration",
+    width: "35%",
+    render: (row) => {
+      return <p style={{ textTransform: "lowercase" }}>{row.duration}</p>;
+    },
+  },
+  { key: "coins", title: "Coins", width: "20%" },
   { key: "theme", title: "Theme", width: "35%" },
   {
-    key: "depositRequest",
+    key: "hasRequest",
     title: "Deposit request",
     width: "35%",
     render: (row) => {
-      if ("depositRequest" in row && row.depositRequest === "Request") {
+      if ("hasRequest" in row && row.hasRequest) {
         return (
           <button className="view-btn request">
             Request <MdArrowForwardIos className="view-icon" />
@@ -191,20 +211,38 @@ export const callHistoryTableConfig: Column<CallHistory>[] = [
 ];
 
 export const withdrawRequestTableConfig: Column<RequestPage>[] = [
-  ...baseListsColumns,
-  { key: "request", title: "Withdraw", width: "25%" },
+  {
+    key: "select",
+    renderHeader: () => <input type="checkbox" className="table-check-box" />,
+    render: () => <input type="checkbox" className="table-check-box" />,
+  },
+  {
+    key: "request",
+    title: "Withdraw",
+    width: "25%",
+    render: (row) => {
+      return <p>Withdraw</p>;
+    },
+  },
   { key: "date", title: "Data", width: "15%" },
-  { key: "coins", title: "Coins", width: "15%" },
+  {
+    key: "amount",
+    title: "Coins",
+    width: "15%",
+  },
   {
     key: "status",
     title: "Withdraw request",
     width: "70%",
     render: (row) => {
-      if ("status" in row && row.request === "Request") {
+      if ("status" in row && row.status === "PENDING") {
         return (
-          <button className="view-btn request">
+          <Link
+            to={`/home/lists/translator/withdraw?name=${encodeURIComponent(row.name)}&id=${encodeURIComponent(row.id)}&from=translator`}
+            className="view-btn request"
+          >
             Request <MdArrowForwardIos className="view-icon" />
-          </button>
+          </Link>
         );
       }
       return (
@@ -217,20 +255,34 @@ export const withdrawRequestTableConfig: Column<RequestPage>[] = [
 ];
 
 export const depositRequestTableConfig: Column<RequestPage>[] = [
-  ...baseListsColumns,
-  { key: "request", title: "Deposit", width: "25%" },
+  {
+    key: "select",
+    renderHeader: () => <input type="checkbox" className="table-check-box" />,
+    render: () => <input type="checkbox" className="table-check-box" />,
+  },
+  {
+    key: "request",
+    title: "Deposit",
+    width: "25%",
+    render: (row) => {
+      return <p>Deposit</p>;
+    },
+  },
   { key: "date", title: "Data", width: "15%" },
-  { key: "coins", title: "Coins", width: "15%" },
+  { key: "amount", title: "Coins", width: "15%" },
   {
     key: "status",
     title: "Deposit request",
     width: "70%",
     render: (row) => {
-      if ("status" in row && row.status === "Request") {
+      if ("status" in row && row.status === "PENDING") {
         return (
-          <button className="view-btn request">
+          <Link
+            to={`/home/lists/user/deposit?name=${encodeURIComponent(row.name)}&id=${encodeURIComponent(row.id)}&from=user`}
+            className="view-btn request"
+          >
             Request <MdArrowForwardIos className="view-icon" />
-          </button>
+          </Link>
         );
       }
       return (
@@ -309,3 +361,61 @@ export const categoriesTableConfig: Column<Categories>[] = [
 ];
 
 export const isTopicsType = (v: string): v is TopicsType => ["themes", "categories"].includes(v);
+
+type FieldConfig = {
+  name: keyof FormValues;
+  label: string;
+  placeholder: string;
+  extra?: string; // доп. информация (например, баланс)
+};
+
+type FormValues = {
+  accountHolder: string;
+  accountNumber: string;
+  nameOfBank: string;
+  sum: string;
+};
+
+export const FIELDS_WITHDRAW_CONFIG: FieldConfig[] = [
+  {
+    name: "accountNumber",
+    label: "User Name",
+    placeholder: "",
+  },
+  {
+    name: "nameOfBank",
+    label: "Bank Name",
+    placeholder: "",
+  },
+  {
+    name: "accountHolder",
+    label: "Bank Account",
+    placeholder: "",
+  },
+
+  {
+    name: "sum",
+    label: "Withdrawal Amount",
+    placeholder: "",
+    extra: "",
+  },
+];
+
+export const FIELDS_DEPOSIT_CONFIG: FieldConfig[] = [
+  {
+    name: "accountHolder",
+    label: "User",
+    placeholder: "",
+  },
+  {
+    name: "accountNumber",
+    label: "Phone",
+    placeholder: "",
+  },
+
+  {
+    name: "sum",
+    label: "Label",
+    placeholder: "",
+  },
+];

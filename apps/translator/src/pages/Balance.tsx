@@ -2,22 +2,20 @@ import "@shared/styles/homePage.css";
 import "../assets/style/listContacts.css";
 import { CallCard } from "../components/user/CallCard";
 import { useEffect, useState } from "react";
-import { compareDesc, parseISO } from "date-fns";
 import { getCallHistory } from "../api/services/services";
-import type { CallFromApi, CallHisrtoryTranslator } from "../types/types";
-import { transformedMockData } from "../utils/db";
+import type { CallHisrtoryTranslator } from "../types/types";
 
 export default function Balance() {
   const [empyContact, setEmptyContact] = useState<boolean>(false);
   const [callData, setCallData] = useState<CallHisrtoryTranslator[]>([]);
   const fetchData = async () => {
     try {
-      // const response = await getCallHistory();
-      // if (response.length === 0) {
-      //   setEmptyContact(true);
-      //   return;
-      // }
-      setCallData(transformedMockData);
+      const response = await getCallHistory();
+      if (response.length === 0) {
+        setEmptyContact(true);
+        return;
+      }
+      setCallData(response);
     } catch (err) {
       console.error("Ошибка при получении истории:", err);
     }

@@ -25,7 +25,9 @@ export default function ProfileHeader() {
           <AvatarUpload translatorAvatar={translator?.imageUrl} />
           <div className="profile-info">
             <p className="profile-name">{fullName}</p>
-            <p className="profile-phone">{translator?.phone}</p>
+            <p className="profile-phone">
+              {translator?.phone?.replace(/(\d{3})(\d{4})(\d{2})(\d{2})/, "$1 $2 $3 $4")}
+            </p>
           </div>
           <button onClick={handleClick} className="profile-button">
             Изменить

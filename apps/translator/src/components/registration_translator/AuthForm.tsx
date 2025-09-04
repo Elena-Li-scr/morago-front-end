@@ -19,7 +19,6 @@ export default function AuthForm({ type }: { type: keyof typeof FORM_CONFIG }) {
     formState: { isValid },
     setError,
   } = useForm({ mode: "onChange" });
-
   const navigate = useNavigate();
   const onSubmit = async (data: any) => {
     switch (type) {
@@ -31,13 +30,18 @@ export default function AuthForm({ type }: { type: keyof typeof FORM_CONFIG }) {
             password: data.password,
           };
           const res = await LoginTranslator(registerData);
-          console.log(res.token);
-          const translatorData = {
-            firstName: res.firstName,
-            lastName: res.lastName,
-          };
           auth.setToken(res.token);
-          auth.setNewTranslator(translatorData);
+          auth.setNewTranslator({
+            firstName: res.firstName,
+            phone: res.phone,
+            lastName: res.lastName,
+            dateOfBirth: res.dateOfBirth,
+            levelOfKorean: res.levelOfKorean,
+            imageUrl: res.imageUrl,
+            languageIds: res.selectedLanguageIds,
+            themeIds: res.selectedThemeIds,
+          });
+          auth.setVerified();
           auth.setProfileFilled();
           navigate("/my-home-translator-page");
         } catch (err: any) {
@@ -49,7 +53,6 @@ export default function AuthForm({ type }: { type: keyof typeof FORM_CONFIG }) {
             });
           }
         }
-
         break;
       case "register": {
         const cleanPhone = data.phone.replace(/[^0-9]/g, "");
@@ -63,7 +66,7 @@ export default function AuthForm({ type }: { type: keyof typeof FORM_CONFIG }) {
           const res = await registerTranslator(registerData);
           console.log(res);
           auth.setToken(res.token);
-          auth.setNewTranslator(registerData.phone);
+          auth.setNewTranslator(registerData);
           await sendVerificationCode(res.phone);
           navigate(`/verification/register/${cleanPhone}`);
         } catch (err: any) {

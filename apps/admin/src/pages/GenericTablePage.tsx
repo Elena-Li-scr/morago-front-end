@@ -10,7 +10,10 @@ import {
   getAdminThemes,
   getAdminTranslators,
   getAdminUsers,
+  getCallHistoryid,
   getCategoryById,
+  getDepositHistoryid,
+  getWithdrawHistoryid,
 } from "../api/services/services";
 import { useEffect, useState } from "react";
 
@@ -26,6 +29,7 @@ type ApiUser = {
   dateOfBirth: string;
   hasWithdrawalRequest: string;
   categoryId: number;
+  duration: number;
 };
 
 type SortDir = "ASC" | "DESC" | "";
@@ -61,6 +65,26 @@ export default function GenericTablePage({ section }: Props) {
     setRows((prev) => sortByName(prev, sortDir || ""));
   };
 
+  // Define path for "Breadcrumbs"
+  const searchParams = new URLSearchParams(location.search);
+
+  const from = searchParams.get("from") || undefined;
+  const name = searchParams.get("name");
+  const userId = searchParams.get("id");
+  const userPhone = searchParams.get("phone");
+
+  const duration = (total: number) => {
+    const hours = Math.floor(total / 3600);
+    const minutes = Math.floor((total % 3600) / 60);
+    const seconds = total % 60;
+
+    const result: string[] = [];
+    if (hours > 0) result.push(`${hours} h`);
+    if (minutes > 0) result.push(`${minutes} min`);
+    if (seconds > 0) result.push(`${seconds} sec`);
+
+    return result.join(" ");
+  };
   // Load Data List
   useEffect(() => {
     async function load() {
@@ -71,6 +95,7 @@ export default function GenericTablePage({ section }: Props) {
           data = await getAdminUsers(page, size, query);
           rows = (data.content ?? []).map((u: ApiUser) => ({
             ...u,
+            phone: u.phone.replace(/(\d{3})(\d{4})(\d{2})(\d{2})/, "$1 $2 $3 $4"),
             name: [u.firstName, u.lastName].filter(Boolean).join(" ").trim(),
           }));
         }
@@ -78,7 +103,34 @@ export default function GenericTablePage({ section }: Props) {
           data = await getAdminTranslators(page, size, query);
           rows = (data.content ?? []).map((u: ApiUser) => ({
             ...u,
+            phone: u.phone.replace(/(\d{3})(\d{4})(\d{2})(\d{2})/, "$1 $2 $3 $4"),
             name: [u.firstName, u.lastName].filter(Boolean).join(" ").trim(),
+          }));
+        }
+        if (section === "lists" && type === "callHistory" && userId) {
+          data = await getCallHistoryid(userId, page, size);
+          rows = (data.content ?? []).map((u: ApiUser) => ({
+            ...u,
+            id: u.duration,
+            duration: duration(u.duration),
+          }));
+        }
+        if (section === "lists" && type === "depositHistory" && userId) {
+          data = await getDepositHistoryid(userId, page, size);
+          rows = (data.content ?? []).map((u: ApiUser) => ({
+            ...u,
+            amount: u.amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, "."),
+            name: userPhone,
+            id: userId,
+          }));
+        }
+        if (section === "lists" && type === "withdrawHistory" && userId) {
+          data = await getWithdrawHistoryid(Number(userId), page, size);
+          rows = (data.content ?? []).map((u: ApiUser) => ({
+            ...u,
+            amount: u.amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, "."),
+            name: name,
+            id: userId,
           }));
         }
         if (section === "topics" && type === "categories") {
@@ -101,18 +153,13 @@ export default function GenericTablePage({ section }: Props) {
       }
     }
     load();
-  }, [section, type, page, size, query]);
+  }, [section, type, page, size, query, userId]);
 
   useEffect(() => {
     setPage(0);
   }, [type]);
 
   if (!type) return <div>Not found</div>;
-
-  // Define path for "Breadcrumbs"
-  const searchParams = new URLSearchParams(location.search);
-  const from = searchParams.get("from") || undefined;
-  const name = searchParams.get("name");
 
   // Define the type for COLUMNS of Tables
   const columns =
@@ -128,7 +175,8 @@ export default function GenericTablePage({ section }: Props) {
   const normalize = (s: string) => s.toLowerCase().replace(/\s+/g, " ").trim();
 
   const filtered = rows.filter((item) => {
-    return normalize(item.name).startsWith(normalize(query));
+    if (item.name) return normalize(item.name).startsWith(normalize(query));
+    else return item;
   });
 
   const prev = () => setPage((p) => Math.max(0, p - 1));
@@ -187,19 +235,21 @@ export default function GenericTablePage({ section }: Props) {
           />
         </div>
         <div className="pagination-row">
-          <div className="pagination">
-            <button onClick={prev} disabled={page === 0}>
-              Prev
-            </button>
-            {Array.from({ length: totalPages }, (_, i) => (
-              <button key={i} onClick={() => setPage(i)} className={i === page ? "active" : ""}>
-                {i + 1}
+          {rows.length > 1 && (
+            <div className="pagination">
+              <button onClick={prev} disabled={page === 0}>
+                Prev
               </button>
-            ))}
-            <button onClick={next} disabled={page + 1 >= totalPages}>
-              Next
-            </button>
-          </div>
+              {Array.from({ length: totalPages }, (_, i) => (
+                <button key={i} onClick={() => setPage(i)} className={i === page ? "active" : ""}>
+                  {i + 1}
+                </button>
+              ))}
+              <button onClick={next} disabled={page + 1 >= totalPages}>
+                Next
+              </button>
+            </div>
+          )}
         </div>
       </div>
     </div>

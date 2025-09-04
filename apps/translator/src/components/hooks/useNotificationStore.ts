@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import {
-  getClearNotifications,
+  postClearNotifications,
   getNotifications,
   getUnreadNotificationsCount,
 } from "../../api/services/services";
@@ -41,7 +41,7 @@ export const useNotificationStore = create<NotificationStore>((set) => ({
 
   clearNotifications: async () => {
     try {
-      await getClearNotifications();
+      await postClearNotifications();
       set({ unreadCount: 0 }); // обновим глобально
     } catch (err) {
       console.error("Ошибка при очистке уведомлений", err);

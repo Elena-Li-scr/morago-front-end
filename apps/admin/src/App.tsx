@@ -19,7 +19,7 @@ function App() {
             <Route path="new-password" element={<NewPassword />} />
             <Route path="/home" element={<HomePage />}>
               <Route path="lists/:type" element={<GenericTablePage section="lists" />} />
-              <Route path="lists/:type/:id" element={<GenericTablePage section="lists" />} />
+              <Route path="lists/:type/:request" element={<AddPage />} />
               <Route
                 path="translationTopics/:type"
                 element={<GenericTablePage section="topics" />}

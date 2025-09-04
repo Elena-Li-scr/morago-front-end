@@ -2,7 +2,7 @@ import { useController, useFormContext } from "react-hook-form";
 
 type Option = {
   id: number;
-  label: string;
+  name: string;
 };
 
 type Props = {
@@ -13,13 +13,7 @@ type Props = {
   single?: boolean;
 };
 
-export const ControlledCheckboxGroup = ({
-  name,
-  label,
-  options,
-  rules,
-  single = false,
-}: Props) => {
+export const ControlledCheckboxGroup = ({ name, label, options, rules, single = false }: Props) => {
   const { control } = useFormContext();
   const {
     field: { value, onChange },
@@ -43,15 +37,11 @@ export const ControlledCheckboxGroup = ({
           <label key={option.id}>
             <input
               type="checkbox"
-              checked={
-                single
-                  ? !!value
-                  : Array.isArray(value) && value.includes(option.id)
-              }
+              checked={single ? !!value : Array.isArray(value) && value.includes(option.id)}
               onChange={() => handleChange(option.id)}
               className="checkbox"
             />
-            <span className="tranalator-option">{option.label}</span>
+            <span className="tranalator-option">{option.name}</span>
           </label>
         ))}
       </div>

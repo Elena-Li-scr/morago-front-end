@@ -1,6 +1,7 @@
 .add-page-wrapper {
   width: 100%;
   padding: 40px 20px;
+  text-transform: capitalize;
 }
 
 .add-item-form {
@@ -8,14 +9,14 @@
   padding: 64px;
   border: 1px #a2a2a2 solid;
   border-radius: 12px;
-  margin: 30px auto 30px 225px;
+  margin: 30px auto 30px;
   display: flex;
   justify-content: center;
   align-items: flex-start;
   flex-direction: column;
 }
 
-.add-item-form > label {
+.add-item-form>label {
   margin-top: 20px;
   font-weight: 500;
   font-size: 16px;
@@ -57,13 +58,14 @@
 }
 
 .add-item-input {
+  text-transform: capitalize;
   border: 1px solid #a2a2a2;
   border-radius: 4px;
   width: 400px;
   height: 40px;
   padding: 0px 10px 0px 10px;
   font-size: 16px;
-  margin-top: 10px;
+  margin: 10px 0 20px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -71,7 +73,7 @@
 
 .add-item-buttons {
   width: 436px;
-  margin: 10px auto 20px 425px;
+  margin: 10px auto 20px;
   display: flex;
   justify-content: space-between;
   align-items: center;

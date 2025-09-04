@@ -76,8 +76,7 @@ export const rules = {
       if (isAfter(date, now)) return "Дата рождения не может быть в будущем";
 
       const minDate = new Date(1900, 0, 1);
-      if (isBefore(date, minDate))
-        return "Дата рождения не может быть раньше 1900 года";
+      if (isBefore(date, minDate)) return "Дата рождения не может быть раньше 1900 года";
 
       const age = differenceInYears(now, date);
       if (age < 19) return "Возраст должен быть 19+";
@@ -94,7 +93,7 @@ export const rules = {
     },
   },
 
-  bankAccount: {
+  accountHolder: {
     required: "Введите номер счёта",
     pattern: {
       value: /^\d{3}-\d{6}-\d{5}$/,
@@ -102,7 +101,7 @@ export const rules = {
     },
   },
 
-  balance: {
+  won: {
     required: "Введите сумму",
     validate: (val: string) => {
       const num = Number(val.replace(/[^\d]/g, ""));

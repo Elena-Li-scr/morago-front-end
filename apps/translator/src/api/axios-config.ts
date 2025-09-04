@@ -24,14 +24,12 @@ axiosInstance.interceptors.request.use((config) => {
 
 axiosInstance.interceptors.response.use(
   (response) => {
-    const { setLoading, setSuccess } = useModalStore.getState();
+    const { setLoading } = useModalStore.getState();
     // 1. Показываем loading
     setLoading(true);
     setTimeout(() => {
       // 2. Убираем loading
       setLoading(false);
-      // 3. Показываем success
-      setSuccess(true);
     }, 2000); // Задержка для лоадера
     return response.data;
   },

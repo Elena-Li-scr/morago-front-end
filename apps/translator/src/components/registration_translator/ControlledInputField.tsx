@@ -1,10 +1,5 @@
 import React, { useState } from "react";
-import {
-  Controller,
-  type Path,
-  type Control,
-  type FieldValues,
-} from "react-hook-form";
+import { Controller, type Path, type Control, type FieldValues } from "react-hook-form";
 import { FiEye, FiEyeOff } from "react-icons/fi";
 import ChangePageBtn from "../buttons/ChangePageBtn";
 
@@ -42,10 +37,7 @@ export function ControlledInputField<T extends FieldValues>({
         name={name}
         control={control}
         rules={rules}
-        render={({
-          field: { onChange, value, ...rest },
-          fieldState: { error },
-        }) => (
+        render={({ field: { onChange, value, ...rest }, fieldState: { error } }) => (
           <>
             <div className="register-input" style={{ position: "relative" }}>
               {icon && <span className="register-icon">{icon}</span>}
@@ -72,9 +64,7 @@ export function ControlledInputField<T extends FieldValues>({
               )}
             </div>
             {error && <p className="register-validate">{error.message}</p>}
-            {name === "currontPassword" && (
-              <ChangePageBtn page="changePassword" />
-            )}
+            {name === "currontPassword" && <ChangePageBtn page="changePassword" />}
           </>
         )}
       />

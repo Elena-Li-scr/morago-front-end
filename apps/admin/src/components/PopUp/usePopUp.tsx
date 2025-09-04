@@ -1,5 +1,10 @@
 import { createContext, useContext } from "react";
 
+type knowledge = {
+  id: string;
+  name: string;
+};
+
 export type PopUpInfo = {
   id: number;
   name?: string;
@@ -9,6 +14,8 @@ export type PopUpInfo = {
   iconId?: number;
   categoryId?: number;
   isPopular?: boolean;
+  languages?: knowledge[];
+  themes?: knowledge[];
   firstName?: string;
   lastName?: string;
   phone?: string;

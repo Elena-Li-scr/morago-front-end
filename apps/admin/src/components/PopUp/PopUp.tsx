@@ -4,15 +4,13 @@ import "../../assets/style/popUp.css";
 import { usePopUp, type PopUpInfo } from "./usePopUp";
 import { useLocation, useNavigate } from "react-router-dom";
 import {
+  getAdminFiles,
   getCategoryById,
   getThemeById,
   getTranslatorById,
   getUserById,
 } from "../../api/services/services";
-// interface Props {
-//   id?: number;
-//   type: "user" | "translator" | "themes" | "categories";
-// }
+import FileUpload from "../FileUpload";
 
 interface Category {
   id: number;
@@ -72,7 +70,6 @@ export default function PopUp() {
   const { popUpData, setPopUpData, popUpStatus, setPopUpStatus } = usePopUp();
   const [data, setData] = useState<PopUpInfo | null>(null);
   const navigate = useNavigate();
-
   useEffect(() => {
     if (popUpStatus == "open" || !popUpData) return;
     let cancelled = false;
@@ -87,6 +84,7 @@ export default function PopUp() {
           }
           case "translator": {
             res = await getTranslatorById(popUpData.id);
+
             break;
           }
           case "themes": {
@@ -110,12 +108,13 @@ export default function PopUp() {
   }, [popUpData, popUpData]);
 
   if (!popUpData || popUpStatus == "open") return null;
-
   return (
     <div className="pop-up-wrapper" onClick={() => setPopUpData(null)}>
       <div className="pop-up" onClick={(e) => e.stopPropagation()}>
         <div className="pop-up-header">
-          <div className="pop-up-image"></div>
+          <div className="pop-up-image">
+            <FileUpload translatorAvatar={""}></FileUpload>
+          </div>
           <div className="pop-up-setting">
             <button
               type="button"
@@ -123,14 +122,16 @@ export default function PopUp() {
               onClick={() => {
                 if (popUpData && last !== "user" && last !== "translator") {
                   setPopUpData(null);
-                  navigate(`/home/translationTopics/${popUpData.type}/${popUpData.id}/upDate`);
+                  navigate(
+                    `/home/translationTopics/${popUpData.type}/${popUpData.id}/upDate?from=${last}`,
+                  );
                 }
               }}
             >
               <p>Edit</p> <img src="/assets/arrow-right.png" alt="arrow right" />
             </button>
 
-            {last !== "user" && (
+            {last !== "user" && last !== "translator" && (
               <button type="button" className="pop-up-setting-button">
                 <p>Status</p>
                 <img src="/assets/setting.png" alt="setting" />
@@ -144,12 +145,21 @@ export default function PopUp() {
             {last === "translator" && (
               <div className="translations-themes">
                 <h5>Translations:</h5>
-                <ol></ol>
+                <ol className="themes-list">
+                  {data?.themes?.map((i) => (
+                    <li key={i.id}>{i.name}</li>
+                  ))}
+                </ol>
               </div>
             )}
             {last === "translator" && (
               <div className="translations-lang">
                 <h5>Language:</h5>
+                <ol className="languages-list">
+                  {data?.languages?.map((i) => (
+                    <li key={i.id}>{i.name}</li>
+                  ))}
+                </ol>
               </div>
             )}
           </div>
