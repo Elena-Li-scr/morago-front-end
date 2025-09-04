@@ -5,6 +5,7 @@ import type {
   NotificationResponse,
   RegisterFormValues,
   UserProfileExtra,
+  WithdrawalForm,
 } from "../../types/types";
 import axiosInstance from "../axios-config";
 
@@ -39,11 +40,37 @@ export const verifyCode = async (phone: string, code: string) => {
   });
 };
 
-// добавления доп иформации об переводчике
-export const newTranslatorData = async (data: UserProfileExtra) => {
-  return axiosInstance.put("/translator", data).then((res) => res.data);
+// получние Themes
+export const getThemes = async () => {
+  return await axiosInstance.get(`profile/themes`);
 };
 
+// отправка Themes
+export const postThemes = async (ids: number) => {
+  return await axiosInstance.post(`translator/themes/${ids}/select`);
+};
+
+// отправка Languages
+export const getLanguages = async () => {
+  const res = await axiosInstance.get("/profile/languages");
+  return res;
+};
+
+// добавления доп иформации об переводчике
+export const newTranslatorData = async (data: UserProfileExtra) => {
+  return axiosInstance.put("/translator", data);
+};
+
+export const imgTranslatorData = async (file: File) => {
+  const formData = new FormData();
+  formData.append("file", file);
+  const res = await axiosInstance.post("/profile/avatar/upload", formData, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
+  return res;
+};
 // изменить пароль
 export const changePassword = async (data: ChangePasswordData) => {
   return axiosInstance.post("/profile/password/update", data);
@@ -53,7 +80,7 @@ export const changePassword = async (data: ChangePasswordData) => {
 export const switchTranslatorStatus = async () => {
   try {
     const response = await axiosInstance.put("/translator/switch-status");
-    return response.data;
+    return response;
   } catch (error) {
     console.error("Ошибка при переключении статуса:", error);
     throw error;
@@ -80,12 +107,10 @@ export const getCallHistory = async (filter?: "isMissed" | "isLast") => {
     const response = await axiosInstance.get("/profile/calls/history", {
       params,
     });
-    console.log(response);
-
-    const content: CallFromApi[] = response.data.content;
+    const content: CallFromApi[] = response.content;
     const transformed = content.map((call) => ({
       id: `${call.date}-${call.phone}`,
-      name: call.phone,
+      name: call.name,
       avatarUrl: "",
       theme: call.theme,
       time: call.duration,
@@ -120,7 +145,7 @@ export const getNotifications = async () => {
       sortDirection: "ASC", // или 'DESC'
     },
   });
-  return response.data;
+  return response;
 };
 
 export const getUnreadNotificationsCount = async () => {
@@ -128,13 +153,17 @@ export const getUnreadNotificationsCount = async () => {
     const response = await axiosInstance.get("/profile/notifications/count", {
       params: { isUnread: true },
     });
-    return response.data;
+    return response;
   } catch (error) {
     console.error("Ошибка при получении количества уведомлений:", error);
     throw error;
   }
 };
 
-export const getClearNotifications = async () => {
+export const postClearNotifications = async () => {
   return axiosInstance.post("/profile/notifications/clear");
+};
+
+export const postWithdrawalTranslator = async (data: WithdrawalForm) => {
+  return axiosInstance.post("/translator/withdrawal", data);
 };

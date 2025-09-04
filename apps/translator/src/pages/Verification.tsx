@@ -81,12 +81,12 @@ export default function VerificationPage() {
 
   const successSubmit = () => {
     navigate(process === "register" ? `/new-translator/${phone}` : "/new-password");
+    setSuccess(false);
   };
 
   const handleResend = async () => {
     const repeatCode = await sendVerificationCode(phone);
     console.log(repeatCode);
-
     setRemaining(180); // Сбросить таймер
   };
 

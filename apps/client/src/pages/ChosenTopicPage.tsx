@@ -4,23 +4,38 @@ import SimpleHeader from "../components/SimpleHeader";
 import MainFooter from "../components/MainFooter";
 import TranslatorCall from "../components/TranslatorCall";
 import { translators } from "@shared/utils/temporaryVar";
-import { useTopicStore, useTranslatorStore } from "@shared/store/useStore";
+import { useTopicStore, useTranslatorStore, useIdTopicStore } from "@shared/store/useStore";
+import { addLastChoosenThemes, getTranslatorsByTheme } from "@shared/services/clientApi";
 import { useNavigate } from "react-router-dom";
 
 import "@shared/styles/homePage.css";
+import { useEffect } from "react";
 
 export default function ChosenTopicPage() {
   const { selectedTranslator, setSelectedTranslator } = useTranslatorStore();
   const { chosenTopic, setChosenTopic } = useTopicStore();
+  const { chosenTopicId, setChosenTopicId } = useIdTopicStore();
   const navigate = useNavigate();
   const handleBack = () => {
     navigate(-1);
     setChosenTopic("");
+    setChosenTopicId("");
   };
 
-  const callHandler = () => {
+  const callHandler = async () => {
+    await addLastChoosenThemes({ id: chosenTopicId });
     navigate("/call");
   };
+
+  useEffect(() => {
+    const server = async () => {
+      if (chosenTopicId) {
+        const res = await getTranslatorsByTheme({ id: chosenTopicId });
+        console.log(res.data.content);
+      }
+    };
+    server();
+  });
 
   return (
     <div className="page-wrapper">

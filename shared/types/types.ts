@@ -23,3 +23,8 @@ export interface BalancePayload {
 export interface GetById {
   id: number | string;
 }
+
+export interface CallProps {
+  recipientId: string | number;
+  themeId: string | number;
+}

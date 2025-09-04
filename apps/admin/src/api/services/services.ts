@@ -123,3 +123,50 @@ export const updateCategory = (id: number | string, data: CategoryReq) => {
   const res = axiosInstance.put(`/admin/categories/${id}`, data);
   return res;
 };
+
+export const getCallHistoryid = (id: number | string, page: number, size: number) => {
+  const res = axiosInstance.get(`/admin/calls/history/${id}`, {
+    params: { id, page, size, sortBy: "id", sortDirection: "ASC" },
+  });
+  return res;
+};
+
+export const getDepositHistoryid = (id: number | string, page: number, size: number) => {
+  const res = axiosInstance.get(`/admin/deposits/history/${id}`, {
+    params: { id, page, size, sortBy: "id", sortDirection: "ASC" },
+  });
+  return res;
+};
+
+export const getDepositHistory = (id: number | string) => {
+  const res = axiosInstance.get(`/admin/deposits?userId=${id}`);
+  return res;
+};
+
+export const getWithdrawHistory = (id: number | string) => {
+  const res = axiosInstance.get(`/admin/withdrawals?userId=${id}`);
+  return res;
+};
+
+export const getWithdrawHistoryid = (id: number | string, page: number, size: number) => {
+  const res = axiosInstance.get(`/admin/withdrawals/history/${id}`, {
+    params: { id, page, size, sortBy: "id", sortDirection: "ASC" },
+  });
+  return res;
+};
+
+export const postAdminFiles = (file: File) => {
+  const formData = new FormData();
+  formData.append("file", file);
+  const res = axiosInstance.post("/admin/files/upload?type=AVATAR", formData, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
+  return res;
+};
+
+export const getAdminFiles = (id: number | string) => {
+  const res = axiosInstance.get(`/admin/files/${id}`);
+  return res;
+};

@@ -17,7 +17,6 @@ export default function FlexTable<T extends WithId>({
   tableType,
 }: Props<T>) {
   const getKey = (r: T) => (rowKey ? rowKey(r) : String(r.id));
-
   return (
     <div className="table">
       {/* Хедер таблицы */}
@@ -43,7 +42,7 @@ export default function FlexTable<T extends WithId>({
         ))}
       </div>
       {/* Строки данных */}
-      {data ? (
+      {data.length > 0 ? (
         <div>
           {data.map((row) => (
             <div className="table-row" key={getKey(row)}>
@@ -51,9 +50,10 @@ export default function FlexTable<T extends WithId>({
                 <div
                   className={`${
                     col.key !== "select" &&
-                    col.key !== "depositRequest" &&
+                    col.key !== "hasDepositRequest" &&
                     col.key !== "status" &&
-                    col.key !== "withdrawRequest" &&
+                    col.key !== "hasRequest" &&
+                    col.key !== "hasWithdrawalRequest" &&
                     "table-item"
                   }`}
                   key={String(col.key)}
@@ -70,7 +70,7 @@ export default function FlexTable<T extends WithId>({
           ))}
         </div>
       ) : (
-        <p></p>
+        <div className="empty-block">Нет Записей</div>
       )}
     </div>
   );

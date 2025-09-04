@@ -17,31 +17,19 @@ export default function CallPage() {
       <div className="call-main">
         <div>
           <p className="call-translator-name">{selectedTranslator?.name}</p>
-          <img
-            src={selectedTranslator?.photo}
-            alt="translator-photo"
-            className="call-main-photo"
-          />
+          <img src={selectedTranslator?.photo} alt="translator-photo" className="call-main-photo" />
         </div>
         <div>
           <div className="call-buttons">
             <button type="button">
               <div className="call-img-cover">
-                <img
-                  src="/assets/call/mute-off.png"
-                  alt="mute-button"
-                  className="mute-button"
-                />
+                <img src="/assets/call/mute-off.png" alt="mute-button" className="mute-button" />
               </div>
               Mute
             </button>
             <button type="button">
               <div className="call-img-cover">
-                <img
-                  src="/assets/call/photo-off.png"
-                  alt="photo-button"
-                  className="photo-button"
-                />
+                <img src="/assets/call/photo-off.png" alt="photo-button" className="photo-button" />
               </div>
               Photo
             </button>

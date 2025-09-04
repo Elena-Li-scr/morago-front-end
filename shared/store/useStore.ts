@@ -15,7 +15,14 @@ interface ListStore {
   chosenList: string;
   setChosenList: (list: string) => void;
 }
-
+interface NoteStore {
+  haveNewNote: boolean;
+  setHaveNewNote: (val: boolean) => void;
+}
+interface TopicIdStore {
+  chosenTopicId: string | number;
+  setChosenTopicId: (topic: string | number) => void;
+}
 type ModalState = {
   loading: boolean;
   success: boolean;
@@ -35,6 +42,11 @@ export const useTopicStore = create<TopicStore>((set) => ({
   setChosenTopic: (topic) => set({ chosenTopic: topic }),
 }));
 
+export const useIdTopicStore = create<TopicIdStore>((set) => ({
+  chosenTopicId: "",
+  setChosenTopicId: (topic) => set({ chosenTopicId: topic }),
+}));
+
 export const useTranslatorStore = create<TranslatorStore>((set) => ({
   selectedTranslator: null,
   setSelectedTranslator: (translator) => set({ selectedTranslator: translator }),
@@ -43,4 +55,9 @@ export const useTranslatorStore = create<TranslatorStore>((set) => ({
 export const useListStore = create<ListStore>((set) => ({
   chosenList: "",
   setChosenList: (list) => set({ chosenList: list }),
+}));
+
+export const useNoteStore = create<NoteStore>((set) => ({
+  haveNewNote: false,
+  setHaveNewNote: (val) => set({ haveNewNote: val }),
 }));

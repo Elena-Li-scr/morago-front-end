@@ -1,7 +1,7 @@
 import { Controller, useFormContext } from "react-hook-form";
 type Option = {
   id: number;
-  label: string;
+  name: string;
 };
 
 type Props = {
@@ -11,12 +11,7 @@ type Props = {
   rules?: any;
 };
 
-export const LanguageToggleButtons = ({
-  name,
-  label,
-  options,
-  rules,
-}: Props) => {
+export const LanguageToggleButtons = ({ name, label, options, rules }: Props) => {
   const { control } = useFormContext();
   return (
     <Controller
@@ -38,12 +33,10 @@ export const LanguageToggleButtons = ({
                 <button
                   key={option.id}
                   type="button"
-                  className={`checkbox-button ${
-                    value.includes(option.id) ? "active" : ""
-                  }`}
+                  className={`checkbox-button ${value.includes(option.id) ? "active" : ""}`}
                   onClick={() => toggle(option.id)}
                 >
-                  {option.label}
+                  {option.name}
                 </button>
               ))}
             </div>

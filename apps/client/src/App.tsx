@@ -18,6 +18,7 @@ import NewPassword from "./pages/NewPassword";
 import GreetingPage from "./pages/GreetingPage";
 import SignIn from "./pages/SignIn";
 import Loader from "./components/Loader";
+// import NotificationsListener from "./components/NotificationsListener";
 function App() {
   return (
     <>
@@ -43,6 +44,7 @@ function App() {
           <Route path="/new-password" element={<NewPassword />} />
         </Routes>
         <Loader />
+        {/* <NotificationsListener /> */}
       </BrowserRouter>
     </>
   );

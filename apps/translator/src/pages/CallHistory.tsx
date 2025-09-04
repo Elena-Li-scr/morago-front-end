@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 import { CallCard } from "../components/user/CallCard";
 import { getCallHistory } from "../api/services/services";
 import type { CallHisrtoryTranslator } from "../types/types";
-import { transformedMockData } from "../utils/db";
 
 export default function CallHistory() {
   const [isAvailable, setIsAvailable] = useState(true);
@@ -11,10 +10,8 @@ export default function CallHistory() {
 
   const fetchData = async () => {
     try {
-      // const response = await getCallHistory("isLast");
-      // setCallData(response);
-
-      setCallData(transformedMockData);
+      const response = await getCallHistory("isLast");
+      setCallData(response);
     } catch (err) {
       console.error("Ошибка при получении истории:", err);
     }

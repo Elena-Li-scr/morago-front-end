@@ -40,7 +40,6 @@ export const Breadcrumbs = ({ from }: Props) => {
         const isLast = index === fullPathnames.length - 1;
         const label = formatCrumb(segment, index, fullPathnames);
         const shouldGoBack = from && label.toLowerCase() === from.toLowerCase();
-
         return (
           <span key={index}>
             {index !== 0 && " / "}

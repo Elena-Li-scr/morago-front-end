@@ -11,8 +11,11 @@ import {
   getThemeById,
   updateCategory,
   updateTheme,
+  getWithdrawHistory,
+  getDepositHistory,
   postAdminThemesIcon,
 } from "../api/services/services";
+import { FIELDS_DEPOSIT_CONFIG, FIELDS_WITHDRAW_CONFIG } from "../constans/tableConfigs/configs";
 
 interface Form {
   theme?: string;
@@ -20,6 +23,11 @@ interface Form {
   image?: FileList;
   categoryIds: (number | string)[];
   isActive?: boolean;
+  withdraw?: string;
+  accountHolder?: string;
+  accountNumber?: string;
+  nameOfBank?: string;
+  sum?: string;
 }
 
 interface Option {
@@ -51,11 +59,16 @@ export default function AddPage() {
     register("image");
   }, [register]);
 
+  const { request } = useParams();
   const { type } = useParams();
   const { id } = useParams();
 
   const searchParams = new URLSearchParams(location.search);
-  const from = searchParams.get("from") || type === "themes" ? "Themes" : "Categories";
+  const from = searchParams.get("from") || undefined;
+  const userId = searchParams.get("id");
+  const name = searchParams.get("name");
+  const phone = searchParams.get("phone");
+
   const navigate = useNavigate();
   const imageFiles = watch("image");
   const fileName = imageFiles?.[0]?.name ?? "";
@@ -71,16 +84,41 @@ export default function AddPage() {
   }, []);
 
   useEffect(() => {
-    if (!id) return;
-
     const server = async () => {
       try {
-        if (type === "categories") {
+        if (type === "categories" && id) {
           const data = await getCategoryById(id);
           setValue("category", data.name);
-        } else if (type === "themes") {
+        }
+        if (type === "themes" && id) {
           const data = await getThemeById(id);
           setValue("theme", data.name);
+        }
+        if (request === "withdraw" && userId) {
+          const data = await getWithdrawHistory(userId);
+          const rows = {
+            ...data,
+            sum: data.sum.toString().replace(/\B(?=(\d{3})+(?!\d))/g, "."),
+            accountNumber: name,
+          };
+          FIELDS_WITHDRAW_CONFIG.forEach((field) => {
+            if (rows[field.name]) {
+              setValue(field.name, rows[field.name]);
+            }
+          });
+        }
+        if (request === "deposit" && userId) {
+          const data = await getDepositHistory(userId);
+          const rows = {
+            ...data,
+            sum: data.coin.toString().replace(/\B(?=(\d{3})+(?!\d))/g, "."),
+            accountNumber: phone ?? name,
+          };
+          FIELDS_DEPOSIT_CONFIG.forEach((field) => {
+            if (rows[field.name]) {
+              setValue(field.name, rows[field.name]);
+            }
+          });
         }
       } catch (e) {
         console.error("Ошибка при загрузке:", e);
@@ -88,7 +126,7 @@ export default function AddPage() {
     };
 
     server();
-  }, [id, type, setValue]);
+  }, [id, type, setValue, request, userId]);
 
   const onSubmit = async (data: Form) => {
     if (type === "categories" && data.category && !id) {
@@ -142,41 +180,43 @@ export default function AddPage() {
   return (
     <div className="container">
       <div className="add-page-wrapper">
-        <h3 className="page-info-title">{type === "themes" ? "Themes" : "Categorys"}</h3>
+        <h3 className="page-info-title">{request ? request : type}</h3>
         <Breadcrumbs from={from} />
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="add-item-form">
-            <div className="file-upload-wrapper">
-              <label htmlFor="theme-upload" className="upload-theme">
-                <div className="upload-theme-left">
-                  {type === "themes" ? (
-                    fileName ? (
-                      <p className="selected-file-name">Выбран файл: {fileName}</p>
-                    ) : (
-                      <img src="/assets/arrow-line-up.png" alt="upload" />
-                    )
-                  ) : (
-                    ""
-                  )}
+            {/* {type !== ""} */}
+            {!request && (
+              <>
+                <div className="file-upload-wrapper">
+                  <label htmlFor="theme-upload" className="upload-theme">
+                    <div className="upload-theme-left">
+                      {type === "themes" ? (
+                        fileName ? (
+                          <p className="selected-file-name">Выбран файл: {fileName}</p>
+                        ) : (
+                          <img src="/assets/arrow-line-up.png" alt="upload" />
+                        )
+                      ) : (
+                        ""
+                      )}
+                    </div>
+                    <div className="upload-theme-right"></div>
+                  </label>
+                  <input
+                    id="theme-upload"
+                    type="file"
+                    accept="image/*"
+                    className="hidden-file-input"
+                    onChange={(e) => {
+                      if (e.target.files?.length) {
+                        setValue("image", e.target.files, { shouldValidate: true });
+                      }
+                    }}
+                  />
                 </div>
-                <div className="upload-theme-right"></div>
-              </label>
-
-              <input
-                id="theme-upload"
-                type="file"
-                accept="image/*"
-                className="hidden-file-input"
-                onChange={(e) => {
-                  if (e.target.files?.length) {
-                    setValue("image", e.target.files, { shouldValidate: true });
-                  }
-                }}
-              />
-            </div>
-
-            <label>{type === "themes" ? "Theme name" : "Category name"}</label>
-
+                <label>{type}</label>
+              </>
+            )}
             {type === "themes" && (
               <input
                 type="text"
@@ -187,7 +227,6 @@ export default function AddPage() {
                 })}
               />
             )}
-
             {type === "categories" && (
               <input
                 type="text"
@@ -198,7 +237,6 @@ export default function AddPage() {
                 })}
               />
             )}
-
             {type === "themes" && (
               <>
                 <label>Categories</label>
@@ -257,18 +295,49 @@ export default function AddPage() {
                 {errors.categoryIds && <span className="error">{errors.categoryIds.message}</span>}
               </>
             )}
-
             {id && (
               <div className="checkbox">
                 <input type="checkbox" {...register("isActive")} />
                 <label>Is Active?</label>
               </div>
             )}
-
+            {request === "withdraw" && (
+              <>
+                {FIELDS_WITHDRAW_CONFIG.map((field) => (
+                  <div key={field.name}>
+                    <label>{field.label}</label>
+                    {field.extra && <p>{field.extra}</p>}
+                    <input
+                      type="text"
+                      placeholder={field.placeholder}
+                      disabled
+                      className="add-item-input"
+                      {...register(field.name, { required: `Введите ${field.label}` })}
+                    />
+                  </div>
+                ))}
+              </>
+            )}
+            {request === "deposit" && (
+              <>
+                {FIELDS_DEPOSIT_CONFIG.map((field) => (
+                  <div key={field.name}>
+                    <label>{field.label}</label>
+                    {field.extra && <p>{field.extra}</p>}
+                    <input
+                      type="text"
+                      placeholder={field.placeholder}
+                      disabled
+                      className="add-item-input"
+                      {...register(field.name, { required: `Введите ${field.label}` })}
+                    />
+                  </div>
+                ))}
+              </>
+            )}
             {errors.theme && <span className="error">{errors.theme.message}</span>}
             {errors.category && <span className="error">{errors.category.message}</span>}
           </div>
-
           <div className="add-item-buttons">
             <button
               type="button"

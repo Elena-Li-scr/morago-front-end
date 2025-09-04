@@ -30,10 +30,7 @@ export default function SignUp() {
       if (response?.data.token && response?.data.id) {
         localStorage.setItem("token", response.data.token);
         localStorage.setItem("phone", response.data.phone);
-        if (response.data.firstName && response.data.lastName) {
-          localStorage.setItem("firstName", response?.data.firstName);
-          localStorage.setItem("lastName", response?.data.lastName);
-        }
+
         navigate("/code");
       }
     } catch (error: unknown) {

@@ -2,8 +2,11 @@ import { useRef, useState } from "react";
 import { AiOutlineCamera } from "react-icons/ai";
 import { useLocation } from "react-router-dom";
 
+const DEFAULT_AVATAR_URL = "/assets/images/user.png";
+const BASE_URL = "http://localhost:8080";
+
 type AvatarUploadProps = {
-  onChange?: (file: string) => void;
+  onChange?: (file: File) => void;
   translatorAvatar?: string | null;
 };
 
@@ -23,9 +26,9 @@ const AvatarUpload = ({ onChange, translatorAvatar }: AvatarUploadProps) => {
       reader.onload = () => {
         const base64String = reader.result as string;
         setPreview(base64String);
-        onChange?.(base64String);
       };
       reader.readAsDataURL(file);
+      onChange?.(file);
     }
   };
 
@@ -35,17 +38,14 @@ const AvatarUpload = ({ onChange, translatorAvatar }: AvatarUploadProps) => {
     <div className="register-user">
       <div className="register-block">
         <img
-          src={preview || translatorAvatar || "/assets/images/user.png"}
+          src={
+            preview || (translatorAvatar ? `${BASE_URL}${translatorAvatar}` : DEFAULT_AVATAR_URL)
+          }
           alt="avatar"
           className={isMyProfile ? `profile-img` : `register-user-photo`}
-          // className="profile-img"
         />
         {!isMyProfile && (
-          <button
-            type="button"
-            onClick={handleClick}
-            className="icon-camera-btn"
-          >
+          <button type="button" onClick={handleClick} className="icon-camera-btn">
             <AiOutlineCamera className="icon-camera" />
           </button>
         )}

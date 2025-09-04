@@ -23,7 +23,6 @@ export const ControlledSelectField = ({
   icon,
 }: Props) => {
   const { control } = useFormContext();
-
   return (
     <div className="register-block">
       <label className="register-label" htmlFor={name}>

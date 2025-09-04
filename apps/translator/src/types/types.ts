@@ -37,7 +37,7 @@ export type InputFieldConfig = {
 
 export type CheckboxOption = {
   id: number;
-  label: string;
+  name: string;
 };
 export type CheckboxGroupConfig = {
   label: string;
@@ -65,9 +65,9 @@ export type NavItem = {
 };
 
 export type WithdrawalForm = {
-  bankAccount: string;
-  bankName: string;
-  balance: string;
+  accountHolder: string;
+  nameOfBank: string;
+  won: number;
 };
 
 export interface CallHisrtoryTranslator {
@@ -82,6 +82,7 @@ export interface CallHisrtoryTranslator {
 }
 
 export type CallFromApi = {
+  name: string;
   date: string;
   phone: string;
   duration: number;

@@ -25,9 +25,15 @@ export default function SignIn() {
         localStorage.clear();
         localStorage.setItem("token", response.data.token);
         localStorage.setItem("phone", response.data.phone);
+        localStorage.setItem("id", response.data.id);
+
         if (response.data.firstName && response.data.lastName) {
           localStorage.setItem("firstName", response?.data.firstName);
           localStorage.setItem("lastName", response?.data.lastName);
+        }
+
+        if (response.data.imageUrl) {
+          localStorage.setItem("avatar", response.data.imageUrl);
         }
         navigate("/home");
       }

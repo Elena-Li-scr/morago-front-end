@@ -5,11 +5,7 @@ import type {
   NavItem,
   WithdrawalForm,
 } from "../types/types";
-import {
-  formatDateString,
-  formatPhone,
-  formatTopikLevel,
-} from "../utils/formatInput";
+import { formatDateString, formatPhone, formatTopikLevel } from "../utils/formatInput";
 import { rules } from "../utils/rules";
 import { AiOutlineUser } from "react-icons/ai";
 import { FiPhone } from "react-icons/fi";
@@ -32,24 +28,18 @@ export const CHECKBOX_GROUPS: CheckboxGroupConfig[] = [
     label: "Темы перевода",
     field: "themeIds",
     options: [
-      { id: 1, label: "Пудонсан" },
-      { id: 2, label: "Маркет" },
-      { id: 3, label: "Банк" },
-      { id: 4, label: "Больница" },
-      { id: 5, label: "Ресторан" },
-      { id: 6, label: "Такси" },
+      { id: 15, name: "Агентство труда" },
+      { id: 16, name: "Завод" },
+      { id: 18, name: "Больница" },
+      { id: 19, name: "Поликлинника" },
+      { id: 21, name: "Аптека" },
+      { id: 22, name: "Стоматология" },
     ],
   },
   {
     label: "Доступные языки перевода",
     field: "languageIds",
-    options: [
-      { id: 1, label: "Русский" },
-      { id: 2, label: "Казахский" },
-      { id: 3, label: "Узбекский" },
-      { id: 4, label: "Английский" },
-      { id: 5, label: "Таджикский" },
-    ],
+    options: [],
     useButtons: true,
   },
 ];
@@ -117,15 +107,8 @@ const confirmPasswordField = (getValues: () => any) => ({
   icon: <RiLockPasswordLine className="register-icon" />,
 });
 
-export const FORM_CONFIG: Record<
-  string,
-  (getValues: () => any) => FormField[]
-> = {
-  register: (getValues: () => any) => [
-    phoneField,
-    passwordField,
-    confirmPasswordField(getValues),
-  ],
+export const FORM_CONFIG: Record<string, (getValues: () => any) => FormField[]> = {
+  register: (getValues: () => any) => [phoneField, passwordField, confirmPasswordField(getValues)],
 
   login: () => [phoneField, passwordField],
 
@@ -209,9 +192,9 @@ export const navItems: NavItem[] = [
 // WithdrawalForm --------------
 
 export const withdrawalData: WithdrawalForm = {
-  bankAccount: "",
-  bankName: "",
-  balance: "",
+  accountHolder: "",
+  nameOfBank: "",
+  won: 0,
 };
 
 export const koreanBanks = [
@@ -243,7 +226,7 @@ export const settingsSections = [
       {
         label: "Уведомления",
         icon: <FaRegBell className="register-icon " />,
-        route: "/settings/notifications",
+        route: "/my-notification-page",
       },
     ],
   },

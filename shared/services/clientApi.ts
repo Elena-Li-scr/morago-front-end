@@ -1,6 +1,6 @@
 import axiosInstance from "./axiosInstance";
 
-import type { NewUserPayload, ProfilePayload, BalancePayload } from "../types/types";
+import type { NewUserPayload, ProfilePayload, BalancePayload, CallProps } from "../types/types";
 
 // registration
 
@@ -157,8 +157,22 @@ export function getThemesByCategory({ id }: { id: number }) {
   });
 }
 
-// export function getAvatar() {
-//   return axiosInstance.get(
-//     "/uploads/avatars/285d2068-cfc1-4f5b-9b0c-215b0410355d-istockphoto-1911641218-612x612.jpg",
-//   );
-// }
+export function getTranslatorsByTheme({ id }: { id: number | string }) {
+  return axiosInstance.get(`/user/translators`, {
+    params: {
+      themeId: id,
+      page: 0,
+      size: 5,
+      sortBy: "id",
+      sortDirection: "ASC",
+    },
+  });
+}
+
+export function addLastChoosenThemes({ id }: { id: number | string }) {
+  return axiosInstance.post(`/profile/themes/${id}/favorite`, {});
+}
+
+export function createCall(payload: CallProps) {
+  return axiosInstance.post(`/call/create`, payload);
+}

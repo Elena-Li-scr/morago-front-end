@@ -15,6 +15,7 @@ import { rules } from "../utils/rules";
 import { formatBalance, formatBankAccount } from "../utils/formatInput";
 import { ControlledSelectField } from "../components/registration_translator/ControlledSelectedField";
 import ChangePageBtn from "../components/buttons/ChangePageBtn";
+import { postWithdrawalTranslator } from "../api/services/services";
 
 export default function Withdrawal() {
   const methods = useForm({
@@ -27,10 +28,14 @@ export default function Withdrawal() {
 
   const { control, handleSubmit, formState } = methods;
 
-  const onSubmit = (data: any) => {
-    console.log("Отправка данных:", data);
+  const onSubmit = async (data: any) => {
+    const withdrawal = {
+      accountHolder: data.accountHolder,
+      nameOfBank: data.nameOfBank,
+      won: Number(data.won.replace(/\D/g, "")),
+    };
+    await postWithdrawalTranslator(withdrawal);
     setSuccess(true);
-    // fetch('/api/register', { method: 'POST', body: formData });
   };
   const successSubmit = () => {
     navigate("/my-home-translator-page");
@@ -43,21 +48,21 @@ export default function Withdrawal() {
           <ChangePageBtn page="withdrawalIkconBack" />
           <h2 className="verification-title">Вывод средств</h2>
           <p className="verification-text">
-            Минимальная сумма вывода 50.000 вон. Введите номер своего счёта и в
-            течении рабочего дня вам поступят средства.
+            Минимальная сумма вывода 50.000 вон. Введите номер своего счёта и в течении рабочего дня
+            вам поступят средства.
           </p>
           <div className="withdrawal-inputs">
             <ControlledInputField
-              name="bankAccount"
+              name="accountHolder"
               icon={<GoShieldCheck className={`register-icon`} />}
               control={control}
               label="Номер банковского счёта"
               placeholder="Номер банковского счёта"
               format={formatBankAccount}
-              rules={rules.bankAccount}
+              rules={rules.accountHolder}
             />
             <ControlledSelectField
-              name="bankName"
+              name="nameOfBank"
               icon={<GrHomeRounded className={`register-icon`} />}
               label="Название банка"
               placeholder="Выберите банк"
@@ -65,13 +70,13 @@ export default function Withdrawal() {
               options={koreanBankOptions}
             />
             <ControlledInputField
-              name="balance"
+              name="won"
               label="Сумма для вывода"
               placeholder="Сумма для вывода"
               icon={<BiWalletAlt className={`register-icon`} />}
               control={control}
               format={formatBalance}
-              rules={rules.balance}
+              rules={rules.won}
             />
           </div>
           <MainButton
