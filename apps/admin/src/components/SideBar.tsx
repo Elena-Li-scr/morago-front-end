@@ -19,11 +19,8 @@ export default function SideBar() {
   };
 
   const addHandler = (text: string) => {
-    if (type === "themes") {
-      navigate(`translationTopics/themes/newPage`);
-      // setAddType("");
-    } else if (type === "categories") {
-      navigate(`translationTopics/categories/newPage`);
+    if (type === "themes" || type === "categories") {
+      navigate(`translationTopics/${type}/newPage?from=${type}`);
       // setAddType("");
     }
   };

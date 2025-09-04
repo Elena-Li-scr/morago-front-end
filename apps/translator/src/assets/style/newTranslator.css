@@ -144,7 +144,7 @@
 }
 
 .register-user-photo {
-    background: red;
+
     width: 100px;
     height: 100px;
     border-radius: 21.05px;
@@ -186,6 +186,7 @@
 
 
 .profile-img {
+    height: 54px;
     width: 54px;
     border-radius: 65px;
 }

@@ -8,32 +8,58 @@ import AvatarUpload from "../components/registration_translator/AvatarUpload";
 import { useTranslatorFromLocalStorage } from "../components/hooks/useTranslatorFromLocalStorage";
 import { useNavigate } from "react-router-dom";
 import { auth } from "../utils/auth";
-import { newTranslatorData } from "../api/services/services";
+import { imgTranslatorData, newTranslatorData } from "../api/services/services";
+import { useEffect } from "react";
+
+const DEFAULT_AVATAR_URL = "/assets/images/user.png";
 
 export default function ChangeDataTranslator() {
+  const translator = useTranslatorFromLocalStorage();
   const methods = useForm<UserProfileExtra>({
     mode: "onChange",
+    defaultValues: {
+      firstName: translator?.firstName ?? "",
+      lastName: translator?.lastName ?? "",
+    },
   });
+  useEffect(() => {
+    if (translator) {
+      methods.reset({
+        firstName: translator.firstName,
+        lastName: translator.lastName,
+        phone: translator.phone,
+      });
+    }
+  }, [translator, methods]);
   const navigate = useNavigate();
 
-  const userDataString = auth.isNewTranslator();
-  const userData = userDataString ? JSON.parse(userDataString) : {};
-  const translator = useTranslatorFromLocalStorage();
-
   const { control, handleSubmit, formState } = methods;
+
   const onSubmit = async (data: any) => {
-    const updatedUserData = {
-      firstName: data.firstName,
-      lastName: data.lastName,
-      imageUrl: data.imageUrl || translator?.imageUrl,
-    };
-
+    let imageUrl: string | null = translator?.imageUrl ?? null;
     try {
-      const res = await newTranslatorData(updatedUserData);
-      console.log(res);
-
-      auth.setNewTranslator(updatedUserData);
-      navigate("/my-profile-page");
+      if (data.imageUrl && data.imageUrl !== translator?.imageUrl) {
+        const response = await imgTranslatorData(data.imageUrl);
+        imageUrl = `/uploads/${response.path}`;
+      }
+      if (!imageUrl) {
+        imageUrl = DEFAULT_AVATAR_URL;
+      }
+      if (translator) {
+        const res = await newTranslatorData(translator);
+        const updatedUserData = {
+          firstName: res.firstName,
+          lastName: res.lastName,
+          imageUrl: imageUrl,
+          phone: res.phone,
+          levelOfKorean: res?.levelOfKorean,
+          dateOfBirth: res?.dateOfBirth?.replace(/\./g, "-"),
+          themeIds: res.themes.map((t: any) => t.id ?? t),
+          languageIds: res.languages.map((l: any) => l.id ?? l),
+        };
+        auth.setNewTranslator(updatedUserData);
+        navigate("/my-profile-page");
+      }
     } catch (err) {
       console.log(err);
     }
