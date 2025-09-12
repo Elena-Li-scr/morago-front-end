@@ -19,6 +19,11 @@ interface NoteStore {
   haveNewNote: boolean;
   setHaveNewNote: (val: boolean) => void;
 }
+
+interface FirstCallStore {
+  isFirstCall: boolean;
+  setIsFirstCall: (val: boolean) => void;
+}
 interface TopicIdStore {
   chosenTopicId: string | number;
   setChosenTopicId: (topic: string | number) => void;
@@ -60,4 +65,9 @@ export const useListStore = create<ListStore>((set) => ({
 export const useNoteStore = create<NoteStore>((set) => ({
   haveNewNote: false,
   setHaveNewNote: (val) => set({ haveNewNote: val }),
+}));
+
+export const useFirstCall = create<FirstCallStore>((set) => ({
+  isFirstCall: true,
+  setIsFirstCall: (val) => set({ isFirstCall: val }),
 }));

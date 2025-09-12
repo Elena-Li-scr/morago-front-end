@@ -24,6 +24,12 @@ export default function SignUp() {
       phone: data.phone.replace(/\s+/g, ""),
       role: "ROLE_USER",
     };
+    localStorage.removeItem("token");
+    localStorage.removeItem("phone");
+    localStorage.removeItem("id");
+    localStorage.removeItem("firstName");
+    localStorage.removeItem("lastName");
+    localStorage.removeItem("avatar");
 
     try {
       const response = await newUser(user);

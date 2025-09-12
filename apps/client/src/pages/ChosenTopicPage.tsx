@@ -29,9 +29,13 @@ export default function ChosenTopicPage() {
 
   useEffect(() => {
     const server = async () => {
-      if (chosenTopicId) {
-        const res = await getTranslatorsByTheme({ id: chosenTopicId });
-        console.log(res.data.content);
+      try {
+        if (chosenTopicId) {
+          const res = await getTranslatorsByTheme({ id: chosenTopicId });
+          console.log(res.data.content);
+        }
+      } catch (error) {
+        console.log(error);
       }
     };
     server();

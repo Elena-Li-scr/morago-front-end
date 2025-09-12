@@ -17,16 +17,16 @@ export default function CallsHistory() {
   };
 
   useEffect(() => {
-    try {
-      const server = async () => {
+    const server = async () => {
+      try {
         const lastCalls = await getLastCalls();
         const missedCalls = await getMissedCalls();
         console.log(lastCalls.data, missedCalls.data);
-      };
-      server();
-    } catch (error) {
-      console.log(error);
-    }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    server();
   });
 
   return (

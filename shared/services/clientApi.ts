@@ -98,6 +98,19 @@ export function getMissedCalls() {
   });
 }
 
+//getting All Calls
+
+export function getAllCalls() {
+  return axiosInstance.get("/profile/calls/history", {
+    params: {
+      page: 0,
+      size: 5,
+      sortBy: "id",
+      sortDirection: "ASC",
+    },
+  });
+}
+
 //getting balance
 
 export function getBalance() {
