@@ -13,6 +13,8 @@ import {
   updateTheme,
   getWithdrawHistory,
   getDepositHistory,
+  putWithdraw,
+  putDeposit,
 } from "../api/services/services";
 import { FIELDS_DEPOSIT_CONFIG, FIELDS_WITHDRAW_CONFIG } from "../constans/tableConfigs/configs";
 
@@ -37,6 +39,8 @@ interface Option {
 export default function AddPage() {
   const [categoryOptions, setCategoryOptions] = useState<Option[]>([]);
 
+  const [requestId, setRequestId] = useState<string | number>();
+
   const {
     register,
     handleSubmit,
@@ -45,18 +49,6 @@ export default function AddPage() {
     control,
     formState: { errors },
   } = useForm<Form>({ mode: "onChange", defaultValues: { categoryIds: [], isActive: true } });
-
-  useEffect(() => {
-    (async () => {
-      try {
-        const cats = await getAdminCategories();
-        setCategoryOptions(cats.content.map((c) => ({ id: c.id, label: c.name })));
-      } catch (e) {
-        console.error("Не удалось загрузить данные", e);
-      }
-    })();
-    register("image");
-  }, [register]);
 
   const { request } = useParams();
   const { type } = useParams();
@@ -85,6 +77,23 @@ export default function AddPage() {
   useEffect(() => {
     const server = async () => {
       try {
+        if (type === "themes") {
+          let page = 0;
+          let allCategories: any[] = [];
+          let hasMore = true;
+          while (hasMore) {
+            const res = await getAdminCategories(page, 5); // передаём page и size
+            allCategories = [...allCategories, ...res.content];
+            hasMore = !res.last; // пока не последняя страница
+            page++;
+          }
+          setCategoryOptions(
+            allCategories.map((c) => ({
+              id: c.id,
+              label: c.name,
+            })),
+          );
+        }
         if (type === "categories" && id) {
           const data = await getCategoryById(id);
           setValue("category", data.name);
@@ -94,10 +103,10 @@ export default function AddPage() {
           setValue("theme", data.name);
         }
         if (request === "withdraw" && userId) {
-          const data = await getWithdrawHistory(userId);
+          const data: any = await getWithdrawHistory(userId);
           const rows = {
             ...data,
-            sum: data.sum.toString().replace(/\B(?=(\d{3})+(?!\d))/g, "."),
+            sum: data.sum?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, "."),
             accountNumber: name,
           };
           FIELDS_WITHDRAW_CONFIG.forEach((field) => {
@@ -105,12 +114,13 @@ export default function AddPage() {
               setValue(field.name, rows[field.name]);
             }
           });
+          setRequestId(data.id);
         }
         if (request === "deposit" && userId) {
-          const data = await getDepositHistory(userId);
+          const data: any = await getDepositHistory(userId);
           const rows = {
             ...data,
-            sum: data.coin.toString().replace(/\B(?=(\d{3})+(?!\d))/g, "."),
+            sum: data.coin?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, "."),
             accountNumber: phone ?? name,
           };
           FIELDS_DEPOSIT_CONFIG.forEach((field) => {
@@ -118,14 +128,14 @@ export default function AddPage() {
               setValue(field.name, rows[field.name]);
             }
           });
+          setRequestId(data.id);
         }
       } catch (e) {
         console.error("Ошибка при загрузке:", e);
       }
     };
-
     server();
-  }, [id, type, setValue, request, userId]);
+  }, [id, type, setValue, request, userId, name, phone]);
 
   const onSubmit = async (data: Form) => {
     if (type === "categories" && data.category && !id) {
@@ -137,7 +147,6 @@ export default function AddPage() {
       };
       await updateCategory(id, category);
     }
-
     if (type === "themes") {
       const upData = {
         name: data.theme,
@@ -167,6 +176,23 @@ export default function AddPage() {
         console.log(e);
       }
     }
+
+    if (request === "withdraw" && requestId) {
+      const withdrawData = {
+        fullName: data.accountNumber,
+        bankName: data.nameOfBank,
+        bankAccount: data.accountHolder,
+        sum: Number(data.sum?.toString().replace(/\./g, "")),
+      };
+      await putWithdraw(requestId, withdrawData);
+    }
+
+    if (request === "deposit" && requestId) {
+      const depositAmount = {
+        sum: Number(data.sum?.toString().replace(/\./g, "")),
+      };
+      await putDeposit(requestId, depositAmount);
+    }
     navigate(-1);
   };
 
@@ -177,7 +203,6 @@ export default function AddPage() {
         <Breadcrumbs from={from} />
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="add-item-form">
-            {/* {type !== ""} */}
             {!request && (
               <>
                 <div className="file-upload-wrapper">

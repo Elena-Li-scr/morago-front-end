@@ -2,34 +2,20 @@ import { useCall } from "./useCall";
 import "../../assets/style/call.css";
 
 export const IncomingCallModal = () => {
-  const { incomingCall, setIncomingCall, setCallStatus, callStatus } = useCall();
+  const { incomingCall, callStatus, acceptCall, rejectCall } = useCall();
 
-  if (!incomingCall || callStatus === "active") return null;
-
-  const handleAccept = () => {
-    console.log("Принят звонок");
-    setCallStatus("active");
-    document.body.style.overflow = "hidden";
-    // setIncomingCall(null);
-  };
-
-  const handleDecline = () => {
-    console.log("Отклонён звонок");
-    document.body.style.overflow = "scroll";
-    setIncomingCall(null);
-  };
-
+  if (!incomingCall || callStatus === "in-call") return null;
   return (
     <div className="modal-overlay">
       <div className="container">
         <div className="incoming-call-modal">
           <div className="incoming-call-title">
             <p className="incoming-call">Входящий звонок</p>
-            <p className="incoming-call-theme">Тема: {incomingCall.topic}</p>
+            <p className="incoming-call-theme">Тема: {incomingCall.theme}</p>
           </div>
           <div className="incoming-call-block">
             <img src={incomingCall.photoUrl} className="incoming-call-img" alt="Аватар" />
-            <p className="incoming-call-block-user">{incomingCall.name}</p>
+            <p className="incoming-call-block-user">{incomingCall.toUserId}</p>
           </div>
           <div className="incoming-call-block">
             <div className="incoming-call-block-item">
@@ -37,7 +23,7 @@ export const IncomingCallModal = () => {
               <p className="incoming-call-block-text">Статус </p>
             </div>
             <div className="incoming-call-block-item">
-              <p className="incoming-call-block-title">{incomingCall.coins} коинов</p>
+              <p className="incoming-call-block-title">{incomingCall.costPerMinute} коинов</p>
               <p className="incoming-call-block-text">1 минута</p>
             </div>
           </div>
@@ -51,10 +37,10 @@ export const IncomingCallModal = () => {
               <li>Готово</li>
             </ol>
           </div>
-          <button className="button button-call" onClick={handleAccept}>
+          <button className="button button-call" onClick={acceptCall}>
             Принять звонок
           </button>
-          <button className="button button-call-reject" onClick={handleDecline}>
+          <button className="button button-call-reject" onClick={rejectCall}>
             Отклонить
           </button>
         </div>

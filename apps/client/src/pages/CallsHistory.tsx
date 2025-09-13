@@ -7,13 +7,15 @@ import { translators, missed } from "@shared/utils/temporaryVar";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { getMissedCalls, getLastCalls } from "@shared/services/clientApi";
+import { TestCallButton } from "../components/webRTC/TestCallButton";
 export default function CallsHistory() {
   const [allCalls, setAllCalls] = useState(true);
   const { selectedTranslator, setSelectedTranslator } = useTranslatorStore();
   const navigate = useNavigate();
 
   const callHandler = () => {
-    navigate("/call");
+    // navigate("/call");
+    console.log(5);
   };
 
   useEffect(() => {
@@ -21,7 +23,7 @@ export default function CallsHistory() {
       const server = async () => {
         const lastCalls = await getLastCalls();
         const missedCalls = await getMissedCalls();
-        console.log(lastCalls.data, missedCalls.data);
+        // console.log(lastCalls.data, missedCalls.data);
       };
       server();
     } catch (error) {
@@ -36,6 +38,7 @@ export default function CallsHistory() {
       </div>
       <div className="call-history-main scroll-content">
         <div className="calls-history-selectors">
+          <TestCallButton></TestCallButton>
           <button
             type="button"
             onClick={() => setAllCalls(true)}

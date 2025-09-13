@@ -13,14 +13,15 @@ export default function BalanceHeader() {
   useEffect(() => {
     const fetchBalance = async () => {
       try {
-        const result = await getBalance();
-        setBalance(result);
+        const result: any = await getBalance();
+        setBalance(result.toString().replace(/\B(?=(\d{3})+(?!\d))/g, "."));
       } catch (err) {
         console.error("Не удалось загрузить баланс");
       }
     };
     fetchBalance();
-  }, []);
+  }, [balance]);
+
   const changePage = () => {
     if (isHomePage) navigate("/my-balance-translator-page");
     if (isBalancePage) navigate("/withdrawal-page");

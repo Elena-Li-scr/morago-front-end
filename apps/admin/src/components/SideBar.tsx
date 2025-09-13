@@ -6,22 +6,21 @@ import { useNavigate, useParams } from "react-router-dom";
 export default function SideBar() {
   const [openList, setOpenList] = useState(false);
   const [openTopics, setOpenTopics] = useState(false);
-  const [addType, setAddType] = useState<string>("");
   const [selected, setSelected] = useState("");
   const navigate = useNavigate();
 
+  const searchParams = new URLSearchParams(location.search);
+  const from = searchParams.get("from") || undefined;
   const { type } = useParams();
 
   const selectHandler = (text: string) => {
     setSelected(text);
-    setAddType(text);
     navigate(`${text}`);
   };
 
-  const addHandler = (text: string) => {
+  const addHandler = () => {
     if (type === "themes" || type === "categories") {
       navigate(`translationTopics/${type}/newPage?from=${type}`);
-      // setAddType("");
     }
   };
 
@@ -92,7 +91,7 @@ export default function SideBar() {
         )}
       </div>
       <div className="side-bar-setting">
-        <SmallButton text="Add" icon="/assets/add-icon.png" onClick={() => addHandler(addType)} />
+        <SmallButton from={from} text="Add" icon="/assets/add-icon.png" onClick={addHandler} />
         <button type="button" className="setting-button">
           <img src="/assets/setting.png" alt="settings" />
         </button>

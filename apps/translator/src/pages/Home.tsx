@@ -2,7 +2,6 @@ import "@shared/styles/homePage.css";
 import "../assets/style/listContacts.css";
 import { CallCard } from "../components/user/CallCard";
 import { useEffect, useState } from "react";
-import { TestCallButton } from "../components/call/TestCallButton";
 import { getCallHistory } from "../api/services/services";
 import type { CallHisrtoryTranslator } from "../types/types";
 
@@ -48,7 +47,6 @@ export default function Home() {
           </div>
         )}
       </div>
-      <TestCallButton />
     </div>
   );
 }

@@ -22,7 +22,7 @@ export default function NewTrasnlator() {
     // options
     async function load() {
       try {
-        const languages = await getLanguages();
+        const languages: any = await getLanguages();
         // const themes = await getThemes();
         // console.log(themes);
         setCheckboxGroups((prev) =>

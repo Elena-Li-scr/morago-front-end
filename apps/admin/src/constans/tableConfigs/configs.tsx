@@ -238,7 +238,7 @@ export const withdrawRequestTableConfig: Column<RequestPage>[] = [
       if ("status" in row && row.status === "PENDING") {
         return (
           <Link
-            to={`/home/lists/translator/withdraw?name=${encodeURIComponent(row.name)}&id=${encodeURIComponent(row.id)}&from=translator`}
+            to={`/home/lists/translator/withdraw?name=${encodeURIComponent(row.name)}&id=${encodeURIComponent(row.userId)}&from=translator`}
             className="view-btn request"
           >
             Request <MdArrowForwardIos className="view-icon" />
@@ -369,7 +369,7 @@ type FieldConfig = {
   extra?: string; // доп. информация (например, баланс)
 };
 
-type FormValues = {
+export type FormValues = {
   accountHolder: string;
   accountNumber: string;
   nameOfBank: string;

@@ -53,7 +53,7 @@ export const CallCard = ({ avatarUrl, name, theme, time, price, date }: Props) =
         </div>
       ) : (
         <div className="call-time">
-          <p className="call-time-price">{price.toLocaleString()} ₩</p>
+          <p className="call-time-price">{price} ₩</p>
           <p className="call-time-time">{formatTime(Number(time))}</p>
         </div>
       )}

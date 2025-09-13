@@ -30,6 +30,8 @@ type ApiUser = {
   hasWithdrawalRequest: string;
   categoryId: number;
   duration: number;
+  date?: string;
+  coins?: string;
 };
 
 type SortDir = "ASC" | "DESC" | "";
@@ -95,8 +97,12 @@ export default function GenericTablePage({ section }: Props) {
           data = await getAdminUsers(page, size, query);
           rows = (data.content ?? []).map((u: ApiUser) => ({
             ...u,
+            balance: u.balance.toString().replace(/\B(?=(\d{3})+(?!\d))/g, "."),
             phone: u.phone.replace(/(\d{3})(\d{4})(\d{2})(\d{2})/, "$1 $2 $3 $4"),
-            name: [u.firstName, u.lastName].filter(Boolean).join(" ").trim(),
+            name:
+              u.firstName || u.lastName
+                ? [u.firstName, u.lastName].filter(Boolean).join(" ").trim()
+                : "( Не указоно )",
           }));
         }
         if (section === "lists" && type === "translator") {
@@ -111,6 +117,7 @@ export default function GenericTablePage({ section }: Props) {
           data = await getCallHistoryid(userId, page, size);
           rows = (data.content ?? []).map((u: ApiUser) => ({
             ...u,
+            coins: u.coins?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, "."),
             id: u.duration,
             duration: duration(u.duration),
           }));
@@ -130,7 +137,8 @@ export default function GenericTablePage({ section }: Props) {
             ...u,
             amount: u.amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, "."),
             name: name,
-            id: userId,
+            id: userId + u.date,
+            userId: userId,
           }));
         }
         if (section === "topics" && type === "categories") {

@@ -98,15 +98,16 @@ export const getCallHistory = async (filter?: "isMissed" | "isLast") => {
     };
 
     if (filter === "isMissed") {
-      params.isMissed = true;
+      params.isMissed = "true";
     }
     if (filter === "isLast") {
-      params.isLast = true;
+      params.isLast = "true";
     }
 
     const response = await axiosInstance.get("/profile/calls/history", {
       params,
     });
+
     const content: CallFromApi[] = response.content;
     const transformed = content.map((call) => ({
       id: `${call.date}-${call.phone}`,
@@ -129,7 +130,7 @@ export const getCallHistory = async (filter?: "isMissed" | "isLast") => {
 export const getBalance = async () => {
   try {
     const response = await axiosInstance.get("/profile/balance");
-    return response.data; // Предположим, что backend возвращает просто число (баланс)
+    return response; // Предположим, что backend возвращает просто число (баланс)
   } catch (error) {
     console.error("Ошибка при получении баланса:", error);
     throw error;

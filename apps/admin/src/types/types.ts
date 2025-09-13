@@ -43,6 +43,7 @@ export type RequestPage = {
   amount: string;
   name: string;
   status?: string;
+  userId: string;
 };
 
 export type Categories = {

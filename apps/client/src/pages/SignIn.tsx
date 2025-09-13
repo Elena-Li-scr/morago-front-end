@@ -29,6 +29,8 @@ export default function SignIn() {
           localStorage.setItem("firstName", response?.data.firstName);
           localStorage.setItem("lastName", response?.data.lastName);
         }
+        console.log(response);
+
         navigate("/home");
       }
     } catch (error: unknown) {

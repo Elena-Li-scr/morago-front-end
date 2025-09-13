@@ -25,8 +25,8 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route index element={<Navigate to="/logIn" />} />
-        <Route path="/logIn" element={<LogIn />} />
+        <Route index element={<Navigate to="/login" />} />
+        <Route path="/login" element={<LogIn />} />
         <Route path="/register" element={<RegisterForm />} />
         <Route path="/verification/:process/:phone" element={<VerificationCode />} />
         <Route path="/new-translator/:phone" element={<NewTrasnlator />} />
