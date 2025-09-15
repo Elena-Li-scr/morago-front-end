@@ -3,18 +3,18 @@ import Theme from "@shared/components/Theme";
 import SimpleHeader from "../components/SimpleHeader";
 import MainFooter from "../components/MainFooter";
 import TranslatorCall from "../components/TranslatorCall";
-import { translators } from "@shared/utils/temporaryVar";
 import { useTopicStore, useTranslatorStore, useIdTopicStore } from "@shared/store/useStore";
 import { addLastChoosenThemes, getTranslatorsByTheme } from "@shared/services/clientApi";
 import { useNavigate } from "react-router-dom";
 
 import "@shared/styles/homePage.css";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 export default function ChosenTopicPage() {
   const { selectedTranslator, setSelectedTranslator } = useTranslatorStore();
   const { chosenTopic, setChosenTopic } = useTopicStore();
   const { chosenTopicId, setChosenTopicId } = useIdTopicStore();
+  const [translators, setTranslators] = useState([]);
   const navigate = useNavigate();
   const handleBack = () => {
     navigate(-1);
@@ -32,14 +32,14 @@ export default function ChosenTopicPage() {
       try {
         if (chosenTopicId) {
           const res = await getTranslatorsByTheme({ id: chosenTopicId });
-          console.log(res.data.content);
+          setTranslators(res.data.content);
         }
       } catch (error) {
         console.log(error);
       }
     };
     server();
-  });
+  }, [chosenTopicId]);
 
   return (
     <div className="page-wrapper">

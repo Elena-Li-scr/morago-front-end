@@ -134,12 +134,6 @@ export function sendNewPassword(payload: NewUserPayload) {
   return axiosInstance.post("/publicResetPassword/reset/confirm", payload);
 }
 
-// export function getTranslatorsList(themeId: number) {
-//   return axiosInstance.get("/user/translators", {
-//     params: { themeId, page: 0, size: 5, sortBy: "id", sortDirection: "ASC" },
-//   });
-// }
-
 //получение уведомлений
 
 export function getNotifications() {
@@ -180,6 +174,10 @@ export function getTranslatorsByTheme({ id }: { id: number | string }) {
       sortDirection: "ASC",
     },
   });
+}
+
+export function getTranslatorsById({ id }: { id: number | string }) {
+  return axiosInstance.get(`/user/translators/${id}`);
 }
 
 export function addLastChoosenThemes({ id }: { id: number | string }) {

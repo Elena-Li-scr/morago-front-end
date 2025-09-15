@@ -1,14 +1,20 @@
 import { create } from "zustand";
-import type { Translator } from "../../apps/client/src/types";
 
 interface TopicStore {
   chosenTopic: string;
   setChosenTopic: (topic: string) => void;
 }
+interface TranslatorByTheme {
+  id: string | number;
+  nameWithInitials: string;
+  levelOfKorean: number;
+  imageUrl: null | string;
+  theme: string;
+}
 
 interface TranslatorStore {
-  selectedTranslator: Translator | null;
-  setSelectedTranslator: (translator: Translator | null) => void;
+  selectedTranslator: TranslatorByTheme | null;
+  setSelectedTranslator: (translator: TranslatorByTheme | null) => void;
 }
 
 interface ListStore {
