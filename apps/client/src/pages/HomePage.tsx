@@ -4,7 +4,6 @@ import FirstCallModal from "../components/FirstCallModal";
 // import InsufficientModal from "../components/InsufficientModal";
 import TranslatorInfo from "../components/TranslatorInfo";
 import MainFooter from "../components/MainFooter";
-// import { translators } from "@shared/utils/temporaryVar";
 import { getLastCalls, getAllCalls } from "@shared/services/clientApi";
 import { useFirstCall } from "@shared/store/useStore";
 import { useEffect, useState } from "react";
@@ -33,7 +32,7 @@ export default function HomePage() {
       <HomeHeader />
       <div className="scroll-content">
         <ThemePage />
-        {translators && (
+        {translators.length > 0 && (
           <div className="home-last-calls">
             <h3>Мои последние звонки</h3>
             <div className="last-calls-list">

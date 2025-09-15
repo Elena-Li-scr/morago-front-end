@@ -180,6 +180,10 @@ export function getTranslatorsById({ id }: { id: number | string }) {
   return axiosInstance.get(`/user/translators/${id}`);
 }
 
+export function getLastChoosenThemes() {
+  return axiosInstance.get(`/profile/themes`);
+}
+
 export function addLastChoosenThemes({ id }: { id: number | string }) {
   return axiosInstance.post(`/profile/themes/${id}/favorite`, {});
 }
