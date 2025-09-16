@@ -18,7 +18,7 @@ import ProfileSubLayout from "./components/layout/ProfileSubLayout";
 import CallHistory from "./pages/CallHistory";
 import { IncomingCallModal } from "./components/call/IncomingCallModal";
 import { CallModal } from "./components/call/CallModal";
-import Loading from "./components/loading/Loading";
+import Loader from "@shared/components/Loader";
 import NotificationTranslator from "./pages/NotificationTranslator";
 
 function App() {
@@ -49,7 +49,7 @@ function App() {
           <Route path="/my-notification-page" element={<NotificationTranslator />} />
         </Route>
       </Routes>
-      <Loading />
+      <Loader />
       <IncomingCallModal />
       <CallModal />
     </BrowserRouter>

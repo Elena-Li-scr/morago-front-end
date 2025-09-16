@@ -7,7 +7,7 @@ const BASE_URL = "http://localhost:8080";
 
 type AvatarUploadProps = {
   onChange?: (file: File) => void;
-  translatorAvatar?: string | null;
+  translatorAvatar?: File | string | null;
 };
 
 const AvatarUpload = ({ onChange, translatorAvatar }: AvatarUploadProps) => {

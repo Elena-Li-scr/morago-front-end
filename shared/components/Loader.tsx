@@ -1,7 +1,7 @@
-import "../../assets/style/loading.css";
-import { useModalStore } from "./useModalStore";
+import "../styles/loader.css";
+import { useModalStore } from "../store/useStore";
 
-const Loading = () => {
+export default function Loader() {
   const isLoading = useModalStore((state) => state.loading);
 
   if (!isLoading) return null;
@@ -15,6 +15,4 @@ const Loading = () => {
       <div className="brand-text">morago</div>
     </div>
   );
-};
-
-export default Loading;
+}

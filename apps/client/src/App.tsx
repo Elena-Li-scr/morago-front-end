@@ -17,7 +17,7 @@ import ForgotPasswordCode from "./pages/ForgotPasswordCode";
 import NewPassword from "./pages/NewPassword";
 import GreetingPage from "./pages/GreetingPage";
 import SignIn from "./pages/SignIn";
-import Loader from "./components/Loader";
+import Loader from "@shared/components/Loader";
 function App() {
   return (
     <>

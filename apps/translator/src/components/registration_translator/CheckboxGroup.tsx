@@ -13,21 +13,19 @@ type Props = {
   single?: boolean;
 };
 
-export const ControlledCheckboxGroup = ({ name, label, options, rules, single = false }: Props) => {
+export const ControlledCheckboxGroup = ({ name, label, options, rules }: Props) => {
   const { control } = useFormContext();
   const {
     field: { value, onChange },
   } = useController({ name, control, rules });
 
   const handleChange = (option: number) => {
-    if (single) {
-      onChange(!value ? true : !value);
-    } else {
-      const newValue = value?.includes(option)
-        ? value.filter((v: number) => v !== option)
-        : [...(value || []), option];
-      onChange(newValue);
-    }
+    const newValue = value?.includes(option)
+      ? value.filter((v: number) => v !== option)
+      : [...(value || []), option];
+    console.log(newValue);
+
+    onChange(newValue);
   };
   return (
     <div className="tranalator-checkbox">
@@ -37,7 +35,7 @@ export const ControlledCheckboxGroup = ({ name, label, options, rules, single = 
           <label key={option.id}>
             <input
               type="checkbox"
-              checked={single ? !!value : Array.isArray(value) && value.includes(option.id)}
+              checked={Array.isArray(value) && value.includes(option.id)}
               onChange={() => handleChange(option.id)}
               className="checkbox"
             />

@@ -1,33 +1,32 @@
 import "../assets/style/callPage.css";
 import { useEffect, useState } from "react";
 import { CallCard } from "../components/user/CallCard";
-import { getCallHistory } from "../api/services/services";
-import type { CallHisrtoryTranslator } from "../types/types";
+import { getCallHistory } from "@shared/services/translatorApi";
+
+import type { CallFromApi } from "@shared/types/types";
+import { callListSort } from "../utils/callListSort";
 
 export default function CallHistory() {
   const [isAvailable, setIsAvailable] = useState(true);
-  const [callData, setCallData] = useState<CallHisrtoryTranslator[]>([]);
+  const [callData, setCallData] = useState<CallFromApi[]>([]);
 
-  const fetchData = async () => {
-    try {
-      const response = await getCallHistory("isLast");
-      setCallData(response);
-    } catch (err) {
-      console.error("Ошибка при получении истории:", err);
-    }
-  };
   useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const res = await getCallHistory("isLast");
+        const sortedCallList = callListSort(res.content);
+        setCallData(sortedCallList);
+      } catch (err) {
+        console.error("Ошибка при получении истории:", err);
+      }
+    };
     fetchData();
   }, []);
 
   const switchStatusHandler = async () => {
     const filter = isAvailable ? "isMissed" : "isLast";
     const result = await getCallHistory(filter);
-    setCallData(result);
-    console.log(isAvailable);
-
-    console.log(filter);
-
+    setCallData(result.content);
     setIsAvailable(!isAvailable);
   };
 
@@ -58,11 +57,11 @@ export default function CallHistory() {
             callData.map((call) => (
               <CallCard
                 key={call.id}
-                avatarUrl={call.avatarUrl}
+                avatarUrl={call.imageUrl}
                 name={call.name}
                 theme={call.theme}
-                time={call.time}
-                price={call.price}
+                time={call.duration}
+                price={call.coins}
               />
             ))
           )}

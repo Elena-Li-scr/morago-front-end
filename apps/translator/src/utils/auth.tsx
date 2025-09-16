@@ -1,4 +1,4 @@
-import type { UserProfileExtra } from "../types/types";
+import type { UserProfileExtra } from "@shared/types/types";
 
 const TOKEN_KEY = "token";
 const VERIFIED_KEY = "isVerified";

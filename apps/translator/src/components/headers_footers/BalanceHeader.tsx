@@ -4,7 +4,7 @@ import LogoHeader from "./LogoHeader";
 import { StatusToggle } from "../animation/StatusToggle";
 import { GrNext } from "react-icons/gr";
 import { useEffect, useState } from "react";
-import { getBalance } from "../../api/services/services";
+import { getBalance } from "@shared/services/translatorApi";
 
 export default function BalanceHeader() {
   const [balance, setBalance] = useState<number | null>(null);
@@ -13,10 +13,10 @@ export default function BalanceHeader() {
   useEffect(() => {
     const fetchBalance = async () => {
       try {
-        const result: any = await getBalance();
-        setBalance(result.toString().replace(/\B(?=(\d{3})+(?!\d))/g, "."));
+        const result = await getBalance();
+        setBalance(result.data.toString().replace(/\B(?=(\d{3})+(?!\d))/g, "."));
       } catch (err) {
-        console.error("Не удалось загрузить баланс");
+        console.error("Не удалось загрузить баланс", err);
       }
     };
     fetchBalance();

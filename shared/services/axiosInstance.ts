@@ -22,11 +22,11 @@ axiosInstance.interceptors.request.use((config) => {
 
 axiosInstance.interceptors.response.use(
   (response) => {
-    setTimeout(() => useModalStore.getState().setLoading(false), 150);
+    setTimeout(() => useModalStore.getState().setLoading(false), 2000);
     return response;
   },
   (error) => {
-    setTimeout(() => useModalStore.getState().setLoading(false), 150);
+    setTimeout(() => useModalStore.getState().setLoading(false), 2000);
     return Promise.reject(error);
   },
 );

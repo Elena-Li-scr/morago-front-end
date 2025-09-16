@@ -15,7 +15,8 @@ import { rules } from "../utils/rules";
 import { formatBalance, formatBankAccount } from "../utils/formatInput";
 import { ControlledSelectField } from "../components/registration_translator/ControlledSelectedField";
 import ChangePageBtn from "../components/buttons/ChangePageBtn";
-import { postWithdrawalTranslator } from "../api/services/services";
+import { postWithdrawalTranslator } from "@shared/services/translatorApi";
+import type { WithdrawalForm } from "@shared/types/types";
 
 export default function Withdrawal() {
   const methods = useForm({
@@ -28,11 +29,11 @@ export default function Withdrawal() {
 
   const { control, handleSubmit, formState } = methods;
 
-  const onSubmit = async (data: any) => {
+  const onSubmit = async (data: WithdrawalForm) => {
     const withdrawal = {
       accountHolder: data.accountHolder,
       nameOfBank: data.nameOfBank,
-      won: Number(data.won.replace(/\D/g, "")),
+      won: data.won.replace(/\D/g, ""),
     };
     await postWithdrawalTranslator(withdrawal);
     setSuccess(true);

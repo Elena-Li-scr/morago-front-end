@@ -3,7 +3,7 @@ import {
   postClearNotifications,
   getNotifications,
   getUnreadNotificationsCount,
-} from "../../api/services/services";
+} from "@shared/services/translatorApi";
 import type { NotificationType } from "../../types/types";
 
 interface NotificationStore {
@@ -22,7 +22,7 @@ export const useNotificationStore = create<NotificationStore>((set) => ({
   fetchUnreadCount: async () => {
     try {
       const res = await getUnreadNotificationsCount();
-      set({ unreadCount: res });
+      set({ unreadCount: res.data });
     } catch (err) {
       console.error("Ошибка при получении количества уведомлений", err);
     }
@@ -30,7 +30,7 @@ export const useNotificationStore = create<NotificationStore>((set) => ({
   fetchNotifications: async () => {
     try {
       const res = await getNotifications();
-      const sorted = [...res.content].sort((a, b) => {
+      const sorted = [...res.data.content].sort((a, b) => {
         return Number(a.isRead) - Number(b.isRead);
       });
       set({ notifications: sorted });

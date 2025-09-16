@@ -1,24 +1,19 @@
 import { navItems } from "../../constans/constans";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 export default function MainFooter() {
   const navigate = useNavigate();
   const toHomePage = () => navigate("/my-home-translator-page");
   const toCallHistoryPage = () => navigate("/my-call-history");
   const toProfilePage = () => navigate("/my-profile-page");
-
+  const location = useLocation();
   const page = location.pathname.toLowerCase();
-  const isProfilePage =
-    location.pathname.toLowerCase() === "/my-profile-page/change-password";
+  const isProfilePage = location.pathname.toLowerCase() === "/my-profile-page/change-password";
 
   const navWithHandlers = navItems.map((item) => ({
     ...item,
     onClick:
-      item.name === "main"
-        ? toHomePage
-        : item.name === "phone"
-        ? toCallHistoryPage
-        : toProfilePage,
+      item.name === "main" ? toHomePage : item.name === "phone" ? toCallHistoryPage : toProfilePage,
   }));
 
   if (!isProfilePage)
@@ -33,19 +28,11 @@ export default function MainFooter() {
               onClick={item.onClick}
             >
               <div
-                className={`${
-                  page === item.route
-                    ? " main-footer-nav active"
-                    : "main-footer-nav"
-                }`}
+                className={`${page === item.route ? " main-footer-nav active" : "main-footer-nav"}`}
               >
                 {item.icon}
               </div>
-              <h3
-                className={`main-footer-icon ${
-                  page === item.route ? "main-footer-active" : ""
-                }`}
-              >
+              <h3 className={`main-footer-icon ${page === item.route ? "main-footer-active" : ""}`}>
                 {item.label}
               </h3>
             </button>

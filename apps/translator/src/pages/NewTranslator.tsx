@@ -9,11 +9,13 @@ import { ControlledInputField } from "../components/registration_translator/Cont
 import { FormProvider, useForm } from "react-hook-form";
 import { rules } from "../utils/rules";
 import { auth } from "../utils/auth";
-import type { UserProfileExtra } from "../types/types";
-import { getLanguages, getThemes, newTranslatorData, postThemes } from "../api/services/services";
+import type { UserProfileExtra } from "@shared/types/types";
+import { getLanguages, newTranslatorData, postThemes } from "@shared/services/translatorApi";
 import { formatPhone } from "../utils/formatInput";
-import { useModalStore } from "../components/loading/useModalStore";
+import { useModalStore } from "@shared/store/useStore";
 import { useEffect, useState } from "react";
+import type { CategoryTranslator, languagesTranslator } from "../types/types";
+
 export default function NewTrasnlator() {
   const { success, setSuccess } = useModalStore();
   const [checkboxGroups, setCheckboxGroups] = useState(CHECKBOX_GROUPS);
@@ -22,12 +24,10 @@ export default function NewTrasnlator() {
     // options
     async function load() {
       try {
-        const languages: any = await getLanguages();
-        // const themes = await getThemes();
-        // console.log(themes);
+        const languages = await getLanguages();
         setCheckboxGroups((prev) =>
           prev.map((item) =>
-            item.field === "languageIds" ? { ...item, options: languages } : item,
+            item.field === "languageIds" ? { ...item, options: languages.data } : item,
           ),
         );
       } catch (err) {
@@ -46,12 +46,10 @@ export default function NewTrasnlator() {
   });
   const { control, handleSubmit, formState } = methods;
   const navigate = useNavigate();
-
-  const onSubmit = async (data: any) => {
-    const fullName = data.fullName.split(" ");
-    const firstName = fullName[0];
-    const lastName = fullName[fullName.length - 1];
-
+  const onSubmit = async (data: UserProfileExtra) => {
+    const fullName = data.fullName?.split(" ");
+    const firstName = fullName && fullName[0];
+    const lastName = fullName && fullName[fullName.length - 1];
     const translatorData = {
       firstName: firstName,
       lastName: lastName,
@@ -62,25 +60,22 @@ export default function NewTrasnlator() {
       languageIds: data.languageIds,
     };
     try {
-      for (const id of translatorData.themeIds) {
-        await postThemes(id);
-      }
+      await Promise.all(translatorData.themeIds.map((id) => postThemes(id)));
       const res = await newTranslatorData(translatorData);
       const resdata = {
-        ...res,
-        dateOfBirth: res.dateOfBirth.replace(/\./g, "-"),
-        phone: res.phone,
-        themeIds: res.themes.map((t: any) => t.id ?? t),
-        languageIds: res.languages.map((l: any) => l.id ?? l),
+        ...res.data,
+        dateOfBirth: res.data.dateOfBirth.replace(/\./g, "-"),
+        phone: res.data.phone,
+        themeIds: res.data.themes.map((t: CategoryTranslator) => t.id ?? t),
+        languageIds: res.data.languages.map((l: languagesTranslator) => l.id ?? l),
       };
-
       document.body.style.overflow = "hidden";
+      console.log(success);
       setSuccess(true);
       auth.setProfileFilled();
       auth.setNewTranslator(resdata);
-    } catch (err: any) {
-      const serverMessage = err.response?.data.error;
-      console.log(serverMessage);
+    } catch (err) {
+      console.log(err);
     }
   };
 
@@ -106,7 +101,7 @@ export default function NewTrasnlator() {
               icon={icon}
               format={format}
               type={type}
-              rules={rules[name]}
+              rules={name !== "token" && rules[name]}
             />
           ))}
           {checkboxGroups.map((group) => {
@@ -117,7 +112,7 @@ export default function NewTrasnlator() {
                 key={group.field}
                 label={group.label}
                 options={group.options}
-                rules={rules[group.field]}
+                rules={group.field !== "token" && rules[group.field]}
               />
             );
           })}
