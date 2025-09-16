@@ -1,6 +1,7 @@
 import "@shared/styles/profile.css";
 import MainFooter from "../components/MainFooter";
 import { useNavigate } from "react-router-dom";
+
 export default function Profile() {
   const navigate = useNavigate();
   const changeProfile = () => {
@@ -14,6 +15,7 @@ export default function Profile() {
   const toNotifications = () => {
     navigate("/notification");
   };
+
   return (
     <div className="page-wrapper">
       <header className="profile-header">
@@ -21,7 +23,11 @@ export default function Profile() {
         <div className="profile-header-info">
           <div>
             <img
-              src="/assets/profile/temporary-photo.png"
+              src={
+                localStorage.getItem("avatar")
+                  ? `http://localhost:8080${localStorage.getItem("avatar")}`
+                  : "/assets/profile/temporary-photo.png"
+              }
               alt="profile-photo"
               className="profile-image"
             />

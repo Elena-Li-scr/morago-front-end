@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useTopicStore } from "@shared/store/useStore";
+import { useTopicStore, useIdTopicStore } from "@shared/store/useStore";
 import SimpleHeader from "../components/SimpleHeader";
 import MainFooter from "../components/MainFooter";
 import Theme from "@shared/components/Theme";
@@ -36,6 +36,7 @@ type ThemesResponse = {
 export default function CallSelectors() {
   const navigate = useNavigate();
   const { chosenTopic, setChosenTopic } = useTopicStore();
+  const { setChosenTopicId } = useIdTopicStore();
   const [categories, setCategories] = useState<Category[]>([]);
   const [themesByCategory, setThemesByCategory] = useState<Record<number, ThemeItem[]>>({});
   const [loadingThemes, setLoadingThemes] = useState<Record<number, boolean>>({});
@@ -84,8 +85,9 @@ export default function CallSelectors() {
     });
   };
 
-  const handleThemeClick = (themeName: string) => {
-    setChosenTopic(themeName);
+  const handleThemeClick = (id: number, name: string) => {
+    setChosenTopic(name);
+    setChosenTopicId(id);
   };
 
   const handleBack = () => navigate(-1);
@@ -144,7 +146,9 @@ export default function CallSelectors() {
                       <Theme
                         key={theme.id}
                         theme={theme.name}
-                        onClick={handleThemeClick}
+                        onClick={(nameFromChild: string) =>
+                          handleThemeClick(theme.id, nameFromChild)
+                        }
                         style={chosenTopic === theme.name ? { backgroundColor: "#EB9412" } : {}}
                       />
                     ))}

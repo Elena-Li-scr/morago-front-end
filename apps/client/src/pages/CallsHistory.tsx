@@ -1,33 +1,35 @@
 import "@shared/styles/calls.css";
 import MainFooter from "../components/MainFooter";
 import TranslatorInfoSimple from "../components/TranslatorInfoSimple";
-import TranslatorCall from "../components/TranslatorCall";
-import { useTranslatorStore } from "@shared/store/useStore";
-import { translators, missed } from "@shared/utils/temporaryVar";
+// import TranslatorCall from "../components/TranslatorCall";
+// import { useTranslatorStore } from "@shared/store/useStore";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { getMissedCalls, getLastCalls } from "@shared/services/clientApi";
+// import { useNavigate } from "react-router-dom";
+import { getMissedCalls, getAllCalls } from "@shared/services/clientApi";
 export default function CallsHistory() {
   const [allCalls, setAllCalls] = useState(true);
-  const { selectedTranslator, setSelectedTranslator } = useTranslatorStore();
-  const navigate = useNavigate();
+  const [allTranslators, setAllTranslators] = useState([]);
+  const [missedTranslators, setMissedTranslators] = useState([]);
+  // const { selectedTranslator, setSelectedTranslator } = useTranslatorStore();
+  // const navigate = useNavigate();
 
-  const callHandler = () => {
-    navigate("/call");
-  };
+  // const callHandler = () => {
+  //   navigate("/call");
+  // };
 
   useEffect(() => {
-    try {
-      const server = async () => {
-        const lastCalls = await getLastCalls();
+    const server = async () => {
+      try {
+        const allCalls = await getAllCalls();
         const missedCalls = await getMissedCalls();
-        console.log(lastCalls.data, missedCalls.data);
-      };
-      server();
-    } catch (error) {
-      console.log(error);
-    }
-  });
+        setAllTranslators(allCalls.data.content);
+        setMissedTranslators(missedCalls.data.content);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    server();
+  }, []);
 
   return (
     <div className="call-history-wrapper">
@@ -59,22 +61,22 @@ export default function CallsHistory() {
           <h3>Недавние</h3>
           {allCalls ? (
             <div className="recent-calls-list">
-              {translators.map((translator, index) => (
+              {allTranslators.map((translator, index) => (
                 <TranslatorInfoSimple
                   key={index}
                   translator={translator}
-                  onClick={() => setSelectedTranslator(translator)}
+                  // onClick={() => setSelectedTranslator(translator)}
                 />
               ))}
             </div>
           ) : (
             <div className="recent-calls-list">
               <div className="recent-calls-list">
-                {missed.map((translator, index) => (
+                {missedTranslators.map((translator, index) => (
                   <TranslatorInfoSimple
                     key={index}
                     translator={translator}
-                    onClick={() => setSelectedTranslator(translator)}
+                    // onClick={() => setSelectedTranslator(translator)}
                   />
                 ))}
               </div>
@@ -83,7 +85,7 @@ export default function CallsHistory() {
         </div>
       </div>
       <MainFooter page="phone" />
-      {selectedTranslator && (
+      {/* {selectedTranslator && (
         <div
           className="modal-window-wrapper"
           onClick={(e) => {
@@ -94,7 +96,7 @@ export default function CallsHistory() {
         >
           <TranslatorCall translator={selectedTranslator} onClick={callHandler} />
         </div>
-      )}
+      )} */}
     </div>
   );
 }

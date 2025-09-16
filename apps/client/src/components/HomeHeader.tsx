@@ -18,15 +18,15 @@ export default function HomeHeader() {
   };
 
   useEffect(() => {
-    try {
-      const server = async () => {
+    const server = async () => {
+      try {
         const res = await getBalance();
         setBalance(res.data);
-      };
-      server();
-    } catch (error) {
-      console.log(error);
-    }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    server();
   }, []);
   return (
     <div className="home-header-wrapper">

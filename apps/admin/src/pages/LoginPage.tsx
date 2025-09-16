@@ -4,6 +4,7 @@ import BigButton from "../components/BigButton";
 import "../assets/style/startPage.css";
 import { useNavigate } from "react-router-dom";
 import { LoginAdmin } from "../api/services/services";
+import axios from "axios";
 
 interface FormData {
   phone: string;
@@ -19,18 +20,26 @@ export default function LoginPage() {
       password: data.password,
       phone: data.phone.replace(/\s+/g, ""),
     };
+    localStorage.removeItem("token");
+    localStorage.removeItem("phone");
     try {
       const response = await LoginAdmin(admin);
       if (response?.token && response?.phone) {
-        localStorage.clear();
         localStorage.setItem("token", response.token);
         localStorage.setItem("phone", response.phone);
         navigate("/home");
         setError(null);
       }
-    } catch (error) {
-      if (error instanceof Error) {
-        setError(error.message);
+    } catch (error: unknown) {
+      if (axios.isAxiosError(error)) {
+        const errorMessage = error.response?.data?.error;
+        if (errorMessage === "Invalid phone or password") {
+          setError("Invalid phone or password");
+        } else {
+          setError("Login failed");
+        }
+      } else {
+        setError("Login failed");
       }
     }
   };
