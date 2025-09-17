@@ -1,4 +1,3 @@
-import { IoEyeOutline } from "react-icons/io5";
 import { MdArrowForwardIos } from "react-icons/md";
 import type {
   CallHistory,
@@ -26,7 +25,7 @@ const baseListsColumns = [
   {
     key: "eye",
     title: "",
-    render: (row) => {
+    render: (row: any) => {
       if (!row) return null;
       return <ViewButton row={row} />;
     },
@@ -220,7 +219,7 @@ export const withdrawRequestTableConfig: Column<RequestPage>[] = [
     key: "request",
     title: "Withdraw",
     width: "25%",
-    render: (row) => {
+    render: () => {
       return <p>Withdraw</p>;
     },
   },
@@ -238,7 +237,7 @@ export const withdrawRequestTableConfig: Column<RequestPage>[] = [
       if ("status" in row && row.status === "PENDING") {
         return (
           <Link
-            to={`/home/lists/translator/withdraw?name=${encodeURIComponent(row.name)}&id=${encodeURIComponent(row.id)}&from=translator`}
+            to={`/home/lists/translator/withdraw?name=${encodeURIComponent(row.name)}&id=${encodeURIComponent(row.userId)}&from=translator`}
             className="view-btn request"
           >
             Request <MdArrowForwardIos className="view-icon" />
@@ -264,7 +263,7 @@ export const depositRequestTableConfig: Column<RequestPage>[] = [
     key: "request",
     title: "Deposit",
     width: "25%",
-    render: (row) => {
+    render: () => {
       return <p>Deposit</p>;
     },
   },
@@ -369,7 +368,7 @@ type FieldConfig = {
   extra?: string; // доп. информация (например, баланс)
 };
 
-type FormValues = {
+export type FormValues = {
   accountHolder: string;
   accountNumber: string;
   nameOfBank: string;

@@ -18,15 +18,15 @@ import ProfileSubLayout from "./components/layout/ProfileSubLayout";
 import CallHistory from "./pages/CallHistory";
 import { IncomingCallModal } from "./components/call/IncomingCallModal";
 import { CallModal } from "./components/call/CallModal";
-import Loading from "./components/loading/Loading";
+import Loader from "@shared/components/Loader";
 import NotificationTranslator from "./pages/NotificationTranslator";
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route index element={<Navigate to="/logIn" />} />
-        <Route path="/logIn" element={<LogIn />} />
+        <Route index element={<Navigate to="/login" />} />
+        <Route path="/login" element={<LogIn />} />
         <Route path="/register" element={<RegisterForm />} />
         <Route path="/verification/:process/:phone" element={<VerificationCode />} />
         <Route path="/new-translator/:phone" element={<NewTrasnlator />} />
@@ -49,7 +49,7 @@ function App() {
           <Route path="/my-notification-page" element={<NotificationTranslator />} />
         </Route>
       </Routes>
-      <Loading />
+      <Loader />
       <IncomingCallModal />
       <CallModal />
     </BrowserRouter>

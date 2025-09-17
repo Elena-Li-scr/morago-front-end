@@ -1,19 +1,23 @@
 import { createContext, useContext } from "react";
 
-export type CallInfo = {
-  name: string;
-  topic: string;
-  coins: number;
+export type CallPayload = {
+  callId: string;
+  fromUserId: string;
+  toUserId: string;
+  theme: string;
   photoUrl: string;
+  costPerMinute: string;
 };
 
-export type CallStatus = "incoming" | "active" | null;
+export type CallStatus = "idle" | "ringing" | "in-call" | "rejected" | "ended";
 
 type CallContextType = {
-  incomingCall: CallInfo | null;
+  incomingCall: CallPayload | null; // для модалки «Принять/Отклонить»
+  currentCall: CallPayload | null; // активный звонок (после принятия)
   callStatus: CallStatus;
-  setIncomingCall: (info: CallInfo | null) => void;
-  setCallStatus: (status: CallStatus) => void;
+  acceptCall: () => void;
+  rejectCall: () => void;
+  endCall: () => void;
 };
 
 export const CallContext = createContext<CallContextType | undefined>(undefined);

@@ -1,6 +1,5 @@
 import { useRef, useState } from "react";
-import { useLocation } from "react-router-dom";
-import { postAdminFiles } from "../api/services/services";
+import { postAdminFiles } from "@shared/services/adminApi";
 
 const DEFAULT_AVATAR_URL = "/assets/Icon_mock_theme.png";
 const BASE_URL = "http://localhost:8080";
@@ -13,7 +12,6 @@ const FileUpload = ({ translatorAvatar }: AvatarUploadProps) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [preview, setPreview] = useState<string | null>(null);
 
-  const location = useLocation();
   const handleClick = () => {
     fileInputRef.current?.click();
   };

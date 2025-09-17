@@ -1,10 +1,6 @@
-import type {
-  CheckboxGroupConfig,
-  FormField,
-  InputFieldConfig,
-  NavItem,
-  WithdrawalForm,
-} from "../types/types";
+import type { CheckboxGroupConfig, FormField, NavItem } from "../types/types";
+import type { InputFieldConfig, WithdrawalForm } from "@shared/types/types";
+
 import { formatDateString, formatPhone, formatTopikLevel } from "../utils/formatInput";
 import { rules } from "../utils/rules";
 import { AiOutlineUser } from "react-icons/ai";
@@ -109,13 +105,11 @@ const confirmPasswordField = (getValues: () => any) => ({
 
 export const FORM_CONFIG: Record<string, (getValues: () => any) => FormField[]> = {
   register: (getValues: () => any) => [phoneField, passwordField, confirmPasswordField(getValues)],
-
   login: () => [phoneField, passwordField],
-
   changePassword: (getValues: () => any) => [
     {
       ...passwordField,
-      name: "currontPassword",
+      name: "currentPassword",
       placeholder: "Введите текущий пароль",
       label: "Текущий пароль",
     },
@@ -130,9 +124,7 @@ export const FORM_CONFIG: Record<string, (getValues: () => any) => FormField[]> 
       label: "Повторите новый пароль",
     },
   ],
-
   resetPassword: () => [phoneField],
-
   newPassword: (getValues: () => any) => [
     {
       ...passwordField,
@@ -194,7 +186,7 @@ export const navItems: NavItem[] = [
 export const withdrawalData: WithdrawalForm = {
   accountHolder: "",
   nameOfBank: "",
-  won: 0,
+  won: "0",
 };
 
 export const koreanBanks = [

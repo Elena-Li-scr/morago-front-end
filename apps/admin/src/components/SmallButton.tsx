@@ -3,14 +3,15 @@ import "../assets/style/buttons.css";
 interface Props {
   icon?: string;
   text?: string;
+  from?: string;
   onClick: () => void;
 }
 
-export default function SmallButton({ icon, text, onClick }: Props) {
+export default function SmallButton({ from, icon, text, onClick }: Props) {
   return (
-    <div className="small-button" onClick={onClick} role="button">
+    <button className="small-button" disabled={from ? true : false} onClick={onClick} role="button">
       <img src={icon} alt="icon" />
       <p>{text}</p>
-    </div>
+    </button>
   );
 }

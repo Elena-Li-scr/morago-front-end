@@ -44,6 +44,13 @@ export function ControlledInputField<T extends FieldValues>({
               <input
                 {...rest}
                 id={name}
+                autoComplete={
+                  name === " password"
+                    ? "new-password"
+                    : name === "confirmPassword"
+                      ? "new-password"
+                      : "off"
+                }
                 type={isPassword && showPassword ? "text" : type}
                 value={value || ""}
                 placeholder={placeholder}
@@ -55,16 +62,18 @@ export function ControlledInputField<T extends FieldValues>({
                 }}
               />
               {isPassword && (
-                <span
+                <button
+                  type="button"
+                  aria-pressed={showPassword}
                   className="register-icon register-eye-icon"
                   onClick={() => setShowPassword((prev) => !prev)}
                 >
                   {showPassword ? <FiEyeOff /> : <FiEye />}
-                </span>
+                </button>
               )}
             </div>
             {error && <p className="register-validate">{error.message}</p>}
-            {name === "currontPassword" && <ChangePageBtn page="changePassword" />}
+            {name === "currentPassword" && <ChangePageBtn page="changePassword" />}
           </>
         )}
       />

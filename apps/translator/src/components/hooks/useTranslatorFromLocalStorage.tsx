@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import type { UserProfileExtra } from "../../types/types";
+import type { UserProfileExtra } from "@shared/types/types";
 
 export const useTranslatorFromLocalStorage = () => {
   const [translatorProfile, setTranslatorProfile] = useState<UserProfileExtra | null>(null);

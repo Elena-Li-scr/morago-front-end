@@ -1,5 +1,14 @@
-import axiosInstance from "../axios-config";
-import type { Category } from "../../types/types";
+import axiosInstance from "./axiosInstance.ts";
+import {
+  type CallHistory,
+  type Categories,
+  type Category,
+  type PageResponse,
+  type RequestPage,
+  type Themes,
+  type Translator,
+  type User,
+} from "../types/adminTypes.ts";
 
 export type AuthResponse = {
   token: string;
@@ -14,15 +23,13 @@ export type RegisterAdmin = {
 };
 
 export async function getAdminUsers(page: number, size: number, keyword: string) {
-  const res = await axiosInstance.get("/admin/users", {
+  return await axiosInstance.get<PageResponse<User>>("/admin/users", {
     params: { page, size, sortBy: "id", keyword, sortDirection: "ASC" },
   });
-  return res;
 }
 
 // Login
 export const LoginAdmin = async (data: RegisterAdmin): Promise<AuthResponse> => {
-  console.log(data);
   return axiosInstance.post("/auth/login", { ...data });
 };
 
@@ -31,32 +38,27 @@ export const getUserById = (id: number | string) => {
 };
 
 export async function getAdminTranslators(page: number, size: number, keyword: string) {
-  const res = await axiosInstance.get("/admin/translators", {
+  return await axiosInstance.get<PageResponse<Translator>>("/admin/translators", {
     params: { page, size, sortBy: "id", keyword, sortDirection: "ASC" },
   });
-  return res;
 }
 
 export async function getTranslatorById(id: string | number) {
-  const res = await axiosInstance.get(`/admin/translators/${id}`);
-  return res;
+  return await axiosInstance.get(`/admin/translators/${id}`);
 }
 
 export async function getAdminCategories(page?: number, size?: number, keyword?: string) {
-  const res = await axiosInstance.get("/admin/categories", {
+  return await axiosInstance.get<PageResponse<Categories>>("/admin/categories", {
     params: { page, size, sortBy: "id", keyword, sortDirection: "ASC" },
   });
-  return res;
 }
 
 export const getCategoryById = (id: number | string) => {
-  const res = axiosInstance.get<Category>(`/admin/categories/${id}`);
-  return res;
+  return axiosInstance.get<Category>(`/admin/categories/${id}`).then((res) => res.data);
 };
 
 export async function postAdminCategories(name: string) {
-  const res = await axiosInstance.post("/admin/categories", { name, isActive: "true" });
-  return res;
+  return await axiosInstance.post("/admin/categories", { name, isActive: "true" });
 }
 
 type AdminThemes = {
@@ -70,24 +72,15 @@ type AdminThemes = {
   iconId?: number;
   categoryId?: number;
 };
-export type PageResponse<T> = {
-  content: T[];
-  number: number;
-  size: number;
-  totalElements: number;
-  totalPages: number;
-};
 
 export async function getAdminThemes(page: number, size: number, keyword: string) {
-  const res = await axiosInstance.get<PageResponse<AdminThemes>>("/admin/themes", {
+  return await axiosInstance.get<PageResponse<Themes>>("/admin/themes", {
     params: { page, size, sortBy: "id", keyword, sortDirection: "ASC" },
   });
-  return res;
 }
 
 export async function postAdminThemes(data: AdminThemes) {
-  const res = await axiosInstance.post("/admin/themes", data);
-  return res;
+  return await axiosInstance.post("/admin/themes", data);
 }
 
 type AddIcon = {
@@ -96,22 +89,19 @@ type AddIcon = {
 };
 
 export async function postAdminThemesIcon({ formData, id }: AddIcon) {
-  const res = await axiosInstance.post(`/admin/themes/${id}/icon`, formData, {
+  return await axiosInstance.post(`/admin/themes/${id}/icon`, formData, {
     headers: {
       "Content-Type": "multipart/form-data",
     },
   });
-  return res;
 }
 
 export const getThemeById = (id: number | string) => {
-  const res = axiosInstance.get(`/admin/themes/${id}`);
-  return res;
+  return axiosInstance.get(`/admin/themes/${id}`);
 };
 
 export const updateTheme = (id: number | string, data: AdminThemes) => {
-  const res = axiosInstance.put(`/admin/themes/update/${id}`, data);
-  return res;
+  return axiosInstance.put(`/admin/themes/update/${id}`, data);
 };
 
 export type CategoryReq = {
@@ -120,53 +110,60 @@ export type CategoryReq = {
 };
 
 export const updateCategory = (id: number | string, data: CategoryReq) => {
-  const res = axiosInstance.put(`/admin/categories/${id}`, data);
-  return res;
+  return axiosInstance.put(`/admin/categories/${id}`, data);
 };
 
 export const getCallHistoryid = (id: number | string, page: number, size: number) => {
-  const res = axiosInstance.get(`/admin/calls/history/${id}`, {
+  return axiosInstance.get<PageResponse<CallHistory>>(`/admin/calls/history/${id}`, {
     params: { id, page, size, sortBy: "id", sortDirection: "ASC" },
   });
-  return res;
+};
+
+export type ConfirmData = {
+  fullName?: string;
+  bankName?: string;
+  bankAccount?: string;
+  sum?: number;
 };
 
 export const getDepositHistoryid = (id: number | string, page: number, size: number) => {
-  const res = axiosInstance.get(`/admin/deposits/history/${id}`, {
+  return axiosInstance.get<PageResponse<RequestPage>>(`/admin/deposits/history/${id}`, {
     params: { id, page, size, sortBy: "id", sortDirection: "ASC" },
   });
-  return res;
 };
 
 export const getDepositHistory = (id: number | string) => {
-  const res = axiosInstance.get(`/admin/deposits?userId=${id}`);
-  return res;
+  return axiosInstance.get(`/admin/deposits?userId=${id}`);
+};
+
+export const putDeposit = (id: number | string, sum: ConfirmData) => {
+  return axiosInstance.put(`/admin/deposits/${id}`, sum);
 };
 
 export const getWithdrawHistory = (id: number | string) => {
-  const res = axiosInstance.get(`/admin/withdrawals?userId=${id}`);
-  return res;
+  return axiosInstance.get(`/admin/withdrawals?userId=${id}`);
 };
 
 export const getWithdrawHistoryid = (id: number | string, page: number, size: number) => {
-  const res = axiosInstance.get(`/admin/withdrawals/history/${id}`, {
+  return axiosInstance.get<PageResponse<RequestPage>>(`/admin/withdrawals/history/${id}`, {
     params: { id, page, size, sortBy: "id", sortDirection: "ASC" },
   });
-  return res;
+};
+
+export const putWithdraw = (id: number | string, data: ConfirmData) => {
+  return axiosInstance.put(`/admin/withdrawals/${id}`, data);
 };
 
 export const postAdminFiles = (file: File) => {
   const formData = new FormData();
   formData.append("file", file);
-  const res = axiosInstance.post("/admin/files/upload?type=AVATAR", formData, {
+  return axiosInstance.post("/admin/files/upload?type=AVATAR", formData, {
     headers: {
       "Content-Type": "multipart/form-data",
     },
   });
-  return res;
 };
 
 export const getAdminFiles = (id: number | string) => {
-  const res = axiosInstance.get(`/admin/files/${id}`);
-  return res;
+  return axiosInstance.get(`/admin/files/${id}`);
 };

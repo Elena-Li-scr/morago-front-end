@@ -6,7 +6,8 @@ import "../assets/style/verification.css";
 import SucessActionModal from "@shared/components/SucessActionModal";
 import { auth } from "../utils/auth";
 import ChangePageBtn from "../components/buttons/ChangePageBtn";
-import { sendVerificationCode, verifyCode } from "../api/services/services";
+import { sendVerificationCode } from "@shared/services/translatorApi";
+import type { AxiosError } from "axios";
 
 type VerificationParams = {
   process: "register" | "reset";
@@ -74,8 +75,9 @@ export default function VerificationPage() {
         auth.setVerified();
       }
       setSuccess(true);
-    } catch (err: any) {
-      setError(err.response?.data.error);
+    } catch (err) {
+      const axiosErr = err as AxiosError<{ error: string }>;
+      setError(axiosErr.response?.data?.error || "");
     }
   };
 
@@ -86,7 +88,7 @@ export default function VerificationPage() {
 
   const handleResend = async () => {
     const repeatCode = await sendVerificationCode(phone);
-    console.log(repeatCode);
+    console.log(repeatCode.data);
     setRemaining(180); // Сбросить таймер
   };
 

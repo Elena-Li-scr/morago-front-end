@@ -2,21 +2,22 @@ import "@shared/styles/homePage.css";
 import "../assets/style/listContacts.css";
 import { CallCard } from "../components/user/CallCard";
 import { useEffect, useState } from "react";
-import { TestCallButton } from "../components/call/TestCallButton";
-import { getCallHistory } from "../api/services/services";
-import type { CallHisrtoryTranslator } from "../types/types";
+import { getCallHistory } from "@shared/services/translatorApi";
+import type { CallFromApi } from "@shared/types/types";
+import { callListSort } from "../utils/callListSort";
 
 export default function Home() {
   const [empyContact, setEmptyContact] = useState<boolean>(false);
-  const [callData, setCallData] = useState<CallHisrtoryTranslator[]>([]);
+  const [callData, setCallData] = useState<CallFromApi[]>([]);
   const fetchData = async () => {
     try {
-      const response = await getCallHistory();
-      if (response.length === 0) {
+      const res = await getCallHistory();
+      const sortedCallList = callListSort(res.content);
+      if (sortedCallList.length === 0) {
         setEmptyContact(true);
         return;
       }
-      setCallData(response);
+      setCallData(sortedCallList);
     } catch (err) {
       console.error("Ошибка при получении истории:", err);
     }
@@ -37,18 +38,17 @@ export default function Home() {
             {callData.map((call) => (
               <CallCard
                 key={call.id}
-                avatarUrl={call.avatarUrl}
+                avatarUrl={call.imageUrl}
                 name={call.name}
                 theme={call.theme}
-                time={call.time}
-                price={call.price}
+                time={call.duration}
+                price={call.coins}
                 date={call.date}
               />
             ))}
           </div>
         )}
       </div>
-      <TestCallButton />
     </div>
   );
 }

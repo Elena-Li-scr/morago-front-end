@@ -13,9 +13,12 @@ import {
   updateTheme,
   getWithdrawHistory,
   getDepositHistory,
+  putWithdraw,
+  putDeposit,
   postAdminThemesIcon,
-} from "../api/services/services";
+} from "@shared/services/adminApi";
 import { FIELDS_DEPOSIT_CONFIG, FIELDS_WITHDRAW_CONFIG } from "../constans/tableConfigs/configs";
+import type { Categories, Category } from "src/types/types";
 
 interface Form {
   theme?: string;
@@ -38,6 +41,8 @@ interface Option {
 export default function AddPage() {
   const [categoryOptions, setCategoryOptions] = useState<Option[]>([]);
 
+  const [requestId, setRequestId] = useState<string | number>();
+
   const {
     register,
     handleSubmit,
@@ -46,18 +51,6 @@ export default function AddPage() {
     control,
     formState: { errors },
   } = useForm<Form>({ mode: "onChange", defaultValues: { categoryIds: [], isActive: true } });
-
-  useEffect(() => {
-    (async () => {
-      try {
-        const cats = await getAdminCategories();
-        setCategoryOptions(cats.content.map((c) => ({ id: c.id, label: c.name })));
-      } catch (e) {
-        console.error("Не удалось загрузить данные", e);
-      }
-    })();
-    register("image");
-  }, [register]);
 
   const { request } = useParams();
   const { type } = useParams();
@@ -86,19 +79,42 @@ export default function AddPage() {
   useEffect(() => {
     const server = async () => {
       try {
+        if (type === "themes") {
+          let page = 0;
+          let allCategories: Category[] = [];
+          let hasMore = true;
+          while (hasMore) {
+            const res = await getAdminCategories(page, 5);
+            const pageItems: Category[] = (res.data.content as Categories[]).map((c) => ({
+              id: typeof c.id === "string" ? Number(c.id) : c.id,
+              name: c.name,
+              isActive: !!c.isActive,
+            }));
+            allCategories = allCategories.concat(pageItems);
+            hasMore = !res.data.last;
+            page++;
+          }
+
+          setCategoryOptions(
+            allCategories.map((c) => ({
+              id: c.id,
+              label: c.name,
+            })),
+          );
+        }
         if (type === "categories" && id) {
-          const data = await getCategoryById(id);
-          setValue("category", data.name);
+          const res = await getCategoryById(id);
+          setValue("category", res.name);
         }
         if (type === "themes" && id) {
-          const data = await getThemeById(id);
-          setValue("theme", data.name);
+          const res = await getThemeById(id);
+          setValue("theme", res.data.name);
         }
         if (request === "withdraw" && userId) {
-          const data = await getWithdrawHistory(userId);
+          const res = await getWithdrawHistory(userId);
           const rows = {
-            ...data,
-            sum: data.sum.toString().replace(/\B(?=(\d{3})+(?!\d))/g, "."),
+            ...res.data,
+            sum: res.data.sum?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, "."),
             accountNumber: name,
           };
           FIELDS_WITHDRAW_CONFIG.forEach((field) => {
@@ -106,12 +122,13 @@ export default function AddPage() {
               setValue(field.name, rows[field.name]);
             }
           });
+          setRequestId(res.data.id);
         }
         if (request === "deposit" && userId) {
-          const data = await getDepositHistory(userId);
+          const res = await getDepositHistory(userId);
           const rows = {
-            ...data,
-            sum: data.coin.toString().replace(/\B(?=(\d{3})+(?!\d))/g, "."),
+            ...res.data,
+            sum: res.data.coin?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, "."),
             accountNumber: phone ?? name,
           };
           FIELDS_DEPOSIT_CONFIG.forEach((field) => {
@@ -119,14 +136,14 @@ export default function AddPage() {
               setValue(field.name, rows[field.name]);
             }
           });
+          setRequestId(res.data.id);
         }
       } catch (e) {
         console.error("Ошибка при загрузке:", e);
       }
     };
-
     server();
-  }, [id, type, setValue, request, userId]);
+  }, [id, type, setValue, request, userId, name, phone]);
 
   const onSubmit = async (data: Form) => {
     if (type === "categories" && data.category && !id) {
@@ -138,7 +155,6 @@ export default function AddPage() {
       };
       await updateCategory(id, category);
     }
-
     if (type === "themes") {
       const upData = {
         name: data.theme,
@@ -157,7 +173,7 @@ export default function AddPage() {
           if (data.image?.[0]) {
             const formData = new FormData();
             formData.append("icon", data.image[0]);
-            const iconRes = await postAdminThemesIcon({ id: res.id, formData });
+            const iconRes = await postAdminThemesIcon({ id: res.data.id, formData });
             console.log(iconRes);
           }
           console.log(res);
@@ -174,6 +190,23 @@ export default function AddPage() {
         console.log(e);
       }
     }
+
+    if (request === "withdraw" && requestId) {
+      const withdrawData = {
+        fullName: data.accountNumber,
+        bankName: data.nameOfBank,
+        bankAccount: data.accountHolder,
+        sum: Number(data.sum?.toString().replace(/\./g, "")),
+      };
+      await putWithdraw(requestId, withdrawData);
+    }
+
+    if (request === "deposit" && requestId) {
+      const depositAmount = {
+        sum: Number(data.sum?.toString().replace(/\./g, "")),
+      };
+      await putDeposit(requestId, depositAmount);
+    }
     navigate(-1);
   };
 
@@ -184,7 +217,6 @@ export default function AddPage() {
         <Breadcrumbs from={from} />
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="add-item-form">
-            {/* {type !== ""} */}
             {!request && (
               <>
                 <div className="file-upload-wrapper">

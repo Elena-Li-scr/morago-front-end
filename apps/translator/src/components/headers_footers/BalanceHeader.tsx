@@ -4,7 +4,7 @@ import LogoHeader from "./LogoHeader";
 import { StatusToggle } from "../animation/StatusToggle";
 import { GrNext } from "react-icons/gr";
 import { useEffect, useState } from "react";
-import { getBalance } from "../../api/services/services";
+import { getBalance } from "@shared/services/translatorApi";
 
 export default function BalanceHeader() {
   const [balance, setBalance] = useState<number | null>(null);
@@ -14,20 +14,20 @@ export default function BalanceHeader() {
     const fetchBalance = async () => {
       try {
         const result = await getBalance();
-        setBalance(result);
+        setBalance(result.data.toString().replace(/\B(?=(\d{3})+(?!\d))/g, "."));
       } catch (err) {
-        console.error("Не удалось загрузить баланс");
+        console.error("Не удалось загрузить баланс", err);
       }
     };
     fetchBalance();
-  }, []);
+  }, [balance]);
+
   const changePage = () => {
     if (isHomePage) navigate("/my-balance-translator-page");
     if (isBalancePage) navigate("/withdrawal-page");
   };
 
   const location = useLocation();
-
   const isHomePage = location.pathname === "/my-home-translator-page";
   const isBalancePage = location.pathname === "/my-balance-translator-page";
   const isCallHistory = location.pathname === "/my-call-history";

@@ -1,6 +1,6 @@
-import type { UserProfileExtra } from "../types/types";
+import type { UserProfileExtra } from "@shared/types/types";
 
-const TOKEN_KEY = "accessToken";
+const TOKEN_KEY = "token";
 const VERIFIED_KEY = "isVerified";
 const PROFILE_KEY = "isProfileFilled";
 const NEW_TRANSLATOR_DATA = "newTranslator";

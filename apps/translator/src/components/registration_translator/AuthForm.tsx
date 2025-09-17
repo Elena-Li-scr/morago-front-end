@@ -1,4 +1,4 @@
-import { useForm } from "react-hook-form";
+import { useForm, type SubmitHandler } from "react-hook-form";
 import { ControlledInputField } from "./ControlledInputField";
 import { FORM_CONFIG } from "../../constans/constans";
 import MainButton from "@shared/components/MainButton";
@@ -9,8 +9,9 @@ import {
   LoginTranslator,
   registerTranslator,
   sendVerificationCode,
-} from "../../api/services/services";
-
+} from "@shared/services/translatorApi";
+import type { AxiosError } from "axios";
+import type { ChangePasswordData, RegisterFormValues } from "@shared/types/types";
 export default function AuthForm({ type }: { type: keyof typeof FORM_CONFIG }) {
   const {
     control,
@@ -20,32 +21,34 @@ export default function AuthForm({ type }: { type: keyof typeof FORM_CONFIG }) {
     setError,
   } = useForm({ mode: "onChange" });
   const navigate = useNavigate();
-  const onSubmit = async (data: any) => {
+  const onSubmit: SubmitHandler<RegisterFormValues | ChangePasswordData> = async (data) => {
     switch (type) {
       case "login":
         try {
-          const cleanPhone = data.phone.replace(/[^0-9]/g, "");
+          const formData = data as RegisterFormValues;
+          const cleanPhone = formData.phone?.replace(/[^0-9]/g, "");
           const registerData = {
             phone: cleanPhone,
-            password: data.password,
+            password: formData.password,
           };
           const res = await LoginTranslator(registerData);
-          auth.setToken(res.token);
+          auth.setToken(res.data.token);
           auth.setNewTranslator({
-            firstName: res.firstName,
-            phone: res.phone,
-            lastName: res.lastName,
-            dateOfBirth: res.dateOfBirth,
-            levelOfKorean: res.levelOfKorean,
-            imageUrl: res.imageUrl,
-            languageIds: res.selectedLanguageIds,
-            themeIds: res.selectedThemeIds,
+            firstName: res.data.firstName,
+            phone: res.data.phone,
+            lastName: res.data.lastName,
+            dateOfBirth: res.data.dateOfBirth,
+            levelOfKorean: res.data.levelOfKorean,
+            imageUrl: res.data.imageUrl,
+            languageIds: res.data.selectedLanguageIds,
+            themeIds: res.data.selectedThemeIds,
           });
           auth.setVerified();
           auth.setProfileFilled();
           navigate("/my-home-translator-page");
-        } catch (err: any) {
-          const serverMessage = err.response?.data.error;
+        } catch (err) {
+          const axiosErr = err as AxiosError<{ error: string }>;
+          const serverMessage = axiosErr.response?.data.error;
           if (serverMessage === "Internal server error: User profile not found") {
             setError("phone", {
               type: "server",
@@ -55,24 +58,29 @@ export default function AuthForm({ type }: { type: keyof typeof FORM_CONFIG }) {
         }
         break;
       case "register": {
-        const cleanPhone = data.phone.replace(/[^0-9]/g, "");
+        const formData = data as RegisterFormValues;
+        const cleanPhone = formData.phone?.replace(/[^0-9]/g, "");
         const registerData = {
           phone: cleanPhone,
-          password: data.password,
-          confirmPassword: data.confirmPassword,
+          password: formData.password,
+          confirmPassword: formData.confirmPassword,
           role: "ROLE_TRANSLATOR",
         };
         try {
           const res = await registerTranslator(registerData);
-          console.log(res);
-          auth.setToken(res.token);
-          auth.setNewTranslator(registerData);
-          await sendVerificationCode(res.phone);
-          navigate(`/verification/register/${cleanPhone}`);
-        } catch (err: any) {
-          console.log(err);
-          const serverMessage = err.response?.data.error;
-          if (err.response?.status === 400 && serverMessage === "User profile already exists") {
+          if (res.data.token && res.data.phone) {
+            auth.setToken(res.data.token);
+            auth.setNewTranslator(res.data);
+            await sendVerificationCode(res.data.phone);
+            navigate(`/verification/register/${cleanPhone}`);
+          }
+        } catch (err) {
+          const axiosErr = err as AxiosError<{ error: string }>;
+          const serverMessage = axiosErr.response?.data.error;
+          if (
+            axiosErr.response?.status === 400 &&
+            serverMessage === "User profile already exists"
+          ) {
             setError("phone", {
               type: "server",
               message: "Этот номер уже зарегистрирован",
@@ -87,21 +95,23 @@ export default function AuthForm({ type }: { type: keyof typeof FORM_CONFIG }) {
         break;
       }
       case "changePassword": {
+        const formData = data as ChangePasswordData;
         const changePasswordData = {
-          oldPassword: data.currontPassword,
-          newPassword: data.password,
-          confirmPassword: data.confirmPassword,
+          currentPassword: formData.currentPassword,
+          newPassword: formData.newPassword,
+          confirmPassword: formData.confirmPassword,
         };
         try {
           await changePassword(changePasswordData);
           navigate(-1);
-        } catch (err: any) {
-          const serverMessage = err.response?.data.error;
+        } catch (err) {
+          const axiosErr = err as AxiosError<{ error: string }>;
+          const serverMessage = axiosErr.response?.data.error;
           if (
-            err.response?.status === 500 &&
+            axiosErr.response?.status === 500 &&
             serverMessage === "Internal server error: Passwords don't match"
           ) {
-            setError("currontPassword", {
+            setError("currentPassword", {
               type: "server",
               message: "Не верный пароль",
             });
@@ -118,10 +128,12 @@ export default function AuthForm({ type }: { type: keyof typeof FORM_CONFIG }) {
         // await setNewPassword(data.password);
         navigate("/my-home-translator-page");
         break;
-      case "resetPassword":
+      case "resetPassword": {
+        const formData = data as RegisterFormValues;
         // await requestResetCode(data.phone);
-        navigate(`/verification/reset/${data.phone}`);
+        navigate(`/verification/reset/${formData.phone}`);
         break;
+      }
     }
   };
 

@@ -18,4 +18,7 @@ export default defineConfig({
     open: true,
     port: 5174,
   },
+  define: {
+    global: "window",
+  },
 });

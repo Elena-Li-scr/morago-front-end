@@ -1,14 +1,14 @@
 import { useState } from "react";
 import "../../assets/style/statusToggle.css";
-import { switchTranslatorStatus } from "../../api/services/services";
+import { switchTranslatorStatus } from "@shared/services/translatorApi";
 
 export const StatusToggle = () => {
   const [isAvailable, setIsAvailable] = useState(true);
 
-  const switchStatusHandler = () => {
+  const switchStatusHandler = async () => {
     if (isAvailable) setIsAvailable(false);
     if (!isAvailable) setIsAvailable(true);
-    switchTranslatorStatus();
+    await switchTranslatorStatus();
   };
 
   return (

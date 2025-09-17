@@ -4,13 +4,13 @@ import "../../assets/style/popUp.css";
 import { usePopUp, type PopUpInfo } from "./usePopUp";
 import { useLocation, useNavigate } from "react-router-dom";
 import {
-  getAdminFiles,
   getCategoryById,
   getThemeById,
   getTranslatorById,
   getUserById,
-} from "../../api/services/services";
+} from "@shared/services/adminApi";
 import FileUpload from "../FileUpload";
+import { useModalStore } from "@shared/store/useStore";
 
 interface Category {
   id: number;
@@ -65,49 +65,65 @@ function isCategory(d: unknown): d is Category {
 
 export default function PopUp() {
   const { pathname } = useLocation();
+  const { loading } = useModalStore();
   const segments = pathname.split("/").filter(Boolean);
   const last = segments[segments.length - 1];
-  const { popUpData, setPopUpData, popUpStatus, setPopUpStatus } = usePopUp();
+  const { popUpData, setPopUpData, popUpStatus } = usePopUp();
   const [data, setData] = useState<PopUpInfo | null>(null);
   const navigate = useNavigate();
+
   useEffect(() => {
     if (popUpStatus == "open" || !popUpData) return;
     let cancelled = false;
     (async () => {
       try {
-        let res;
-        let themeCatogory;
+        let popInfo: PopUpInfo | null = null;
         switch (popUpData.type) {
           case "user": {
-            res = await getUserById(popUpData.id);
+            const res = await getUserById(popUpData.id);
+            popInfo = res.data;
             break;
           }
           case "translator": {
-            res = await getTranslatorById(popUpData.id);
-
+            const res = await getTranslatorById(popUpData.id);
+            popInfo = res.data;
             break;
           }
           case "themes": {
-            res = await getThemeById(popUpData.id);
-            themeCatogory = await getCategoryById(res.categoryId);
+            const res = await getThemeById(popUpData.id);
+            let category: Category | null = null;
+            if (res.data.categoryId != null) {
+              category = await getCategoryById(res.data.categoryId);
+            }
+            const popInfo: PopUpInfo = {
+              ...res.data,
+              categoryId: category?.id,
+              category,
+            };
+            setData(popInfo);
             break;
           }
           case "categories": {
-            res = await getCategoryById(popUpData.id);
+            const res = await getCategoryById(popUpData.id);
+            popInfo = res;
             break;
           }
         }
-        if (!cancelled) setData({ ...res, id: res?.id, categoryId: themeCatogory?.name });
+
+        if (!cancelled && popInfo) {
+          setData({ ...popInfo, id: popInfo.id });
+        }
       } catch (err) {
         console.error("Ошибка загрузки:", err);
       }
     })();
+
     return () => {
       cancelled = true;
     };
-  }, [popUpData, popUpData]);
+  }, [popUpData, popUpStatus]);
 
-  if (!popUpData || popUpStatus == "open") return null;
+  if (!popUpData || popUpStatus == "open" || loading) return null;
   return (
     <div className="pop-up-wrapper" onClick={() => setPopUpData(null)}>
       <div className="pop-up" onClick={(e) => e.stopPropagation()}>

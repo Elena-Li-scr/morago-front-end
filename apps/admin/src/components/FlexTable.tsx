@@ -8,6 +8,7 @@ type Props<T> = {
   columns: Column<any>[];
   rowKey?: (row: T) => string;
   tableType: string;
+  error?: string | null;
 };
 
 export default function FlexTable<T extends WithId>({
@@ -15,6 +16,7 @@ export default function FlexTable<T extends WithId>({
   columns,
   rowKey,
   tableType,
+  error,
 }: Props<T>) {
   const getKey = (r: T) => (rowKey ? rowKey(r) : String(r.id));
   return (
@@ -70,7 +72,10 @@ export default function FlexTable<T extends WithId>({
           ))}
         </div>
       ) : (
-        <div className="empty-block">Нет Записей</div>
+        <div className="empty-block">
+          <p>Нет Записей</p>
+          {error && <p>( Произошла ошибка )</p>}
+        </div>
       )}
     </div>
   );

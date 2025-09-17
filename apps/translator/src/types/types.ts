@@ -1,44 +1,12 @@
 import type { RegisterOptions, UseFormGetValues } from "react-hook-form";
 
-export type RegisterFormValues = {
-  phone: string;
-  password: string;
-  confirmPassword?: string;
-  role?: string;
-};
-
-export type UserProfileExtra = {
-  phone?: string;
-  fullName?: string;
-  firstName?: string;
-  lastName?: string;
-  dateOfBirth?: string;
-  levelOfKorean?: string;
-  imageUrl?: string | null;
-  themeIds?: string[];
-  languageIds?: string[];
-};
-
-export type ChangePasswordData = {
-  oldPassword: string;
-  newPassword: string;
-  confirmPassword: string;
-};
-
-export type InputFieldConfig = {
-  name: keyof UserProfileExtra;
-  key?: string;
-  label: string;
-  placeholder: string;
-  icon?: React.ReactNode;
-  type: string;
-  format?: (val: string) => string;
-};
+import type { UserProfileExtra } from "@shared/types/types";
 
 export type CheckboxOption = {
   id: number;
   name: string;
 };
+
 export type CheckboxGroupConfig = {
   label: string;
   field: keyof UserProfileExtra;
@@ -64,34 +32,6 @@ export type NavItem = {
   onClick?: () => void;
 };
 
-export type WithdrawalForm = {
-  accountHolder: string;
-  nameOfBank: string;
-  won: number;
-};
-
-export interface CallHisrtoryTranslator {
-  id: string;
-  name: string;
-  avatarUrl: string;
-  theme: string;
-  time: number;
-  price: number;
-  date: string;
-  rating?: string;
-}
-
-export type CallFromApi = {
-  name: string;
-  date: string;
-  phone: string;
-  duration: number;
-  coins: number;
-  theme: string;
-  rating: string;
-  hasRequest: boolean;
-};
-
 export interface NotificationType {
   id: number;
   title: string;
@@ -100,10 +40,23 @@ export interface NotificationType {
   isRead: boolean;
 }
 
-export interface NotificationResponse {
-  content: NotificationType[];
-  totalElements: number;
-  totalPages: number;
-  number: number;
-  size: number;
+export interface CategoryTranslator {
+  categoryId?: string | number;
+  name: string;
+  iconId?: string | number;
+  id: number;
+  isActive?: boolean;
+  isPopular?: boolean;
+}
+
+export interface languagesTranslator {
+  id: number;
+  name: string;
+}
+
+export interface ChangeDataType {
+  firstName?: string;
+  imageUrl?: File | string | null;
+  lastName?: string;
+  phone?: string;
 }
