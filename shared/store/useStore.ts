@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import { persist, createJSONStorage } from "zustand/middleware";
 
 interface TopicStore {
   chosenTopic: string;
@@ -25,6 +26,10 @@ interface NoteStore {
   haveNewNote: boolean;
   setHaveNewNote: (val: boolean) => void;
 }
+interface Balance {
+  lowBalance: boolean;
+  setLowBalance: (val: boolean) => void;
+}
 
 interface FirstCallStore {
   isFirstCall: boolean;
@@ -48,15 +53,33 @@ export const useModalStore = create<ModalState>((set) => ({
   setSuccess: (val) => set({ success: val }),
 }));
 
-export const useTopicStore = create<TopicStore>((set) => ({
-  chosenTopic: "",
-  setChosenTopic: (topic) => set({ chosenTopic: topic }),
-}));
+export const useTopicStore = create<TopicStore>()(
+  persist(
+    (set) => ({
+      chosenTopic: "",
+      setChosenTopic: (v) => set({ chosenTopic: v }),
+    }),
+    {
+      name: "topic-storage",
+      storage: createJSONStorage(() => sessionStorage),
+      partialize: (s) => ({ chosenTopic: s.chosenTopic }),
+    },
+  ),
+);
 
-export const useIdTopicStore = create<TopicIdStore>((set) => ({
-  chosenTopicId: "",
-  setChosenTopicId: (topic) => set({ chosenTopicId: topic }),
-}));
+export const useIdTopicStore = create<TopicIdStore>()(
+  persist(
+    (set) => ({
+      chosenTopicId: "",
+      setChosenTopicId: (v) => set({ chosenTopicId: v }),
+    }),
+    {
+      name: "topic-id-storage",
+      storage: createJSONStorage(() => sessionStorage),
+      partialize: (s) => ({ chosenTopicId: s.chosenTopicId }),
+    },
+  ),
+);
 
 export const useTranslatorStore = create<TranslatorStore>((set) => ({
   selectedTranslator: null,
@@ -74,6 +97,11 @@ export const useNoteStore = create<NoteStore>((set) => ({
 }));
 
 export const useFirstCall = create<FirstCallStore>((set) => ({
-  isFirstCall: true,
+  isFirstCall: false,
   setIsFirstCall: (val) => set({ isFirstCall: val }),
+}));
+
+export const useLowBalance = create<Balance>((set) => ({
+  lowBalance: false,
+  setLowBalance: (val) => set({ lowBalance: val }),
 }));

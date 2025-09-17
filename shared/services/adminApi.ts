@@ -29,7 +29,7 @@ export async function getAdminUsers(page: number, size: number, keyword: string)
 }
 
 // Login
-export const LoginAdmin = async (data: RegisterAdmin): Promise<AuthResponse> => {
+export const LoginAdmin = async (data: RegisterAdmin) => {
   return axiosInstance.post("/auth/login", { ...data });
 };
 

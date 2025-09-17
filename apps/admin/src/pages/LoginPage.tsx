@@ -24,9 +24,9 @@ export default function LoginPage() {
     localStorage.removeItem("phone");
     try {
       const response = await LoginAdmin(admin);
-      if (response?.token && response?.phone) {
-        localStorage.setItem("token", response.token);
-        localStorage.setItem("phone", response.phone);
+      if (response.data.token && response.data.phone) {
+        localStorage.setItem("token", response.data.token);
+        localStorage.setItem("phone", response.data.phone);
         navigate("/home");
         setError(null);
       }

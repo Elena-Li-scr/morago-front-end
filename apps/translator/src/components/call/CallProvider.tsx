@@ -24,6 +24,7 @@ export const CallProvider = ({ children }: { children: React.ReactNode }) => {
     });
     stompRef.current = client;
     client.onConnect = () => {
+      console.log("[STOMP] connected");
       client.subscribe(`/user/queue/incoming-call`, (msg) => {
         console.log(msg.body);
         const call = JSON.parse(msg.body) as CallPayload;
