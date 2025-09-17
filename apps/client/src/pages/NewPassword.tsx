@@ -2,7 +2,7 @@ import "@shared/styles/signUp.css";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import MainForm from "../components/MainForm";
-import { newPassword } from "@shared/services/clientApi";
+import { sendNewPassword } from "@shared/services/clientApi";
 import axios from "axios";
 
 interface FormData {
@@ -15,14 +15,14 @@ export default function NewPassword() {
 
   const onSubmit = async (data: FormData) => {
     console.log(data);
-    const user = {
-      password: data.password,
+    const payload = {
+      resetToken: localStorage.getItem("resetToken")!,
+      newPassword: data.password,
     };
     try {
-      const response = await newPassword(user);
-      if (response?.data.token && response?.data.id) {
-        localStorage.setItem("token", response.data.token);
-        localStorage.setItem("id", response.data.id);
+      console.log(payload);
+      const response = await sendNewPassword(payload);
+      if (response.status === 200 || response.status === 201) {
         navigate("/home");
       }
     } catch (error: unknown) {

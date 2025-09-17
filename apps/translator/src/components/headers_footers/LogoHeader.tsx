@@ -10,7 +10,6 @@ interface Props {
 export default function LogoHeader({ backIcon, notifiIcon }: Props) {
   const navigate = useNavigate();
   const { unreadCount, fetchUnreadCount } = useNotificationStore();
-
   useEffect(() => {
     fetchUnreadCount();
   }, []);

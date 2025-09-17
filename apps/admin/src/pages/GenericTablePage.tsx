@@ -14,14 +14,16 @@ import {
   getCategoryById,
   getDepositHistoryid,
   getWithdrawHistoryid,
-} from "../api/services/services";
+} from "@shared/services/adminApi";
 import { useEffect, useState } from "react";
+import type { AxiosError } from "axios";
 
 type Props = { section?: string };
 
-type ApiUser = {
-  id: number;
+type TableRow = {
+  id: string;
   firstName: string;
+  name?: string;
   lastName?: string;
   phone: string;
   levelOfKorean: string;
@@ -32,14 +34,15 @@ type ApiUser = {
   duration: number;
   date?: string;
   coins?: string;
+  balance?: string;
+  amount?: string;
 };
 
 type SortDir = "ASC" | "DESC" | "";
 export default function GenericTablePage({ section }: Props) {
-  const [rows, setRows] = useState<any[]>([]);
-
+  const [rows, setRows] = useState<TableRow[]>([]);
   const [page, setPage] = useState(0); // 0-based
-  const [size, setSize] = useState(5); // сколько на странице
+  const [size] = useState(5); // сколько на странице
   const [totalPages, setTotalPages] = useState(0);
   const [error, setError] = useState<string | null>(null);
 
@@ -48,7 +51,7 @@ export default function GenericTablePage({ section }: Props) {
   const [sortDir, setSortDir] = useState<SortDir>();
 
   //  Sort Data List - ASC or DESC input
-  const sortByName = (list: Row[], dir: SortDir) => {
+  const sortByName = (list: TableRow[], dir: SortDir) => {
     const collator = new Intl.Collator(["ru", "en"], {
       sensitivity: "base",
       ignorePunctuation: true,
@@ -91,13 +94,13 @@ export default function GenericTablePage({ section }: Props) {
   useEffect(() => {
     async function load() {
       try {
-        let data;
-        let rows;
+        let rows: any;
         if (section === "lists" && type === "user") {
-          data = await getAdminUsers(page, size, query);
-          rows = (data.content ?? []).map((u: ApiUser) => ({
+          const res = await getAdminUsers(page, size, query);
+          setTotalPages(res.data.totalPages);
+          rows = (res.data.content ?? []).map((u) => ({
             ...u,
-            balance: u.balance.toString().replace(/\B(?=(\d{3})+(?!\d))/g, "."),
+            balance: u.balance?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, "."),
             phone: u.phone.replace(/(\d{3})(\d{4})(\d{2})(\d{2})/, "$1 $2 $3 $4"),
             name:
               u.firstName || u.lastName
@@ -106,58 +109,64 @@ export default function GenericTablePage({ section }: Props) {
           }));
         }
         if (section === "lists" && type === "translator") {
-          data = await getAdminTranslators(page, size, query);
-          rows = (data.content ?? []).map((u: ApiUser) => ({
+          const res = await getAdminTranslators(page, size, query);
+          setTotalPages(res.data.totalPages);
+          rows = (res.data.content ?? []).map((u) => ({
             ...u,
             phone: u.phone.replace(/(\d{3})(\d{4})(\d{2})(\d{2})/, "$1 $2 $3 $4"),
             name: [u.firstName, u.lastName].filter(Boolean).join(" ").trim(),
           }));
         }
         if (section === "lists" && type === "callHistory" && userId) {
-          data = await getCallHistoryid(userId, page, size);
-          rows = (data.content ?? []).map((u: ApiUser) => ({
+          const res = await getCallHistoryid(userId, page, size);
+          setTotalPages(res.data.totalPages);
+          rows = (res.data.content ?? []).map((u) => ({
             ...u,
             coins: u.coins?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, "."),
             id: u.duration,
-            duration: duration(u.duration),
+            duration: duration(Number(u.duration)),
           }));
         }
         if (section === "lists" && type === "depositHistory" && userId) {
-          data = await getDepositHistoryid(userId, page, size);
-          rows = (data.content ?? []).map((u: ApiUser) => ({
+          const res = await getDepositHistoryid(userId, page, size);
+          setTotalPages(res.data.totalPages);
+          rows = (res.data.content ?? []).map((u) => ({
             ...u,
-            amount: u.amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, "."),
+            amount: u.amount?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, "."),
             name: userPhone,
             id: userId,
           }));
         }
         if (section === "lists" && type === "withdrawHistory" && userId) {
-          data = await getWithdrawHistoryid(Number(userId), page, size);
-          rows = (data.content ?? []).map((u: ApiUser) => ({
+          const res = await getWithdrawHistoryid(Number(userId), page, size);
+          setTotalPages(res.data.totalPages);
+          rows = (res.data.content ?? []).map((u) => ({
             ...u,
-            amount: u.amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, "."),
+            amount: u.amount?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, "."),
             name: name,
             id: userId + u.date,
             userId: userId,
           }));
         }
         if (section === "topics" && type === "categories") {
-          data = await getAdminCategories(page, size, query);
-          rows = data.content ?? [];
+          const res = await getAdminCategories(page, size, query);
+          setTotalPages(res.data.totalPages);
+          rows = res.data.content ?? [];
         }
         if (section === "topics" && type === "themes") {
-          data = await getAdminThemes(page, size, query);
+          const res = await getAdminThemes(page, size, query);
+          setTotalPages(res.data.totalPages);
           rows = await Promise.all(
-            data.content.map(async (u: ApiUser) => ({
+            res.data.content.map(async (u) => ({
               ...u,
               categories: await getCategoryById(u.categoryId),
             })),
           );
         }
-        setTotalPages(data.totalPages);
         setRows(rows);
-      } catch (e: any) {
-        setError(e?.message ?? "Load error");
+      } catch (err) {
+        const axiosErr = err as AxiosError<{ error: string }>;
+        setError(axiosErr.message);
       }
     }
     load();
@@ -240,6 +249,7 @@ export default function GenericTablePage({ section }: Props) {
             data={filtered || rows}
             rowKey={(row) => row.id}
             tableType={type}
+            error={error}
           />
         </div>
         <div className="pagination-row">

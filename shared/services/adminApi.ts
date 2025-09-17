@@ -1,5 +1,14 @@
-import axiosInstance from "../axios-config";
-import type { Category } from "../../types/types";
+import axiosInstance from "./axiosInstance.ts";
+import {
+  type CallHistory,
+  type Categories,
+  type Category,
+  type PageResponse,
+  type RequestPage,
+  type Themes,
+  type Translator,
+  type User,
+} from "../types/adminTypes.ts";
 
 export type AuthResponse = {
   token: string;
@@ -14,7 +23,7 @@ export type RegisterAdmin = {
 };
 
 export async function getAdminUsers(page: number, size: number, keyword: string) {
-  return await axiosInstance.get("/admin/users", {
+  return await axiosInstance.get<PageResponse<User>>("/admin/users", {
     params: { page, size, sortBy: "id", keyword, sortDirection: "ASC" },
   });
 }
@@ -29,7 +38,7 @@ export const getUserById = (id: number | string) => {
 };
 
 export async function getAdminTranslators(page: number, size: number, keyword: string) {
-  return await axiosInstance.get("/admin/translators", {
+  return await axiosInstance.get<PageResponse<Translator>>("/admin/translators", {
     params: { page, size, sortBy: "id", keyword, sortDirection: "ASC" },
   });
 }
@@ -39,13 +48,13 @@ export async function getTranslatorById(id: string | number) {
 }
 
 export async function getAdminCategories(page?: number, size?: number, keyword?: string) {
-  return await axiosInstance.get("/admin/categories", {
+  return await axiosInstance.get<PageResponse<Categories>>("/admin/categories", {
     params: { page, size, sortBy: "id", keyword, sortDirection: "ASC" },
   });
 }
 
 export const getCategoryById = (id: number | string) => {
-  return axiosInstance.get<Category>(`/admin/categories/${id}`);
+  return axiosInstance.get<Category>(`/admin/categories/${id}`).then((res) => res.data);
 };
 
 export async function postAdminCategories(name: string) {
@@ -63,16 +72,9 @@ type AdminThemes = {
   iconId?: number;
   categoryId?: number;
 };
-export type PageResponse<T> = {
-  content: T[];
-  number: number;
-  size: number;
-  totalElements: number;
-  totalPages: number;
-};
 
 export async function getAdminThemes(page: number, size: number, keyword: string) {
-  return await axiosInstance.get<PageResponse<AdminThemes>>("/admin/themes", {
+  return await axiosInstance.get<PageResponse<Themes>>("/admin/themes", {
     params: { page, size, sortBy: "id", keyword, sortDirection: "ASC" },
   });
 }
@@ -112,7 +114,7 @@ export const updateCategory = (id: number | string, data: CategoryReq) => {
 };
 
 export const getCallHistoryid = (id: number | string, page: number, size: number) => {
-  return axiosInstance.get(`/admin/calls/history/${id}`, {
+  return axiosInstance.get<PageResponse<CallHistory>>(`/admin/calls/history/${id}`, {
     params: { id, page, size, sortBy: "id", sortDirection: "ASC" },
   });
 };
@@ -125,7 +127,7 @@ export type ConfirmData = {
 };
 
 export const getDepositHistoryid = (id: number | string, page: number, size: number) => {
-  return axiosInstance.get(`/admin/deposits/history/${id}`, {
+  return axiosInstance.get<PageResponse<RequestPage>>(`/admin/deposits/history/${id}`, {
     params: { id, page, size, sortBy: "id", sortDirection: "ASC" },
   });
 };
@@ -143,7 +145,7 @@ export const getWithdrawHistory = (id: number | string) => {
 };
 
 export const getWithdrawHistoryid = (id: number | string, page: number, size: number) => {
-  return axiosInstance.get(`/admin/withdrawals/history/${id}`, {
+  return axiosInstance.get<PageResponse<RequestPage>>(`/admin/withdrawals/history/${id}`, {
     params: { id, page, size, sortBy: "id", sortDirection: "ASC" },
   });
 };

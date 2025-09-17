@@ -16,15 +16,21 @@ export default function BalanceHeader() {
   };
 
   useEffect(() => {
-    try {
-      const server = async () => {
+    let isMounted = true;
+    const server = async () => {
+      try {
         const res = await getBalance();
-        setBalance(res.data);
-      };
-      server();
-    } catch (error) {
-      console.log(error);
-    }
+        if (isMounted) {
+          setBalance(res.data);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    server();
+    return () => {
+      isMounted = false;
+    };
   }, []);
   return (
     <div className="home-header-wrapper">

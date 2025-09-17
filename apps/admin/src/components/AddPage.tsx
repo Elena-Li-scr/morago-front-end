@@ -15,8 +15,10 @@ import {
   getDepositHistory,
   putWithdraw,
   putDeposit,
-} from "../api/services/services";
+  postAdminThemesIcon,
+} from "@shared/services/adminApi";
 import { FIELDS_DEPOSIT_CONFIG, FIELDS_WITHDRAW_CONFIG } from "../constans/tableConfigs/configs";
+import type { Categories, Category } from "src/types/types";
 
 interface Form {
   theme?: string;
@@ -79,14 +81,20 @@ export default function AddPage() {
       try {
         if (type === "themes") {
           let page = 0;
-          let allCategories: any[] = [];
+          let allCategories: Category[] = [];
           let hasMore = true;
           while (hasMore) {
-            const res = await getAdminCategories(page, 5); // передаём page и size
-            allCategories = [...allCategories, ...res.content];
-            hasMore = !res.last; // пока не последняя страница
+            const res = await getAdminCategories(page, 5);
+            const pageItems: Category[] = (res.data.content as Categories[]).map((c) => ({
+              id: typeof c.id === "string" ? Number(c.id) : c.id,
+              name: c.name,
+              isActive: !!c.isActive,
+            }));
+            allCategories = allCategories.concat(pageItems);
+            hasMore = !res.data.last;
             page++;
           }
+
           setCategoryOptions(
             allCategories.map((c) => ({
               id: c.id,
@@ -95,18 +103,18 @@ export default function AddPage() {
           );
         }
         if (type === "categories" && id) {
-          const data = await getCategoryById(id);
-          setValue("category", data.name);
+          const res = await getCategoryById(id);
+          setValue("category", res.name);
         }
         if (type === "themes" && id) {
-          const data = await getThemeById(id);
-          setValue("theme", data.name);
+          const res = await getThemeById(id);
+          setValue("theme", res.data.name);
         }
         if (request === "withdraw" && userId) {
-          const data: any = await getWithdrawHistory(userId);
+          const res = await getWithdrawHistory(userId);
           const rows = {
-            ...data,
-            sum: data.sum?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, "."),
+            ...res.data,
+            sum: res.data.sum?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, "."),
             accountNumber: name,
           };
           FIELDS_WITHDRAW_CONFIG.forEach((field) => {
@@ -114,13 +122,13 @@ export default function AddPage() {
               setValue(field.name, rows[field.name]);
             }
           });
-          setRequestId(data.id);
+          setRequestId(res.data.id);
         }
         if (request === "deposit" && userId) {
-          const data: any = await getDepositHistory(userId);
+          const res = await getDepositHistory(userId);
           const rows = {
-            ...data,
-            sum: data.coin?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, "."),
+            ...res.data,
+            sum: res.data.coin?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, "."),
             accountNumber: phone ?? name,
           };
           FIELDS_DEPOSIT_CONFIG.forEach((field) => {
@@ -128,7 +136,7 @@ export default function AddPage() {
               setValue(field.name, rows[field.name]);
             }
           });
-          setRequestId(data.id);
+          setRequestId(res.data.id);
         }
       } catch (e) {
         console.error("Ошибка при загрузке:", e);
@@ -162,15 +170,21 @@ export default function AddPage() {
       try {
         if (!id) {
           const res = await postAdminThemes(upData);
-          // if (data.image?.[0] && res?.id) {
-          //   const formData = new FormData();
-          //   formData.append("icon", data.image[0]);
-          //   const iconRes = await postAdminThemesIcon({ id: res.id, formData });
-          //   console.log(iconRes);
-          // }
+          if (data.image?.[0]) {
+            const formData = new FormData();
+            formData.append("icon", data.image[0]);
+            const iconRes = await postAdminThemesIcon({ id: res.data.id, formData });
+            console.log(iconRes);
+          }
           console.log(res);
         } else if (id) {
           await updateTheme(id, upData);
+          if (data.image?.[0]) {
+            const formData = new FormData();
+            formData.append("icon", data.image[0]);
+            const iconRes = await postAdminThemesIcon({ id, formData });
+            console.log(iconRes);
+          }
         }
       } catch (e) {
         console.log(e);

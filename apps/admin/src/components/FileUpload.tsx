@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import { postAdminFiles } from "../api/services/services";
+import { postAdminFiles } from "@shared/services/adminApi";
 
 const DEFAULT_AVATAR_URL = "/assets/Icon_mock_theme.png";
 const BASE_URL = "http://localhost:8080";

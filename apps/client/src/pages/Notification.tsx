@@ -24,15 +24,15 @@ export default function Notification() {
   };
 
   useEffect(() => {
-    try {
-      const server = async () => {
+    const server = async () => {
+      try {
         const res = await getNotifications();
         setNotifications(res.data.content);
-      };
-      server();
-    } catch (error) {
-      console.log(error);
-    }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    server();
   }, []);
 
   const clearAll = async () => {

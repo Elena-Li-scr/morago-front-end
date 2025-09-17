@@ -19,17 +19,27 @@ export default function SignIn() {
       password: data.password,
       phone: data.phone.replace(/\s+/g, ""),
     };
+    localStorage.removeItem("token");
+    localStorage.removeItem("phone");
+    localStorage.removeItem("id");
+    localStorage.removeItem("firstName");
+    localStorage.removeItem("lastName");
+    localStorage.removeItem("avatar");
     try {
       const response = await login(user);
       if (response?.data.token && response?.data.id) {
-        localStorage.clear();
         localStorage.setItem("token", response.data.token);
         localStorage.setItem("phone", response.data.phone);
+        localStorage.setItem("id", String(response.data.id));
+
         if (response.data.firstName && response.data.lastName) {
-          localStorage.setItem("firstName", response?.data.firstName);
-          localStorage.setItem("lastName", response?.data.lastName);
+          localStorage.setItem("firstName", response.data.firstName);
+          localStorage.setItem("lastName", response.data.lastName);
         }
-        console.log(response);
+
+        if (response.data.imageUrl) {
+          localStorage.setItem("avatar", response.data.imageUrl);
+        }
 
         navigate("/home");
       }

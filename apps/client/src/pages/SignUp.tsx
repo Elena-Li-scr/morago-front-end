@@ -24,17 +24,20 @@ export default function SignUp() {
       phone: data.phone.replace(/\s+/g, ""),
       role: "ROLE_USER",
     };
+    localStorage.removeItem("token");
+    localStorage.removeItem("phone");
+    localStorage.removeItem("id");
+    localStorage.removeItem("firstName");
+    localStorage.removeItem("lastName");
+    localStorage.removeItem("avatar");
 
     try {
       const response = await newUser(user);
       if (response?.data.token && response?.data.id) {
         localStorage.setItem("token", response.data.token);
         localStorage.setItem("phone", response.data.phone);
-        if (response.data.firstName && response.data.lastName) {
-          localStorage.setItem("firstName", response?.data.firstName);
-          localStorage.setItem("lastName", response?.data.lastName);
-        }
-        navigate("/home");
+
+        navigate("/code");
       }
     } catch (error: unknown) {
       if (axios.isAxiosError(error)) {

@@ -3,10 +3,13 @@ import "../assets/style/notification.css";
 import { BsExclamationCircle } from "react-icons/bs";
 import { useEffect } from "react";
 import { useNotificationStore } from "../components/hooks/useNotificationStore";
+import { formatNotificationDate } from "../utils/formatInput";
 
 export default function NotificationTranslator() {
   const { notifications, unreadCount, fetchNotifications, clearNotifications } =
     useNotificationStore();
+
+  console.log(notifications);
 
   useEffect(() => {
     fetchNotifications();
@@ -44,7 +47,7 @@ export default function NotificationTranslator() {
                 <p className="notification-title">{notify.title}</p>
                 <button className="notification-btn">Нажмите, чтобы просмотреть</button>
               </div>
-              <p className="notification-time">{notify.date}</p>
+              <p className="notification-time">{formatNotificationDate(notify.date)}</p>
             </div>
           ))}
         </div>

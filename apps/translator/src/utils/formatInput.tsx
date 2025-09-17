@@ -1,3 +1,5 @@
+import { format, isToday, isYesterday, differenceInHours, differenceInMinutes } from "date-fns";
+
 export const formatPhone = (val: string) =>
   val
     .replace(/\D/g, "")
@@ -25,3 +27,29 @@ export const formatBalance = (val: string): string => {
   const raw = val.replace(/\D/g, "");
   return raw.replace(/\B(?=(\d{3})+(?!\d))/g, " ");
 };
+
+export function formatNotificationDate(rawDate: string): string {
+  const date = new Date(rawDate);
+  const now = new Date();
+
+  if (isToday(date)) {
+    const diffHours = differenceInHours(now, date);
+    const diffMinutes = differenceInMinutes(now, date) % 60;
+
+    if (diffHours === 0 && diffMinutes < 1) {
+      return "Только что";
+    }
+
+    if (diffHours < 1) {
+      return `${diffMinutes} минут назад`;
+    }
+
+    return ` ${diffHours} ч ${diffMinutes} мин назад`;
+  }
+
+  if (isYesterday(date)) {
+    return "Вчера";
+  }
+
+  return format(date, "dd.MM.yyyy"); // пример: 07 сентября 2025
+}

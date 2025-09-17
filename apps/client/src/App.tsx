@@ -43,6 +43,7 @@ function App() {
           <Route path="/new-password" element={<NewPassword />} />
         </Routes>
         <Loader />
+        {/* <NotificationsListener /> */}
       </BrowserRouter>
     </>
   );

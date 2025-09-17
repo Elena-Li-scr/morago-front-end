@@ -299,8 +299,10 @@
 
 
 .empty-block {
+  flex-direction: column;
   color: #6C757D;
   display: flex;
+  align-items: center;
   justify-content: center;
   margin-top: 10%;
 }

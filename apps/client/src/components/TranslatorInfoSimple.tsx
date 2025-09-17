@@ -2,20 +2,28 @@ import type { Translator } from "../types";
 import "@shared/styles/calls.css";
 interface Props {
   translator: Translator;
-  onClick: () => void;
+  onClick?: () => void;
 }
 export default function TranslatorInfoSimple({ translator, onClick }: Props) {
   return (
     <div className="simple-call-detail" role="button" onClick={onClick}>
-      <img src={translator.photo} alt="translator-photo" />
+      <img
+        src={
+          translator.imageUrl
+            ? `http://localhost:8080/uploads/${translator.imageUrl}`
+            : "/assets/profile/temporary-photo.png"
+        }
+        alt="translator-photo"
+      />
       <div className="simple-call-main">
         <div>
           <p
-            className={
-              translator.online
-                ? "simple-call-name simple-call-name-online"
-                : "simple-call-name simple-call-name-offline"
-            }
+            // className={
+            //   translator.online
+            //     ? "simple-call-name simple-call-name-online"
+            //     : "simple-call-name simple-call-name-offline"
+            // }
+            className="simple-call-name simple-call-name-online"
           >
             {translator.name}
           </p>
@@ -23,7 +31,6 @@ export default function TranslatorInfoSimple({ translator, onClick }: Props) {
         </div>
         <div className="simple-call-time">
           <p>{translator.date}</p>
-          <p>{translator.time}</p>
         </div>
       </div>
     </div>

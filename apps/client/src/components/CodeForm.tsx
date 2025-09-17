@@ -6,6 +6,7 @@ import "@shared/styles/signUp.css";
 
 interface Props {
   onSubmit: (data: Code) => void;
+  serverError?: string;
 }
 
 interface Code {
@@ -15,7 +16,7 @@ interface Code {
   num4: string;
 }
 
-export default function CodeForm({ onSubmit }: Props) {
+export default function CodeForm({ onSubmit, serverError }: Props) {
   const { register, handleSubmit, setValue, getValues, watch } = useForm<Code>({
     mode: "onChange",
   });
@@ -39,10 +40,7 @@ export default function CodeForm({ onSubmit }: Props) {
     return () => clearInterval(interval);
   }, []);
 
-  const handleChange = (
-    index: number,
-    e: React.ChangeEvent<HTMLInputElement>
-  ) => {
+  const handleChange = (index: number, e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     if (!/^\d?$/.test(value)) return;
 
@@ -53,10 +51,7 @@ export default function CodeForm({ onSubmit }: Props) {
     }
   };
 
-  const handleKeyDown = (
-    index: number,
-    e: React.KeyboardEvent<HTMLInputElement>
-  ) => {
+  const handleKeyDown = (index: number, e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Backspace") {
       const current = getValues(fieldNames[index]);
       if (!current && index > 0) {
@@ -94,13 +89,12 @@ export default function CodeForm({ onSubmit }: Props) {
         ))}
       </div>
       <p className="verification-timer">{formatTime(timer)}</p>
+      {serverError && <p className="errors">{serverError}</p>}
 
       <MainButton
         type="submit"
         text="Подтвердить"
-        className={
-          isComplete && timer !== 0 ? "button button-active" : "button"
-        }
+        className={isComplete && timer !== 0 ? "button button-active" : "button"}
         disabled={timer === 0}
       />
       <div className="code-repeat">

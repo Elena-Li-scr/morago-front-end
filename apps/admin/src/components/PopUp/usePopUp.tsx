@@ -12,7 +12,7 @@ export type PopUpInfo = {
   isActive?: boolean;
   role?: string;
   iconId?: number;
-  categoryId?: number;
+  categoryId?: number | string;
   isPopular?: boolean;
   languages?: knowledge[];
   themes?: knowledge[];

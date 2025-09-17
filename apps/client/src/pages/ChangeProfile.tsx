@@ -41,6 +41,7 @@ export default function ChangeProfile() {
         formData.append("file", data.image[0]);
         const imageRes = await updateAvatar(formData);
         if (imageRes.status === 200 || imageRes.status === 204) {
+          localStorage.setItem("avatar", `/uploads/${imageRes.data.path}`);
           isSuccess = true;
         }
       }

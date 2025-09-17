@@ -1,6 +1,6 @@
 import axiosInstance from "./axiosInstance";
 
-import type { NewUserPayload, ProfilePayload, BalancePayload } from "../types/types";
+import type { NewUserPayload, ProfilePayload, BalancePayload, CallProps } from "../types/types";
 
 // registration
 
@@ -98,6 +98,19 @@ export function getMissedCalls() {
   });
 }
 
+//getting All Calls
+
+export function getAllCalls() {
+  return axiosInstance.get("/profile/calls/history", {
+    params: {
+      page: 0,
+      size: 5,
+      sortBy: "id",
+      sortDirection: "ASC",
+    },
+  });
+}
+
 //getting balance
 
 export function getBalance() {
@@ -111,13 +124,15 @@ export function sendDeposit(payload: BalancePayload) {
 
 export function sendVerificationCode(payload: NewUserPayload) {
   return axiosInstance.post("/publicResetPassword/reset/request", payload);
-} //не можем получить код
+}
 
-// export function getTranslatorsList(themeId: number) {
-//   return axiosInstance.get("/user/translators", {
-//     params: { themeId, page: 0, size: 5, sortBy: "id", sortDirection: "ASC" },
-//   });
-// }
+export function Verification(payload: NewUserPayload) {
+  return axiosInstance.post("/publicResetPassword/reset/verify", payload);
+}
+
+export function sendNewPassword(payload: NewUserPayload) {
+  return axiosInstance.post("/publicResetPassword/reset/confirm", payload);
+}
 
 //получение уведомлений
 
@@ -147,4 +162,32 @@ export function getThemesByCategory({ id }: { id: number }) {
       keyword: "string",
     },
   });
+}
+
+export function getTranslatorsByTheme({ id }: { id: number | string }) {
+  return axiosInstance.get(`/user/translators`, {
+    params: {
+      themeId: id,
+      page: 0,
+      size: 5,
+      sortBy: "id",
+      sortDirection: "ASC",
+    },
+  });
+}
+
+export function getTranslatorsById({ id }: { id: number | string }) {
+  return axiosInstance.get(`/user/translators/${id}`);
+}
+
+export function getLastChoosenThemes() {
+  return axiosInstance.get(`/profile/themes`);
+}
+
+export function addLastChoosenThemes({ id }: { id: number | string }) {
+  return axiosInstance.post(`/profile/themes/${id}/favorite`, {});
+}
+
+export function createCall(payload: CallProps) {
+  return axiosInstance.post(`/call/create`, payload);
 }
