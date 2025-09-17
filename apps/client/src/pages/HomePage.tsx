@@ -1,24 +1,25 @@
 import HomeHeader from "../components/HomeHeader";
 import ThemePage from "../components/ThemePage";
 import FirstCallModal from "../components/FirstCallModal";
-// import InsufficientModal from "../components/InsufficientModal";
+import InsufficientModal from "../components/InsufficientModal";
 import TranslatorInfo from "../components/TranslatorInfo";
 import MainFooter from "../components/MainFooter";
 import { getLastCalls, getAllCalls } from "@shared/services/clientApi";
-import { useFirstCall } from "@shared/store/useStore";
+import { useFirstCall, useLowBalance } from "@shared/store/useStore";
 import { useEffect, useState } from "react";
 import "@shared/styles/homePage.css";
 
 export default function HomePage() {
   const { isFirstCall, setIsFirstCall } = useFirstCall();
   const [translators, setTranslators] = useState([]);
+  const { lowBalance } = useLowBalance();
 
   useEffect(() => {
     const server = async () => {
       try {
         const lastCalls = await getLastCalls();
         const allCalls = await getAllCalls();
-        if (allCalls.data.content.length !== 0) setIsFirstCall(false);
+        if (allCalls.data.content.length === 0) setIsFirstCall(true);
         setTranslators(lastCalls.data.content);
       } catch (error) {
         console.log(error);
@@ -45,7 +46,7 @@ export default function HomePage() {
       </div>
       <MainFooter page="main" />
       {isFirstCall && <FirstCallModal />}
-      {/* {showBanner && <InsufficientModal />} */}
+      {lowBalance && <InsufficientModal />}
     </div>
   );
 }

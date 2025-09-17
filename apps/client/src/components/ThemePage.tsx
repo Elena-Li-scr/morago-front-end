@@ -1,12 +1,12 @@
 import Theme from "@shared/components/Theme";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useTopicStore } from "@shared/store/useStore";
+import { useTopicStore, useIdTopicStore } from "@shared/store/useStore";
 import { getPopularThemes, getLastChoosenThemes } from "@shared/services/clientApi";
 
 import "@shared/styles/homePage.css";
 import "@shared/styles/theme.css";
-type Theme = {
+type ThemeItem = {
   id: number;
   name: string;
   isActive: boolean;
@@ -16,8 +16,8 @@ type Theme = {
 };
 
 export default function ThemePage() {
-  const [popularThemes, setPopularThemes] = useState<string[]>([]);
-  const [lastThemes, setLastThemes] = useState<string[]>([]);
+  const [popularThemes, setPopularThemes] = useState<ThemeItem[]>([]);
+  const [lastThemes, setLastThemes] = useState<ThemeItem[]>([]);
   const [showAllThemes, setShowAllThemes] = useState(false);
   const [showAllLastThemes, setShowAllLastThemes] = useState(false);
   const navigate = useNavigate();
@@ -25,6 +25,7 @@ export default function ThemePage() {
   const shownThemes = showAllThemes ? popularThemes : popularThemes.slice(0, 5);
   const shownLastThemes = showAllLastThemes ? lastThemes : lastThemes.slice(0, 5);
   const { setChosenTopic } = useTopicStore();
+  const { setChosenTopicId } = useIdTopicStore();
 
   const handleShowAll = () => {
     setShowAllThemes(true);
@@ -38,10 +39,8 @@ export default function ThemePage() {
       try {
         const res = await getPopularThemes();
         const last = await getLastChoosenThemes();
-        const lasted: string[] = (last.data.favoriteThemes as Theme[]).map((item) => item.name);
-        const themes: string[] = (res.data.content as Theme[]).map((item) => item.name);
-        setPopularThemes(themes);
-        setLastThemes(lasted);
+        setPopularThemes(res.data.content);
+        setLastThemes(last.data.favoriteThemes);
       } catch (err) {
         console.error("Ошибка при загрузке популярных тем:", err);
       }
@@ -49,16 +48,17 @@ export default function ThemePage() {
     server();
   }, []);
 
-  const handleThemeClick = (theme: string) => {
-    setChosenTopic(theme);
+  const handleThemeClick = (theme: ThemeItem) => {
+    setChosenTopic(theme.name);
+    setChosenTopicId(theme.id);
     navigate("/chosen-topic");
   };
   return (
     <div className="themes-wrapper">
       <h3>Популярные темы перевода</h3>
       <div className="themes">
-        {shownThemes.map((theme: string, index: number) => (
-          <Theme key={index} theme={theme} onClick={handleThemeClick} />
+        {shownThemes.map((theme) => (
+          <Theme key={theme.id} theme={theme.name} onClick={() => handleThemeClick(theme)} />
         ))}
         {!showAllThemes && popularThemes.length > 6 && (
           <div className="theme-wrapper">
@@ -73,8 +73,8 @@ export default function ThemePage() {
         <div>
           <h3>Мои последние выбранные темы</h3>
           <div className="themes">
-            {shownLastThemes.map((theme: string, index: number) => (
-              <Theme key={index} theme={theme} onClick={handleThemeClick} />
+            {shownLastThemes.map((theme) => (
+              <Theme key={theme.id} theme={theme.name} onClick={() => handleThemeClick(theme)} />
             ))}
             {!showAllLastThemes && lastThemes.length > 6 && (
               <div className="theme-wrapper">

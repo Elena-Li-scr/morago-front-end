@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { getBalance } from "@shared/services/clientApi";
+import { useLowBalance } from "@shared/store/useStore";
 
 export default function HomeHeader() {
   const [balance, setBalance] = useState<number>(0);
   const navigate = useNavigate();
+  const { setLowBalance } = useLowBalance();
   const selectTranslator = () => {
     navigate("/call-selectors");
   };
@@ -22,12 +24,13 @@ export default function HomeHeader() {
       try {
         const res = await getBalance();
         setBalance(res.data);
+        if (res.data < 0) setLowBalance(true);
       } catch (error) {
         console.log(error);
       }
     };
     server();
-  }, []);
+  }, [setLowBalance]);
   return (
     <div className="home-header-wrapper">
       <div className="home-header">
