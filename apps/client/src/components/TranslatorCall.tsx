@@ -5,17 +5,13 @@ import { addLastChoosenThemes, createCall, getTranslatorsById } from "@shared/se
 import { useEffect, useState } from "react";
 import { useCall } from "@shared/components/webRtc/useCall";
 import { useIdTopicStore, useModalStore, useTranslatorStore } from "@shared/store/useStore";
-import InsufficientModal from "../components/InsufficientModal";
-import axios from "axios";
 
 export default function TranslatorCall() {
   const { loading } = useModalStore();
   const { selectedTranslator, setSelectedTranslator } = useTranslatorStore();
   const [translatorCall, setTranslatorCall] = useState<TranslatorById | null>(null);
-  const { chosenTopicId, setChosenTopicId } = useIdTopicStore();
-  const [showBanner, setShowBanner] = useState(false);
+  const { chosenTopicId } = useIdTopicStore();
   const { markCalling } = useCall();
-  const [serverError, setServerError] = useState("");
 
   useEffect(() => {
     let isMounted = true;
@@ -46,16 +42,7 @@ export default function TranslatorCall() {
 
       markCalling(res.data); // теперь статус станет "calling" до accept/reject
     } catch (error) {
-      if (axios.isAxiosError(error)) {
-        const errorMessage = error.response?.data?.error;
-        if (errorMessage === "Caller balance is negative") {
-          setShowBanner(true);
-        } else {
-          setServerError("Произошла ошибка. Попробуйте снова.");
-        }
-      } else {
-        setServerError("Что-то пошло не так. Попробуйте снова.");
-      }
+      console.log(error);
     }
   };
 
@@ -138,8 +125,6 @@ export default function TranslatorCall() {
           onClick={onCall}
         />
       </div>
-
-      {showBanner && <InsufficientModal />}
     </div>
   );
 }

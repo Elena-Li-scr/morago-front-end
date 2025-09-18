@@ -41,6 +41,7 @@ export default function CallSelectors() {
   const [themesByCategory, setThemesByCategory] = useState<Record<number, ThemeItem[]>>({});
   const [loadingThemes, setLoadingThemes] = useState<Record<number, boolean>>({});
   const [openedGroups, setOpenedGroups] = useState<Record<number, boolean>>({});
+  const [inputValue, setInputValue] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
@@ -115,8 +116,13 @@ export default function CallSelectors() {
             <input
               type="text"
               placeholder="Поиск темы"
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
+              value={inputValue}
+              onChange={(e) => setInputValue(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  setSearchTerm(inputValue);
+                }
+              }}
               className="selectors-search-input"
             />{" "}
           </div>
