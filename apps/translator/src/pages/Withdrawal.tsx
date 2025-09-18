@@ -17,6 +17,7 @@ import { ControlledSelectField } from "../components/registration_translator/Con
 import ChangePageBtn from "../components/buttons/ChangePageBtn";
 import { postWithdrawalTranslator } from "@shared/services/translatorApi";
 import type { WithdrawalForm } from "@shared/types/types";
+import { useBalance } from "../components/headers_footers/useBalance";
 
 export default function Withdrawal() {
   const methods = useForm({
@@ -24,12 +25,22 @@ export default function Withdrawal() {
     defaultValues: withdrawalData,
   });
 
+  const { balance } = useBalance();
   const [success, setSuccess] = useState(false);
   const navigate = useNavigate();
 
-  const { control, handleSubmit, formState } = methods;
+  const { control, handleSubmit, formState, setError } = methods;
 
   const onSubmit = async (data: WithdrawalForm) => {
+    const checkBalance = Number(data.won.replace(/\D/g, ""));
+    const contextBalance = Number(balance.replace(/\./g, ""));
+    if (checkBalance > contextBalance) {
+      setError("won", {
+        type: "manual",
+        message: "Недостаточно средств на балансе",
+      });
+      return;
+    }
     const withdrawal = {
       accountHolder: data.accountHolder,
       nameOfBank: data.nameOfBank,
@@ -78,6 +89,7 @@ export default function Withdrawal() {
               control={control}
               format={formatBalance}
               rules={rules.won}
+              balance={balance}
             />
           </div>
           <MainButton

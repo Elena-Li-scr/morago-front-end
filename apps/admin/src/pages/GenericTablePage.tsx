@@ -122,10 +122,12 @@ export default function GenericTablePage({ section }: Props) {
           setTotalPages(res.data.totalPages);
           rows = (res.data.content ?? []).map((u) => ({
             ...u,
+            name: u.phone,
             coins: u.coins?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, "."),
             id: u.duration,
             duration: duration(Number(u.duration)),
           }));
+          console.log(rows);
         }
         if (section === "lists" && type === "depositHistory" && userId) {
           const res = await getDepositHistoryid(userId, page, size);

@@ -24,7 +24,10 @@ export const formatBankAccount = (value: string): string => {
 };
 
 export const formatBalance = (val: string): string => {
-  const raw = val.replace(/\D/g, "");
+  let raw = val.replace(/\D/g, "");
+  if (raw.length > 1) {
+    raw = raw.replace(/^0+/, "");
+  }
   return raw.replace(/\B(?=(\d{3})+(?!\d))/g, " ");
 };
 

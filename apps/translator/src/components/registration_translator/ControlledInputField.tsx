@@ -12,6 +12,7 @@ type Props<T extends FieldValues> = {
   rules?: any;
   icon?: React.ReactNode;
   format?: (value: string) => string;
+  balance?: string;
 };
 
 export function ControlledInputField<T extends FieldValues>({
@@ -23,6 +24,7 @@ export function ControlledInputField<T extends FieldValues>({
   format,
   type = "text",
   rules,
+  balance,
 }: Props<T>) {
   const [showPassword, setShowPassword] = useState(false);
   const isPassword = type === "password";
@@ -31,6 +33,11 @@ export function ControlledInputField<T extends FieldValues>({
       {label && (
         <label className="register-label" htmlFor={name}>
           {label}
+          {name === "won" && (
+            <span style={{ fontSize: "12px", fontWeight: "600", letterSpacing: "1.5px" }}>
+              (Баланс {balance} вон)
+            </span>
+          )}
         </label>
       )}
       <Controller
