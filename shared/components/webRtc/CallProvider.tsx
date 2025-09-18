@@ -105,6 +105,8 @@ export function CallProvider({ children, role, wsUrl, token }: Props) {
       headers: { "content-type": "application/json" },
       body: JSON.stringify({ callId: incomingCall.callId }),
     });
+    setCallStatus("rejected");
+    setIncomingCall(null);
   };
 
   const endCall = () => {
