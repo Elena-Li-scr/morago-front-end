@@ -3,7 +3,7 @@ import "@shared/styles/translatorCall.css";
 import type { TranslatorById } from "src/types";
 import { addLastChoosenThemes, createCall, getTranslatorsById } from "@shared/services/clientApi";
 import { useEffect, useState } from "react";
-import { useCall } from "../lib/useCall";
+import { useCall } from "@shared/components/webRtc/useCall";
 import { useIdTopicStore, useModalStore, useTranslatorStore } from "@shared/store/useStore";
 import InsufficientModal from "../components/InsufficientModal";
 import axios from "axios";

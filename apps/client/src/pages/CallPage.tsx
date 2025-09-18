@@ -1,7 +1,7 @@
 import "@shared/styles/calls.css";
 import { useTranslatorStore } from "@shared/store/useStore";
 import { useEffect, useRef, useState } from "react";
-import { useCall } from "../lib/useCall.tsx";
+import { useCall } from "@shared/components/webRtc/useCall";
 
 const formatTime = (s: number) =>
   `${Math.floor(s / 60)
