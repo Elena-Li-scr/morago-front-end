@@ -2,10 +2,11 @@
 import { createRoot } from "react-dom/client";
 import "../../../shared/styles/index.css";
 import App from "./App.tsx";
-import { CallProvider } from "./components/call/CallProvider.tsx";
+import { CallProvider } from "@shared/components/webRtc/CallProvider.tsx";
 
+const token = localStorage.getItem("token") || "";
 createRoot(document.getElementById("root")!).render(
-  <CallProvider>
+  <CallProvider role={"TRANSLATOR"} wsUrl="http://localhost:8080/ws" token={token}>
     <App />
   </CallProvider>,
 );

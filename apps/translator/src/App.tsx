@@ -20,39 +20,42 @@ import { IncomingCallModal } from "./components/call/IncomingCallModal";
 import { CallModal } from "./components/call/CallModal";
 import Loader from "@shared/components/Loader";
 import NotificationTranslator from "./pages/NotificationTranslator";
+import { BalanceProvider } from "./components/headers_footers/BalanceProvider";
 
 function App() {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route index element={<Navigate to="/login" />} />
-        <Route path="/login" element={<LogIn />} />
-        <Route path="/register" element={<RegisterForm />} />
-        <Route path="/verification/:process/:phone" element={<VerificationCode />} />
-        <Route path="/new-translator/:phone" element={<NewTrasnlator />} />
-        <Route path="/reset-password" element={<ResetPassword />} />
-        <Route path="/new-password" element={<NewPassword />} />
-        <Route element={<ProtectedRoute />}>
-          <Route path="/" element={<MainLayout />}>
-            <Route path="/my-home-translator-page" element={<Home />} />
-            <Route path="/my-balance-translator-page" element={<Balance />} />
-            <Route path="/my-call-history" element={<CallHistory />} />
+    <BalanceProvider>
+      <BrowserRouter>
+        <Routes>
+          <Route index element={<Navigate to="/login" />} />
+          <Route path="/login" element={<LogIn />} />
+          <Route path="/register" element={<RegisterForm />} />
+          <Route path="/verification/:process/:phone" element={<VerificationCode />} />
+          <Route path="/new-translator/:phone" element={<NewTrasnlator />} />
+          <Route path="/reset-password" element={<ResetPassword />} />
+          <Route path="/new-password" element={<NewPassword />} />
+          <Route element={<ProtectedRoute />}>
+            <Route path="/" element={<MainLayout />}>
+              <Route path="/my-home-translator-page" element={<Home />} />
+              <Route path="/my-balance-translator-page" element={<Balance />} />
+              <Route path="/my-call-history" element={<CallHistory />} />
+            </Route>
+            <Route path="/my-profile-page" element={<ProfileLayout />}>
+              <Route index element={<Profile />} />
+            </Route>
+            <Route path="/my-profile-page" element={<ProfileSubLayout />}>
+              <Route path="change-data" element={<ChangeDataTranslator />} />
+              <Route path="change-password" element={<ChangePassword />} />
+            </Route>
+            <Route path="/withdrawal-page" element={<Withdrawal />} />
+            <Route path="/my-notification-page" element={<NotificationTranslator />} />
           </Route>
-          <Route path="/my-profile-page" element={<ProfileLayout />}>
-            <Route index element={<Profile />} />
-          </Route>
-          <Route path="/my-profile-page" element={<ProfileSubLayout />}>
-            <Route path="change-data" element={<ChangeDataTranslator />} />
-            <Route path="change-password" element={<ChangePassword />} />
-          </Route>
-          <Route path="/withdrawal-page" element={<Withdrawal />} />
-          <Route path="/my-notification-page" element={<NotificationTranslator />} />
-        </Route>
-      </Routes>
-      <Loader />
-      <IncomingCallModal />
-      <CallModal />
-    </BrowserRouter>
+        </Routes>
+        <Loader />
+        <IncomingCallModal />
+        <CallModal />
+      </BrowserRouter>
+    </BalanceProvider>
   );
 }
 

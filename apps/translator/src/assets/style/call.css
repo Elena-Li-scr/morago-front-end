@@ -175,3 +175,14 @@
 
     padding: 16.05px 17.21px 14.89px 13.73px;
 }
+
+
+
+.call-modal-row {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+}

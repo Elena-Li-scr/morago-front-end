@@ -18,6 +18,7 @@ import NewPassword from "./pages/NewPassword";
 import GreetingPage from "./pages/GreetingPage";
 import SignIn from "./pages/SignIn";
 import Loader from "@shared/components/Loader";
+import TranslatorCall from "./components/TranslatorCall";
 function App() {
   return (
     <>
@@ -35,7 +36,6 @@ function App() {
           <Route path="/profile" element={<Profile />} />
           <Route path="/change-profile" element={<ChangeProfile />} />
           <Route path="/change-password" element={<ChangePassword />} />
-          <Route path="/call" element={<CallPage />} />
           <Route path="/calls-history" element={<CallsHistory />} />
           <Route path="/notification" element={<Notification />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
@@ -43,6 +43,8 @@ function App() {
           <Route path="/new-password" element={<NewPassword />} />
         </Routes>
         <Loader />
+        <CallPage />
+        <TranslatorCall />
         {/* <NotificationsListener /> */}
       </BrowserRouter>
     </>

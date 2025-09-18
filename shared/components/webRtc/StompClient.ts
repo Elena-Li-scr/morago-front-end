@@ -1,9 +1,8 @@
 import SockJS from "sockjs-client";
 import { Client } from "@stomp/stompjs";
 
-export function createStomp() {
-  const token = localStorage.getItem("token") || "";
-  const wsPath = `http://localhost:8080/ws?token=${encodeURIComponent(token)}`;
+export function createStomp(wsUrl: string, token: string) {
+  const wsPath = `${wsUrl}?token=${encodeURIComponent(token)}`;
 
   const client = new Client({
     webSocketFactory: () => new SockJS(`${wsPath}`),

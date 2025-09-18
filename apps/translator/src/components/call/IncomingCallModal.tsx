@@ -1,10 +1,10 @@
-import { useCall } from "./useCall";
+import { useCall } from "@shared/components/webRtc/useCall";
 import "../../assets/style/call.css";
 
+const DEFAULT_AVATAR_URL = "/assets/images/user2.png";
 export const IncomingCallModal = () => {
   const { incomingCall, callStatus, acceptCall, rejectCall } = useCall();
-
-  if (!incomingCall || callStatus === "in-call") return null;
+  if (!incomingCall || callStatus !== "ringing") return null;
   return (
     <div className="modal-overlay">
       <div className="container">
@@ -14,7 +14,11 @@ export const IncomingCallModal = () => {
             <p className="incoming-call-theme">Тема: {incomingCall.theme}</p>
           </div>
           <div className="incoming-call-block">
-            <img src={incomingCall.photoUrl} className="incoming-call-img" alt="Аватар" />
+            <img
+              src={`${incomingCall.photoUrl ?? DEFAULT_AVATAR_URL}`}
+              className="incoming-call-img"
+              alt="Аватар"
+            />
             <p className="incoming-call-block-user">{incomingCall.toUserId}</p>
           </div>
           <div className="incoming-call-block">

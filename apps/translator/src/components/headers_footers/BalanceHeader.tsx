@@ -3,24 +3,11 @@ import { useNavigate, useLocation } from "react-router-dom";
 import LogoHeader from "./LogoHeader";
 import { StatusToggle } from "../animation/StatusToggle";
 import { GrNext } from "react-icons/gr";
-import { useEffect, useState } from "react";
-import { getBalance } from "@shared/services/translatorApi";
+import { useBalance } from "./useBalance";
 
 export default function BalanceHeader() {
-  const [balance, setBalance] = useState<number | null>(null);
   const navigate = useNavigate();
-
-  useEffect(() => {
-    const fetchBalance = async () => {
-      try {
-        const result = await getBalance();
-        setBalance(result.data.toString().replace(/\B(?=(\d{3})+(?!\d))/g, "."));
-      } catch (err) {
-        console.error("Не удалось загрузить баланс", err);
-      }
-    };
-    fetchBalance();
-  }, [balance]);
+  const { balance } = useBalance();
 
   const changePage = () => {
     if (isHomePage) navigate("/my-balance-translator-page");

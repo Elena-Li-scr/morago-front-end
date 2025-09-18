@@ -37,6 +37,7 @@ export type CallHistory = {
   theme: string;
   hasRequest?: string;
   rating: string;
+  phone?: string;
 };
 
 export type RequestPage = {

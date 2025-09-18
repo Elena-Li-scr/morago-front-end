@@ -9,8 +9,14 @@ export type CallPayload = {
   costPerMinute: string;
 };
 
-export type CallStatus = "idle" | "ringing" | "in-call" | "rejected" | "ended";
-
+export type CallStatus =
+  | "idle"
+  | "ringing"
+  | "calling"
+  | "in-call"
+  | "rejected"
+  | "ended"
+  | "timeout";
 type CallContextType = {
   incomingCall: CallPayload | null; // для модалки «Принять/Отклонить»
   currentCall: CallPayload | null; // активный звонок (после принятия)
@@ -18,13 +24,19 @@ type CallContextType = {
   acceptCall: () => void;
   rejectCall: () => void;
   endCall: () => void;
+  markCalling: (
+    call: CallPayload | { callId: number; callerId: number; translatorId: number },
+  ) => void;
 };
 
-export const CallContext = createContext<CallContextType | undefined>(undefined);
-export const useCall = () => {
-  const context = useContext(CallContext);
-  if (!context) {
-    throw new Error("useCall must be used within a CallProvider");
-  }
-  return context;
-};
+export const CallContext = createContext<CallContextType>({
+  callStatus: "idle",
+  incomingCall: null,
+  currentCall: null,
+  acceptCall: () => {},
+  rejectCall: () => {},
+  endCall: () => {},
+  markCalling: () => {},
+});
+
+export const useCall = () => useContext(CallContext);
