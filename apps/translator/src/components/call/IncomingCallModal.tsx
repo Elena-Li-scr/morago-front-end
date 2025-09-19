@@ -5,6 +5,7 @@ const DEFAULT_AVATAR_URL = "/assets/images/user2.png";
 export const IncomingCallModal = () => {
   const { incomingCall, callStatus, acceptCall, rejectCall } = useCall();
   if (!incomingCall || callStatus !== "ringing") return null;
+  console.log(callStatus);
   return (
     <div className="modal-overlay">
       <div className="container">

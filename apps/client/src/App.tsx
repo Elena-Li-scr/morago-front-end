@@ -19,6 +19,7 @@ import GreetingPage from "./pages/GreetingPage";
 import SignIn from "./pages/SignIn";
 import Loader from "@shared/components/Loader";
 import TranslatorCall from "./components/TranslatorCall";
+
 function App() {
   return (
     <>

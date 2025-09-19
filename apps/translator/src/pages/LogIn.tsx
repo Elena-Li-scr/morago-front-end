@@ -4,9 +4,13 @@ import MainButton from "@shared/components/MainButton";
 import "@shared/styles/signUp.css";
 import AuthForm from "../components/registration_translator/AuthForm";
 import ChangePageBtn from "../components/buttons/ChangePageBtn";
-
+import { useEffect } from "react";
 export default function LogIn() {
   const navigate = useNavigate();
+
+  useEffect(() => {
+    localStorage.removeItem("token"); // <-- удаляет токен при каждом заходе на /login
+  }, []);
 
   const ToRegisterhandler = () => {
     navigate("/register");

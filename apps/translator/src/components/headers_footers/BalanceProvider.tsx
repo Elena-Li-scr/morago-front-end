@@ -4,7 +4,6 @@ import { getBalance } from "@shared/services/clientApi";
 
 export const BalanceProvider = ({ children }: { children: React.ReactNode }) => {
   const [balance, setBalance] = useState(0); // можно потом обновлять из API
-
   useEffect(() => {
     const fetchBalance = async () => {
       try {

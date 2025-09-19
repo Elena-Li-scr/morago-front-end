@@ -1,24 +1,26 @@
 import { useEffect, useRef, useState } from "react";
 import { CallContext, type CallStatus, type CallPayload } from "./useCall";
 import { createStomp } from "./StompClient";
+import type { Client } from "@stomp/stompjs";
 
 type Props = {
   children: React.ReactNode;
   role: "USER" | "TRANSLATOR";
   wsUrl: string;
-  token: string;
 };
 
-export function CallProvider({ children, role, wsUrl, token }: Props) {
+export function CallProvider({ children, role, wsUrl }: Props) {
+  const clientRef = useRef<Client | null>(null);
   const stompRef = useRef<ReturnType<typeof createStomp> | null>(null);
   const [callStatus, setCallStatus] = useState<CallStatus>("idle");
   const [incomingCall, setIncomingCall] = useState<CallPayload | null>(null);
   const [currentCall, setCurrentCall] = useState<CallPayload | null>(null);
 
+  const token = localStorage.getItem("token");
   useEffect(() => {
+    if (!token) return;
     const client = createStomp(wsUrl, token);
     stompRef.current = client;
-
     const unsubs: Array<() => void> = [];
 
     client.onConnect = () => {
@@ -39,30 +41,32 @@ export function CallProvider({ children, role, wsUrl, token }: Props) {
         setIncomingCall(null);
         setCallStatus("in-call");
       });
-
       const sRejected = client.subscribe("/user/queue/call-rejected", () => {
         setCallStatus("rejected");
         setIncomingCall(null);
         setCurrentCall(null);
       });
-
       const sEnded = client.subscribe("/user/queue/call-ended", () => {
         setCallStatus("ended");
         setIncomingCall(null);
         setCurrentCall(null);
       });
-
       const sTimeout = client.subscribe("/user/queue/call-timeout", () => {
         setCallStatus("timeout");
         setIncomingCall(null);
         setCurrentCall(null);
       });
-
+      const sCanceled = client.subscribe("/user/queue/call-canceled", () => {
+        setCallStatus("ended");
+        setIncomingCall(null);
+        setCurrentCall(null);
+      });
       unsubs.push(
         () => sStarted.unsubscribe(),
         () => sRejected.unsubscribe(),
         () => sEnded.unsubscribe(),
         () => sTimeout.unsubscribe(),
+        () => sCanceled.unsubscribe(),
       );
     };
 
@@ -76,14 +80,9 @@ export function CallProvider({ children, role, wsUrl, token }: Props) {
     client.activate();
 
     return () => {
-      unsubs.forEach((u) => {
-        try {
-          u();
-        } catch {}
-      });
-      try {
-        client.deactivate();
-      } catch {}
+      unsubs.forEach((u) => u());
+      client.deactivate();
+      clientRef.current = null;
       stompRef.current = null;
     };
   }, [role, wsUrl, token]);
@@ -105,6 +104,20 @@ export function CallProvider({ children, role, wsUrl, token }: Props) {
       headers: { "content-type": "application/json" },
       body: JSON.stringify({ callId: incomingCall.callId }),
     });
+    setCallStatus("rejected");
+    setIncomingCall(null);
+  };
+
+  const cancelCall = () => {
+    const call = incomingCall ?? currentCall;
+    if (!call || !clientRef.current) return;
+    clientRef.current.publish({
+      destination: "/app/call/cancel",
+      body: JSON.stringify({ callId: call.callId }),
+    });
+    setIncomingCall(null);
+    setCurrentCall(null);
+    setCallStatus("ended");
   };
 
   const endCall = () => {
@@ -139,6 +152,7 @@ export function CallProvider({ children, role, wsUrl, token }: Props) {
         rejectCall,
         endCall,
         markCalling,
+        cancelCall,
       }}
     >
       {children}
