@@ -38,7 +38,7 @@ export const CallCard = ({ avatarUrl, name, theme, time, price, date }: Props) =
     <div className="call-card">
       <div className="call-user">
         <img
-          src={avatarUrl || "assets/images/user2.png"}
+          src={avatarUrl ? `http://localhost:8080${avatarUrl}` : "assets/images/user2.png"}
           alt={`avatar`}
           className="all-user-avatar"
         />
