@@ -26,7 +26,10 @@ export default function CallHistory() {
   const switchStatusHandler = async () => {
     const filter = isAvailable ? "isMissed" : "isLast";
     const result = await getCallHistory(filter);
-    setCallData(result.content);
+    console.log(result);
+
+    const sortedCallList = callListSort(result.content);
+    setCallData(sortedCallList);
     setIsAvailable(!isAvailable);
   };
 
