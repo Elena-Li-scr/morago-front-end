@@ -2,7 +2,7 @@ import { createContext, useContext } from "react";
 
 type BalanceContextType = {
   balance: string;
-  setBalance: (b: number) => void;
+  setBalance: (b: string) => void;
 };
 
 export const BalanceContext = createContext<BalanceContextType | undefined>(undefined);

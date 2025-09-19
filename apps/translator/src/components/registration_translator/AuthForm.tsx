@@ -32,8 +32,6 @@ export default function AuthForm({ type }: { type: keyof typeof FORM_CONFIG }) {
             password: formData.password,
           };
           const res = await LoginTranslator(registerData);
-          console.log(res);
-
           auth.setToken(res.data.token);
           auth.setNewTranslator({
             firstName: res.data.firstName,

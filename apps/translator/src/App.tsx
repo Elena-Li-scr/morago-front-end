@@ -16,46 +16,49 @@ import ProtectedRoute from "./components/layout/ProtectedRoute";
 import ChangeDataTranslator from "./pages/ChangeDataTranslator";
 import ProfileSubLayout from "./components/layout/ProfileSubLayout";
 import CallHistory from "./pages/CallHistory";
-import { IncomingCallModal } from "./components/call/IncomingCallModal";
-import { CallModal } from "./components/call/CallModal";
 import Loader from "@shared/components/Loader";
 import NotificationTranslator from "./pages/NotificationTranslator";
 import { BalanceProvider } from "./components/headers_footers/BalanceProvider";
+import { CallProvider } from "@shared/components/webRtc/CallProvider";
 
 function App() {
   return (
-    <BalanceProvider>
-      <BrowserRouter>
-        <Routes>
-          <Route index element={<Navigate to="/login" />} />
-          <Route path="/login" element={<LogIn />} />
-          <Route path="/register" element={<RegisterForm />} />
-          <Route path="/verification/:process/:phone" element={<VerificationCode />} />
-          <Route path="/new-translator/:phone" element={<NewTrasnlator />} />
-          <Route path="/reset-password" element={<ResetPassword />} />
-          <Route path="/new-password" element={<NewPassword />} />
-          <Route element={<ProtectedRoute />}>
-            <Route path="/" element={<MainLayout />}>
-              <Route path="/my-home-translator-page" element={<Home />} />
-              <Route path="/my-balance-translator-page" element={<Balance />} />
-              <Route path="/my-call-history" element={<CallHistory />} />
-            </Route>
-            <Route path="/my-profile-page" element={<ProfileLayout />}>
-              <Route index element={<Profile />} />
-            </Route>
-            <Route path="/my-profile-page" element={<ProfileSubLayout />}>
-              <Route path="change-data" element={<ChangeDataTranslator />} />
-              <Route path="change-password" element={<ChangePassword />} />
-            </Route>
-            <Route path="/withdrawal-page" element={<Withdrawal />} />
-            <Route path="/my-notification-page" element={<NotificationTranslator />} />
+    <BrowserRouter>
+      <Routes>
+        <Route index element={<Navigate to="/login" />} />
+        <Route path="/login" element={<LogIn />} />
+        <Route path="/register" element={<RegisterForm />} />
+        <Route path="/verification/:process/:phone" element={<VerificationCode />} />
+        <Route path="/new-translator/:phone" element={<NewTrasnlator />} />
+        <Route path="/reset-password" element={<ResetPassword />} />
+        <Route path="/new-password" element={<NewPassword />} />
+        <Route
+          element={
+            <ProtectedRoute>
+              <BalanceProvider>
+                <CallProvider role="TRANSLATOR" wsUrl="http://localhost:8080/ws">
+                  <MainLayout />
+                </CallProvider>
+              </BalanceProvider>
+            </ProtectedRoute>
+          }
+        >
+          <Route path="/my-home-translator-page" element={<Home />} />
+          <Route path="/my-balance-translator-page" element={<Balance />} />
+          <Route path="/my-call-history" element={<CallHistory />} />
+          <Route path="/my-profile-page" element={<ProfileLayout />}>
+            <Route index element={<Profile />} />
           </Route>
-        </Routes>
-        <Loader />
-        <IncomingCallModal />
-        <CallModal />
-      </BrowserRouter>
-    </BalanceProvider>
+          <Route path="/my-profile-page" element={<ProfileSubLayout />}>
+            <Route path="change-data" element={<ChangeDataTranslator />} />
+            <Route path="change-password" element={<ChangePassword />} />
+          </Route>
+          <Route path="/withdrawal-page" element={<Withdrawal />} />
+          <Route path="/my-notification-page" element={<NotificationTranslator />} />
+        </Route>
+      </Routes>
+      <Loader />
+    </BrowserRouter>
   );
 }
 

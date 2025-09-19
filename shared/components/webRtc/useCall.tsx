@@ -23,6 +23,7 @@ type CallContextType = {
   callStatus: CallStatus;
   acceptCall: () => void;
   rejectCall: () => void;
+  cancelCall: () => void;
   endCall: () => void;
   markCalling: (
     call: CallPayload | { callId: number; callerId: number; translatorId: number },
@@ -35,6 +36,7 @@ export const CallContext = createContext<CallContextType>({
   currentCall: null,
   acceptCall: () => {},
   rejectCall: () => {},
+  cancelCall: () => {},
   endCall: () => {},
   markCalling: () => {},
 });

@@ -1,7 +1,7 @@
-import { Navigate, Outlet, useLocation } from "react-router-dom";
+import { Navigate, useLocation } from "react-router-dom";
 import { auth } from "../../utils/auth";
 
-export default function ProtectedLayout() {
+export default function ProtectedLayout({ children }: { children: React.ReactNode }) {
   const { pathname } = useLocation();
   const token = auth.isAuthenticated();
 
@@ -20,5 +20,5 @@ export default function ProtectedLayout() {
   }
 
   // Всё хорошо — рендерим вложенные маршруты
-  return <Outlet />;
+  return <>{children}</>;
 }
