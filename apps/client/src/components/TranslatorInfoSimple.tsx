@@ -10,7 +10,7 @@ export default function TranslatorInfoSimple({ translator, onClick }: Props) {
       <img
         src={
           translator.imageUrl
-            ? `http://localhost:8080/uploads/${translator.imageUrl}`
+            ? `http://localhost:8080${translator.imageUrl}`
             : "/assets/profile/temporary-photo.png"
         }
         alt="translator-photo"

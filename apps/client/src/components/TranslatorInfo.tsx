@@ -5,9 +5,10 @@ import type { Translator } from "../types";
 interface Props {
   translator: Translator;
   onClick?: () => void;
+  uploads?: boolean;
 }
 
-export default function TranslatorInfo({ translator, onClick }: Props) {
+export default function TranslatorInfo({ translator, onClick, uploads = false }: Props) {
   function formatDate(dateString: string) {
     const [, month, day] = dateString.split(" ")[0].split(".");
     return `${month}.${day}`;
@@ -17,7 +18,9 @@ export default function TranslatorInfo({ translator, onClick }: Props) {
       <img
         src={
           translator.imageUrl
-            ? `http://localhost:8080/uploads/${translator.imageUrl}`
+            ? uploads
+              ? `http://localhost:8080/uploads/${translator.imageUrl}`
+              : `http://localhost:8080${translator.imageUrl}`
             : "/assets/profile/temporary-photo.png"
         }
         className="translator-avatar"
