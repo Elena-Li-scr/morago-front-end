@@ -31,8 +31,6 @@ export default function CallPage() {
     }
   };
 
-  console.log(callStatus);
-
   const offCall = () => {
     endCall();
     stopTimer();
