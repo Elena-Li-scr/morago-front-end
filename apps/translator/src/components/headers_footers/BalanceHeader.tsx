@@ -18,6 +18,10 @@ export default function BalanceHeader() {
   const isHomePage = location.pathname === "/my-home-translator-page";
   const isBalancePage = location.pathname === "/my-balance-translator-page";
   const isCallHistory = location.pathname === "/my-call-history";
+  const isMyPtofile = location.pathname.includes("/my-profile-page");
+  const isNotification = location.pathname.includes("/my-notification-page");
+
+  if (isMyPtofile || isNotification) return;
 
   return (
     <div
