@@ -79,7 +79,7 @@ export function getLastCalls() {
       page: 0,
       size: 5,
       sortBy: "id",
-      sortDirection: "ASC",
+      sortDirection: "DESC",
     },
   });
 }
@@ -93,7 +93,7 @@ export function getMissedCalls() {
       page: 0,
       size: 5,
       sortBy: "id",
-      sortDirection: "ASC",
+      sortDirection: "DESC",
     },
   });
 }
@@ -106,7 +106,7 @@ export function getAllCalls() {
       page: 0,
       size: 5,
       sortBy: "id",
-      sortDirection: "ASC",
+      sortDirection: "DESC",
     },
   });
 }

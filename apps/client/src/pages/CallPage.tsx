@@ -14,7 +14,6 @@ export default function CallPage() {
   const [isSpeakerOn, setIsSpeakerOn] = useState(false);
   const [seconds, setSeconds] = useState(0);
   const { callStatus, endCall } = useCall();
-  const [serverError, setServerError] = useState("");
 
   const timerRef = useRef<number | null>(null);
 
@@ -44,6 +43,7 @@ export default function CallPage() {
       startTimer();
     } else if (callStatus === "ended" || callStatus === "rejected" || callStatus === "timeout") {
       stopTimer();
+      setSeconds(0);
     }
   }, [callStatus]);
 
@@ -88,8 +88,7 @@ export default function CallPage() {
       <div className="call-main">
         <div>
           <p className="call-translator-name">{selectedTranslator.nameWithInitials}</p>
-          {serverError && <p style={{ textAlign: "center", marginTop: 8 }}>{serverError}</p>}
-          <p style={{ textAlign: "center", marginTop: 8 }}>Статус: {status}</p>
+          <p style={{ textAlign: "center", marginTop: 8 }}>Статус: {callStatus}</p>
           <p style={{ textAlign: "center", marginTop: 8 }} className="call-timer">
             {formatTime(seconds)}
           </p>
