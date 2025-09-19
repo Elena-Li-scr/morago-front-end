@@ -48,6 +48,7 @@ export default function ChosenTopicPage() {
             <TranslatorInfo
               key={index}
               translator={translator}
+              uploads={true}
               onClick={() => setSelectedTranslator(translator)}
             />
           ))}
