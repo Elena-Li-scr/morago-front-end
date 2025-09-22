@@ -7,7 +7,6 @@ import HomePage from "./pages/HomePage";
 import GenericTablePage from "./pages/GenericTablePage";
 import AddPage from "./components/AddPage";
 import PopUp from "./components/PopUp/PopUp";
-import Loader from "@shared/components/Loader";
 
 function App() {
   return (
@@ -34,7 +33,6 @@ function App() {
             </Route>
           </Route>
         </Routes>
-        <Loader />
         <PopUp />
       </BrowserRouter>
     </>

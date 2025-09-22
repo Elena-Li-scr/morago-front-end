@@ -6,8 +6,10 @@ import { useNavigate } from "react-router-dom";
 import { auth } from "../../utils/auth";
 import {
   changePassword,
+  createNewPassword,
   LoginTranslator,
   registerTranslator,
+  requestResetCode,
   sendVerificationCode,
 } from "@shared/services/translatorApi";
 import type { AxiosError } from "axios";
@@ -19,8 +21,15 @@ export default function AuthForm({ type }: { type: keyof typeof FORM_CONFIG }) {
     getValues,
     formState: { isValid },
     setError,
+    setValue,
+    trigger,
   } = useForm({ mode: "onChange" });
   const navigate = useNavigate();
+
+  const handleRefocusPassword = () => {
+    setValue("confirmPassword", "", { shouldDirty: true, shouldValidate: true });
+    trigger("confirmPassword"); // чтобы сразу обновить валидацию/сообщение
+  };
   const onSubmit: SubmitHandler<RegisterFormValues | ChangePasswordData> = async (data) => {
     switch (type) {
       case "login":
@@ -43,7 +52,6 @@ export default function AuthForm({ type }: { type: keyof typeof FORM_CONFIG }) {
             languageIds: res.data.selectedLanguageIds,
             themeIds: res.data.selectedThemeIds,
           });
-          auth.setVerified();
           auth.setProfileFilled();
           navigate("/my-home-translator-page");
         } catch (err) {
@@ -55,6 +63,12 @@ export default function AuthForm({ type }: { type: keyof typeof FORM_CONFIG }) {
               message: "Профиль пользователя не найден",
             });
           }
+          if (serverMessage === "Invalid phone or password") {
+            setError("password", {
+              type: "server",
+              message: "Неверный пароль или телефон",
+            });
+          }
         }
         break;
       case "register": {
@@ -62,7 +76,7 @@ export default function AuthForm({ type }: { type: keyof typeof FORM_CONFIG }) {
         const cleanPhone = formData.phone?.replace(/[^0-9]/g, "");
         const registerData = {
           phone: cleanPhone,
-          password: formData.password,
+          password: formData.currentPassword,
           confirmPassword: formData.confirmPassword,
           role: "ROLE_TRANSLATOR",
         };
@@ -97,8 +111,8 @@ export default function AuthForm({ type }: { type: keyof typeof FORM_CONFIG }) {
       case "changePassword": {
         const formData = data as ChangePasswordData;
         const changePasswordData = {
-          currentPassword: formData.currentPassword,
-          newPassword: formData.newPassword,
+          oldPassword: formData.password!,
+          newPassword: formData.currentPassword!,
           confirmPassword: formData.confirmPassword,
         };
         try {
@@ -111,7 +125,7 @@ export default function AuthForm({ type }: { type: keyof typeof FORM_CONFIG }) {
             axiosErr.response?.status === 500 &&
             serverMessage === "Internal server error: Passwords don't match"
           ) {
-            setError("currentPassword", {
+            setError("password", {
               type: "server",
               message: "Не верный пароль",
             });
@@ -124,14 +138,37 @@ export default function AuthForm({ type }: { type: keyof typeof FORM_CONFIG }) {
         }
         break;
       }
-      case "newPassword":
-        // await setNewPassword(data.password);
+      case "newPassword": {
+        const formData = data as Record<string, string>;
+        const verifyToken = auth.isVerified();
+        const newPasswordData = {
+          newPassword: formData.currentPassword,
+          resetToken: verifyToken!,
+        };
+
+        await createNewPassword(newPasswordData);
         navigate("/my-home-translator-page");
         break;
+      }
       case "resetPassword": {
-        const formData = data as RegisterFormValues;
-        // await requestResetCode(data.phone);
-        navigate(`/verification/reset/${formData.phone}`);
+        const formData = data as Record<string, string>;
+        const cleanPhone = formData.phone?.replace(/[^0-9]/g, "");
+        const phoneData = {
+          phone: cleanPhone,
+        };
+        try {
+          await requestResetCode(phoneData);
+          navigate(`/verification/reset/${cleanPhone}`);
+        } catch (err) {
+          const axiosErr = err as AxiosError<{ error: string }>;
+          const serverMessage = axiosErr.response?.data.error;
+          if (serverMessage === "User profile not found") {
+            setError("phone", {
+              type: "server",
+              message: "Номер не найден",
+            });
+          }
+        }
         break;
       }
     }
@@ -152,6 +189,7 @@ export default function AuthForm({ type }: { type: keyof typeof FORM_CONFIG }) {
           type={field.type}
           format={field.format}
           rules={typeof field.rules === "function" ? field.rules(getValues) : field.rules}
+          onFocusExtra={handleRefocusPassword} // ← ключевая строка
         />
       ))}
 

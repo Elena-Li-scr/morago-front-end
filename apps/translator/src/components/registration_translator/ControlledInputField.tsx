@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Controller, type Path, type Control, type FieldValues } from "react-hook-form";
 import { FiEye, FiEyeOff } from "react-icons/fi";
 import ChangePageBtn from "../buttons/ChangePageBtn";
+import { useLocation } from "react-router-dom";
 
 type Props<T extends FieldValues> = {
   name: Path<T>;
@@ -13,6 +14,7 @@ type Props<T extends FieldValues> = {
   icon?: React.ReactNode;
   format?: (value: string) => string;
   balance?: string;
+  onFocusExtra?: () => void;
 };
 
 export function ControlledInputField<T extends FieldValues>({
@@ -25,9 +27,13 @@ export function ControlledInputField<T extends FieldValues>({
   type = "text",
   rules,
   balance,
+  onFocusExtra,
 }: Props<T>) {
   const [showPassword, setShowPassword] = useState(false);
   const isPassword = type === "password";
+  const location = useLocation();
+  const isChangePassword = location.pathname.includes("/change-password");
+
   return (
     <div className="register-block">
       {label && (
@@ -62,12 +68,19 @@ export function ControlledInputField<T extends FieldValues>({
                 value={value || ""}
                 placeholder={placeholder}
                 className={`input ${error ? "input-error" : ""}`}
+                onFocus={() => {
+                  if (name === "currentPassword") {
+                    onFocusExtra?.();
+                  }
+                  onChange();
+                }}
                 onChange={(e) => {
                   const raw = e.target.value;
                   const formatted = format ? format(raw) : raw;
                   onChange(formatted);
                 }}
               />
+
               {isPassword && (
                 <button
                   type="button"
@@ -80,7 +93,7 @@ export function ControlledInputField<T extends FieldValues>({
               )}
             </div>
             {error && <p className="register-validate">{error.message}</p>}
-            {name === "currentPassword" && <ChangePageBtn page="changePassword" />}
+            {isChangePassword && name === "password" && <ChangePageBtn page="changePassword" />}
           </>
         )}
       />

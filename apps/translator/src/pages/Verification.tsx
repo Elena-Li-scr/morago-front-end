@@ -6,7 +6,7 @@ import "../assets/style/verification.css";
 import SucessActionModal from "@shared/components/SucessActionModal";
 import { auth } from "../utils/auth";
 import ChangePageBtn from "../components/buttons/ChangePageBtn";
-import { sendVerificationCode } from "@shared/services/translatorApi";
+import { sendVerificationCode, verificationCode } from "@shared/services/translatorApi";
 import type { AxiosError } from "axios";
 
 type VerificationParams = {
@@ -69,15 +69,20 @@ export default function VerificationPage() {
   const handleSubmit = async () => {
     const fullCode = code.join("");
     if (fullCode.length !== 4) return;
+    const verifyCode = {
+      phone: phone,
+      code: fullCode,
+    };
     try {
-      // const success = await verifyCode(phone!, fullCode);
-      if (process === "register") {
-        auth.setVerified();
-      }
+      const confirmCode = await verificationCode(verifyCode);
+      auth.setVerified(confirmCode.data);
       setSuccess(true);
     } catch (err) {
       const axiosErr = err as AxiosError<{ error: string }>;
-      setError(axiosErr.response?.data?.error || "");
+      const serverMessage = axiosErr.response?.data.error;
+      if (serverMessage === "Internal server error: Invalid code") {
+        setError("Неверный код");
+      }
     }
   };
 

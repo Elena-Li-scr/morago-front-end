@@ -62,6 +62,8 @@ export const imgTranslatorData = (file: File | string) => {
 };
 // изменить пароль
 export const changePassword = (data: ChangePasswordData) => {
+  console.log(data);
+
   return axiosInstance.post("/profile/password/update", data);
 };
 
@@ -162,3 +164,15 @@ export const postClearNotifications = () => {
 export const postWithdrawalTranslator = (data: WithdrawalForm) => {
   return axiosInstance.post("/translator/withdrawal", data);
 };
+
+export const requestResetCode = (phone: Record<string, string>) => {
+  return axiosInstance.post("/publicResetPassword/reset/request", phone);
+};
+
+export function verificationCode(payload: Record<string, string>) {
+  return axiosInstance.post("/publicResetPassword/reset/verify", payload);
+}
+
+export function createNewPassword(payload: Record<string, string>) {
+  return axiosInstance.post("/publicResetPassword/reset/confirm", payload);
+}
