@@ -1,6 +1,7 @@
 import "@shared/styles/modals.css";
 import { useNavigate } from "react-router-dom";
 import { useFirstCall } from "@shared/store/useStore";
+import { IoClose } from "react-icons/io5";
 
 export default function FirstCallModal() {
   const navigate = useNavigate();
@@ -9,7 +10,7 @@ export default function FirstCallModal() {
     <div className="modal-window-wrapper">
       <div className="modal-window">
         <button className="modal-window-close-button" onClick={() => setIsFirstCall(false)}>
-          X
+          <IoClose />
         </button>
         <h2>ПЕРВЫЙ ЗВОНОК БЕСПЛАТНЫЙ!</h2>
         <p>

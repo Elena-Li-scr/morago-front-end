@@ -1,5 +1,6 @@
 import "@shared/styles/signUp.css";
 import { useForm, Controller } from "react-hook-form";
+import { useEffect } from "react";
 import Cleave from "cleave.js/react";
 
 import { phonePattern } from "@shared/utils/validationRules";
@@ -41,6 +42,8 @@ export default function MainForm({
     handleSubmit,
     watch,
     control,
+    getValues,
+    trigger,
     formState: { errors, isValid },
   } = useForm<FormData>({ mode: "onChange" });
 
@@ -67,6 +70,10 @@ export default function MainForm({
   const toRecoveryPassword = () => {
     navigate("/forgot-password");
   };
+
+  useEffect(() => {
+    trigger("confirmPassword");
+  }, [password, trigger]);
 
   return (
     <form className="sign-form" onSubmit={handleSubmit(onSubmit)}>
@@ -183,8 +190,8 @@ export default function MainForm({
               autoComplete="new-password"
               className={errors.confirmPassword ? "main-input-error main-input" : "main-input"}
               {...register("confirmPassword", {
-                required: "Подтвердите пароль",
-                validate: (value) => value === password || "Пароли не совпадают",
+                required: true,
+                validate: (value) => value === getValues("password") || "Пароли не совпадают",
               })}
             />
             <button

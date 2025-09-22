@@ -66,13 +66,6 @@ export default function LoginPage() {
         {error && <p className="form-error">{error}</p>}
 
         <BigButton text="Login" type="submit" />
-        <button
-          className="forgot-pass-button"
-          type="button"
-          onClick={() => navigate("/forgot-password")}
-        >
-          Forgot Password?
-        </button>
       </form>
     </div>
   );

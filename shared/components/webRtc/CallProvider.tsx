@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { CallContext, type CallStatus, type CallPayload } from "./useCall";
+import { useShowRating } from "../../store/useStore";
 import { createStomp } from "./StompClient";
 import type { Client } from "@stomp/stompjs";
 
@@ -15,6 +16,7 @@ export function CallProvider({ children, role, wsUrl }: Props) {
   const [callStatus, setCallStatus] = useState<CallStatus>("idle");
   const [incomingCall, setIncomingCall] = useState<CallPayload | null>(null);
   const [currentCall, setCurrentCall] = useState<CallPayload | null>(null);
+  const { setShowRating } = useShowRating();
 
   const token = localStorage.getItem("token");
   useEffect(() => {
@@ -50,6 +52,7 @@ export function CallProvider({ children, role, wsUrl }: Props) {
         setCallStatus("ended");
         setIncomingCall(null);
         setCurrentCall(null);
+        setShowRating(true);
       });
       const sTimeout = client.subscribe("/user/queue/call-timeout", () => {
         setCallStatus("timeout");
@@ -85,7 +88,7 @@ export function CallProvider({ children, role, wsUrl }: Props) {
       clientRef.current = null;
       stompRef.current = null;
     };
-  }, [role, wsUrl, token]);
+  }, [role, wsUrl, token, setShowRating]);
 
   // Экшены
   const acceptCall = () => {
@@ -131,6 +134,7 @@ export function CallProvider({ children, role, wsUrl }: Props) {
     setCallStatus("ended");
     setCurrentCall(null);
     setIncomingCall(null);
+    setShowRating(true);
   };
 
   // пользователь инициировал звонок (после POST /call/create)

@@ -24,7 +24,7 @@ export default function UpBalance() {
               <img
                 src={
                   translator.imageUrl
-                    ? `http://localhost:8080/uploads/${translator.imageUrl}`
+                    ? `http://localhost:8080${translator.imageUrl}`
                     : "/assets/profile/temporary-photo.png"
                 }
                 alt="translator-photo"
