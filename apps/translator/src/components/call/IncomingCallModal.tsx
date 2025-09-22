@@ -2,8 +2,10 @@ import { useCall } from "@shared/components/webRtc/useCall";
 import "../../assets/style/call.css";
 
 const DEFAULT_AVATAR_URL = "/assets/images/user2.png";
+
 export const IncomingCallModal = () => {
   const { incomingCall, callStatus, acceptCall, rejectCall } = useCall();
+
   if (!incomingCall || callStatus !== "ringing") return null;
   return (
     <div className="modal-overlay">

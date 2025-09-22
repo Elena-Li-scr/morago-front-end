@@ -1,7 +1,7 @@
 import Theme from "@shared/components/Theme";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useTopicStore, useIdTopicStore } from "@shared/store/useStore";
+import { useTopicStore, useIdTopicStore, useTopicUrlStore } from "@shared/store/useStore";
 import { getPopularThemes, getLastChoosenThemes } from "@shared/services/clientApi";
 
 import "@shared/styles/homePage.css";
@@ -13,6 +13,7 @@ type ThemeItem = {
   iconId: number | null;
   categoryId: number;
   isPopular: boolean;
+  iconUrl: string;
 };
 
 export default function ThemePage() {
@@ -26,6 +27,7 @@ export default function ThemePage() {
   const shownLastThemes = showAllLastThemes ? lastThemes : lastThemes.slice(0, 5);
   const { setChosenTopic } = useTopicStore();
   const { setChosenTopicId } = useIdTopicStore();
+  const { setChosenTopicUrl } = useTopicUrlStore();
 
   const handleShowAll = () => {
     setShowAllThemes(true);
@@ -51,6 +53,7 @@ export default function ThemePage() {
   const handleThemeClick = (theme: ThemeItem) => {
     setChosenTopic(theme.name);
     setChosenTopicId(theme.id);
+    setChosenTopicUrl(theme.iconUrl);
     navigate("/chosen-topic");
   };
   return (
@@ -58,7 +61,12 @@ export default function ThemePage() {
       <h3>Популярные темы перевода</h3>
       <div className="themes">
         {shownThemes.map((theme) => (
-          <Theme key={theme.id} theme={theme.name} onClick={() => handleThemeClick(theme)} />
+          <Theme
+            key={theme.id}
+            theme={theme.name}
+            iconUrl={theme.iconUrl}
+            onClick={() => handleThemeClick(theme)}
+          />
         ))}
         {!showAllThemes && popularThemes.length > 6 && (
           <div className="theme-wrapper">
@@ -74,7 +82,12 @@ export default function ThemePage() {
           <h3>Мои последние выбранные темы</h3>
           <div className="themes">
             {shownLastThemes.map((theme) => (
-              <Theme key={theme.id} theme={theme.name} onClick={() => handleThemeClick(theme)} />
+              <Theme
+                key={theme.id}
+                theme={theme.name}
+                iconUrl={theme.iconUrl}
+                onClick={() => handleThemeClick(theme)}
+              />
             ))}
             {!showAllLastThemes && lastThemes.length > 6 && (
               <div className="theme-wrapper">

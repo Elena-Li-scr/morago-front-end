@@ -23,7 +23,14 @@ export default function NewPassword() {
       console.log(payload);
       const response = await sendNewPassword(payload);
       if (response.status === 200 || response.status === 201) {
-        navigate("/home");
+        navigate("/sign-in");
+        localStorage.removeItem("token");
+        localStorage.removeItem("phone");
+        localStorage.removeItem("id");
+        localStorage.removeItem("firstName");
+        localStorage.removeItem("lastName");
+        localStorage.removeItem("avatar");
+        localStorage.removeItem("resetToken");
       }
     } catch (error: unknown) {
       if (axios.isAxiosError(error)) {

@@ -191,3 +191,14 @@ export function addLastChoosenThemes({ id }: { id: number | string }) {
 export function createCall(payload: CallProps) {
   return axiosInstance.post(`/call/create`, payload);
 }
+
+interface RateProps {
+  id: number | string;
+  payload: {
+    rating: string;
+  };
+}
+
+export function rateCall({ id, payload }: RateProps) {
+  return axiosInstance.put(`/call/rate/${id}`, payload);
+}

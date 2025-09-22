@@ -122,7 +122,7 @@ export default function GenericTablePage({ section }: Props) {
             name:
               u.firstName || u.lastName
                 ? [u.firstName, u.lastName].filter(Boolean).join(" ").trim()
-                : "( Не указоно )",
+                : "( Не указано )",
           }));
         }
         if (section === "lists" && type === "translator") {

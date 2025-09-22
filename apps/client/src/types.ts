@@ -10,6 +10,7 @@ export interface Translator {
   hasRequest: boolean;
   reviewsCount?: null | number;
   nameWithInitials?: string;
+  averageRating?: number;
 }
 
 export interface TranslatorByTheme {
@@ -18,6 +19,7 @@ export interface TranslatorByTheme {
   levelOfKorean: number;
   imageUrl: null | string;
   theme: string;
+  averageRating?: number;
 }
 
 export interface TranslatorById {
@@ -34,4 +36,5 @@ export interface TranslatorById {
   price?: number;
   rating?: number;
   imageUrl?: string;
+  averageRating?: number;
 }
