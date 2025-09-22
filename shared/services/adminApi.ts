@@ -1,4 +1,4 @@
-import axiosInstance from "./axiosInstance.ts";
+import axiosInstance from "../services/axiosInstance";
 import {
   type CallHistory,
   type Categories,
@@ -22,14 +22,20 @@ export type RegisterAdmin = {
   password: string;
 };
 
-export async function getAdminUsers(page: number, size: number, keyword: string) {
+export async function getAdminUsers(
+  page: number,
+  size: number,
+  keyword?: string,
+  opts?: { signal?: AbortSignal },
+) {
   return await axiosInstance.get<PageResponse<User>>("/admin/users", {
     params: { page, size, sortBy: "id", keyword, sortDirection: "ASC" },
+    signal: opts?.signal,
   });
 }
 
 // Login
-export const LoginAdmin = async (data: RegisterAdmin) => {
+export const LoginAdmin = async (data: RegisterAdmin): Promise<AuthResponse> => {
   return axiosInstance.post("/auth/login", { ...data });
 };
 
@@ -37,9 +43,15 @@ export const getUserById = (id: number | string) => {
   return axiosInstance.get(`/admin/users/${id}`);
 };
 
-export async function getAdminTranslators(page: number, size: number, keyword: string) {
+export async function getAdminTranslators(
+  page: number,
+  size: number,
+  keyword: string,
+  opts?: { signal?: AbortSignal },
+) {
   return await axiosInstance.get<PageResponse<Translator>>("/admin/translators", {
     params: { page, size, sortBy: "id", keyword, sortDirection: "ASC" },
+    signal: opts?.signal,
   });
 }
 
@@ -47,9 +59,15 @@ export async function getTranslatorById(id: string | number) {
   return await axiosInstance.get(`/admin/translators/${id}`);
 }
 
-export async function getAdminCategories(page?: number, size?: number, keyword?: string) {
+export async function getAdminCategories(
+  page?: number,
+  size?: number,
+  keyword?: string,
+  opts?: { signal?: AbortSignal },
+) {
   return await axiosInstance.get<PageResponse<Categories>>("/admin/categories", {
     params: { page, size, sortBy: "id", keyword, sortDirection: "ASC" },
+    signal: opts?.signal,
   });
 }
 
@@ -73,9 +91,15 @@ type AdminThemes = {
   categoryId?: number;
 };
 
-export async function getAdminThemes(page: number, size: number, keyword: string) {
+export async function getAdminThemes(
+  page: number,
+  size: number,
+  keyword: string,
+  opts?: { signal?: AbortSignal },
+) {
   return await axiosInstance.get<PageResponse<Themes>>("/admin/themes", {
     params: { page, size, sortBy: "id", keyword, sortDirection: "ASC" },
+    signal: opts?.signal,
   });
 }
 

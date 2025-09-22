@@ -1,12 +1,14 @@
 import "../styles/loader.css";
 import { useModalStore } from "../store/useStore";
 
-export default function Loader() {
+type props = {
+  role?: string;
+};
+export default function Loader({ role }: props) {
   const isLoading = useModalStore((state) => state.loading);
-
   if (!isLoading) return null;
   return (
-    <div className="logo-wrapper">
+    <div className={`${role ? "admin-logo-wrapper" : "logo-wrapper"}`}>
       <div className="square">
         <div className="circle blue"></div>
         <div className="circle red"></div>

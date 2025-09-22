@@ -9,8 +9,6 @@ export default function NotificationTranslator() {
   const { notifications, unreadCount, fetchNotifications, clearNotifications } =
     useNotificationStore();
 
-  console.log(notifications);
-
   useEffect(() => {
     fetchNotifications();
   }, []);

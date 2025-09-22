@@ -20,8 +20,8 @@ export default function BalanceHeader() {
   const isCallHistory = location.pathname === "/my-call-history";
   const isMyPtofile = location.pathname.includes("/my-profile-page");
   const isNotification = location.pathname.includes("/my-notification-page");
-
-  if (isMyPtofile || isNotification) return;
+  const isWithdrawal = location.pathname.includes("/withdrawal-page");
+  if (isMyPtofile || isNotification || isWithdrawal) return;
 
   return (
     <div

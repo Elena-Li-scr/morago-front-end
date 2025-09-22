@@ -1,5 +1,8 @@
 import { useParams } from "react-router-dom";
 import { listsTableConfigs, topicTableConfigs } from "../constans/tableConfigs/tableConfigs";
+
+import Loader from "@shared/components/Loader";
+
 import FlexTable from "../components/FlexTable";
 import { Breadcrumbs } from "../components/Breadcrumbs";
 import { titleMapLists, titleMapTopics } from "../constans/titleMap/titleMap";
@@ -17,6 +20,8 @@ import {
 } from "@shared/services/adminApi";
 import { useEffect, useState } from "react";
 import type { AxiosError } from "axios";
+import { useModalStore } from "@shared/store/useStore";
+import { useDebounce } from "../components/useDebounce";
 
 type Props = { section?: string };
 
@@ -39,6 +44,7 @@ type TableRow = {
 };
 
 type SortDir = "ASC" | "DESC" | "";
+
 export default function GenericTablePage({ section }: Props) {
   const [rows, setRows] = useState<TableRow[]>([]);
   const [page, setPage] = useState(0); // 0-based
@@ -46,9 +52,16 @@ export default function GenericTablePage({ section }: Props) {
   const [totalPages, setTotalPages] = useState(0);
   const [error, setError] = useState<string | null>(null);
 
+  const { loading } = useModalStore();
+
   const { type } = useParams();
   const [query, setQuery] = useState("");
   const [sortDir, setSortDir] = useState<SortDir>();
+
+  const debouncedQuery = useDebounce(query, 600);
+
+  const isSearch =
+    type === "callHistory" || type === "depositHistory" || type === "withdrawHistory";
 
   //  Sort Data List - ASC or DESC input
   const sortByName = (list: TableRow[], dir: SortDir) => {
@@ -82,21 +95,25 @@ export default function GenericTablePage({ section }: Props) {
     const hours = Math.floor(total / 3600);
     const minutes = Math.floor((total % 3600) / 60);
     const seconds = total % 60;
-
     const result: string[] = [];
     if (hours > 0) result.push(`${hours} h`);
     if (minutes > 0) result.push(`${minutes} min`);
     if (seconds > 0) result.push(`${seconds} sec`);
-
     return result.join(" ");
   };
-  // Load Data List
+
   useEffect(() => {
+    const controller = new AbortController();
+    let ignore = false;
+
     async function load() {
       try {
         let rows: any;
+        const searchParam = (debouncedQuery ?? "").trim();
         if (section === "lists" && type === "user") {
-          const res = await getAdminUsers(page, size, query);
+          const res = await getAdminUsers(page, size, searchParam, {
+            signal: controller.signal,
+          });
           setTotalPages(res.data.totalPages);
           rows = (res.data.content ?? []).map((u) => ({
             ...u,
@@ -109,7 +126,7 @@ export default function GenericTablePage({ section }: Props) {
           }));
         }
         if (section === "lists" && type === "translator") {
-          const res = await getAdminTranslators(page, size, query);
+          const res = await getAdminTranslators(page, size, searchParam);
           setTotalPages(res.data.totalPages);
           rows = (res.data.content ?? []).map((u) => ({
             ...u,
@@ -151,12 +168,16 @@ export default function GenericTablePage({ section }: Props) {
           }));
         }
         if (section === "topics" && type === "categories") {
-          const res = await getAdminCategories(page, size, query);
+          const res = await getAdminCategories(page, size, searchParam, {
+            signal: controller.signal,
+          });
           setTotalPages(res.data.totalPages);
           rows = res.data.content ?? [];
         }
         if (section === "topics" && type === "themes") {
-          const res = await getAdminThemes(page, size, query);
+          const res = await getAdminThemes(page, size, searchParam, {
+            signal: controller.signal,
+          });
           setTotalPages(res.data.totalPages);
           rows = await Promise.all(
             res.data.content.map(async (u) => ({
@@ -172,7 +193,11 @@ export default function GenericTablePage({ section }: Props) {
       }
     }
     load();
-  }, [section, type, page, size, query, userId]);
+    return () => {
+      ignore = true;
+      controller.abort();
+    };
+  }, [section, type, page, size, debouncedQuery, userId]);
 
   useEffect(() => {
     setPage(0);
@@ -190,87 +215,89 @@ export default function GenericTablePage({ section }: Props) {
   const title =
     section === "lists" ? titleMapLists[type as ListsType] : titleMapTopics[type as TopicsType];
 
-  // Search function
-  const normalize = (s: string) => s.toLowerCase().replace(/\s+/g, " ").trim();
-
-  const filtered = rows.filter((item) => {
-    if (item.name) return normalize(item.name).startsWith(normalize(query));
-    else return item;
-  });
-
   const prev = () => setPage((p) => Math.max(0, p - 1));
   const next = () => setPage((p) => Math.min(totalPages - 1, p + 1));
 
   return (
     <div className="container">
       <div className="generic-table-page">
-        <div className="generic-table-data">
-          <div className="page-header">
-            <div className="page-info page-block">
-              <h3 className="page-info-title">
-                {title} {name}
-              </h3>
-              <Breadcrumbs from={from} />
+        <div className="page-header">
+          <div className="page-info page-block">
+            <h3 className="page-info-title">
+              {title} {name}
+            </h3>
+            <Breadcrumbs from={from} />
+          </div>
+          <div className="page-search page-block">
+            <div className="page-search-name">
+              <IoSearch className="search-icon" />
+              <input
+                type="text"
+                disabled={isSearch}
+                value={query}
+                placeholder="Search by name or company "
+                onChange={(e) => {
+                  const val = e.target.value;
+                  setQuery(val);
+                }}
+              ></input>
             </div>
-            <div className="page-search page-block">
-              <div className="page-search-name">
-                <IoSearch className="search-icon" />
-                <input
-                  type="text"
-                  value={query}
-                  placeholder="Search by name or company "
-                  onChange={(e) => setQuery(e.target.value)}
-                ></input>
-              </div>
-              <div className="page-search-filter">
-                <input type="text" placeholder="Filter" />
-                <label>
-                  Имя:
-                  <select
-                    value={sortDir}
-                    onChange={(e) => setSortDir(e.target.value as SortDir)}
-                    className={`select ${sortDir !== undefined ? "select-asc" : ""}`}
-                  >
-                    <option value="">Choose action</option>
-                    <option value="ASC">По возрастанию</option>
-                    <option value="DESC">По убыванию </option>
-                  </select>
-                </label>
-                <button
-                  className="page-search-btn"
-                  disabled={sortDir === undefined}
-                  onClick={handleSort}
+            <div className="page-search-filter">
+              <input type="text" placeholder="Filter" />
+              <label>
+                Имя:
+                <select
+                  value={sortDir}
+                  onChange={(e) => setSortDir(e.target.value as SortDir)}
+                  className={`select ${sortDir !== undefined ? "select-asc" : ""}`}
                 >
-                  Apply
-                </button>
-              </div>
+                  <option value="">Choose action</option>
+                  <option value="ASC">По возрастанию</option>
+                  <option value="DESC">По убыванию </option>
+                </select>
+              </label>
+              <button className="page-search-btn" onClick={handleSort}>
+                Apply
+              </button>
             </div>
           </div>
-          <FlexTable
-            columns={columns}
-            data={filtered || rows}
-            rowKey={(row) => row.id}
-            tableType={type}
-            error={error}
-          />
         </div>
-        <div className="pagination-row">
-          {rows.length > 1 && (
-            <div className="pagination">
-              <button onClick={prev} disabled={page === 0}>
-                Prev
-              </button>
-              {Array.from({ length: totalPages }, (_, i) => (
-                <button key={i} onClick={() => setPage(i)} className={i === page ? "active" : ""}>
-                  {i + 1}
-                </button>
-              ))}
-              <button onClick={next} disabled={page + 1 >= totalPages}>
-                Next
-              </button>
+        {!loading ? (
+          <>
+            <div className="generic-table-data">
+              <FlexTable
+                columns={columns}
+                data={rows}
+                rowKey={(row) => row.id}
+                tableType={type}
+                error={error}
+              />
             </div>
-          )}
-        </div>
+            <div className="pagination-row">
+              {rows.length >= 0 && (
+                <div className="pagination">
+                  <button onClick={prev} disabled={page === 0}>
+                    Prev
+                  </button>
+                  {Array.from({ length: totalPages }, (_, i) => (
+                    <button
+                      key={i}
+                      onClick={() => setPage(i)}
+                      className={i === page ? "active" : ""}
+                    >
+                      {i + 1}
+                    </button>
+                  ))}
+                  <button onClick={next} disabled={page + 1 >= totalPages}>
+                    Next
+                  </button>
+                </div>
+              )}
+            </div>
+          </>
+        ) : (
+          <Loader role="admin"></Loader>
+        )}
       </div>
     </div>
   );

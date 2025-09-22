@@ -36,6 +36,7 @@ export interface CallProps {
 export type RegisterFormValues = {
   phone?: string;
   password?: string;
+  currentPassword?: string;
   confirmPassword?: string;
   role?: string;
 };
@@ -54,7 +55,9 @@ export type UserProfileExtra = {
 };
 
 export type ChangePasswordData = {
-  currentPassword: string;
+  password?: string;
+  currentPassword?: string;
+  oldPassword: string;
   newPassword: string;
   confirmPassword: string;
 };

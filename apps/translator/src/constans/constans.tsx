@@ -95,28 +95,40 @@ const passwordField = {
   icon: <RiLockPasswordLine className="register-icon" />,
 };
 
+const currentPasswordField = (getValues: () => any) => ({
+  name: "currentPassword",
+  placeholder: "Введите ваш пароль",
+  label: "Пароль",
+  type: "password",
+  rules: rules.currentPassword(getValues),
+  icon: <RiLockPasswordLine className="register-icon" />,
+});
+
 const confirmPasswordField = (getValues: () => any) => ({
   name: "confirmPassword",
-  placeholder: "Введите ваш пароль",
+  placeholder: "Повторите ещё раз",
   type: "password",
   rules: rules.confirmPassword(getValues),
   icon: <RiLockPasswordLine className="register-icon" />,
 });
 
 export const FORM_CONFIG: Record<string, (getValues: () => any) => FormField[]> = {
-  register: (getValues: () => any) => [phoneField, passwordField, confirmPasswordField(getValues)],
+  register: (getValues: () => any) => [
+    phoneField,
+    currentPasswordField(getValues),
+    confirmPasswordField(getValues),
+  ],
   login: () => [phoneField, passwordField],
   changePassword: (getValues: () => any) => [
     {
       ...passwordField,
-      name: "currentPassword",
-      placeholder: "Введите текущий пароль",
+      placeholder: "Введите новый пароль",
       label: "Текущий пароль",
     },
     {
-      ...passwordField,
+      ...currentPasswordField(getValues),
+      placeholder: "Введите текущий пароль",
       label: "Новый пароль",
-      placeholder: "Введите новый пароль",
     },
     {
       ...confirmPasswordField(getValues),
@@ -127,7 +139,7 @@ export const FORM_CONFIG: Record<string, (getValues: () => any) => FormField[]> 
   resetPassword: () => [phoneField],
   newPassword: (getValues: () => any) => [
     {
-      ...passwordField,
+      ...currentPasswordField(getValues),
       label: "Новый пароль",
     },
     {

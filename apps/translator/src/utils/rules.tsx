@@ -27,10 +27,18 @@ export const rules = {
     },
   },
 
-  confirmPassword: (getValues: () => any, passwordField = "password") => ({
+  currentPassword: (getValues: () => any, confirmPasswordField = "confirmPassword") => ({
+    required: "Введите пароль",
+    validate: (val: string) => {
+      const password = getValues()[confirmPasswordField];
+      if (password) return val === password || "Пароли не совпадают";
+    },
+  }),
+
+  confirmPassword: (getValues: () => any, currentPasswordField = "currentPassword") => ({
     required: "Повторите пароль",
     validate: (val: string) => {
-      const password = getValues()[passwordField];
+      const password = getValues()[currentPasswordField];
       return val === password || "Пароли не совпадают";
     },
   }),
