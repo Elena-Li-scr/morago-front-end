@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useTopicStore, useIdTopicStore } from "@shared/store/useStore";
+import { useTopicStore, useIdTopicStore, useTopicUrlStore } from "@shared/store/useStore";
 import SimpleHeader from "../components/SimpleHeader";
 import MainFooter from "../components/MainFooter";
 import Theme from "@shared/components/Theme";
@@ -27,6 +27,7 @@ type ThemeItem = {
   iconId: number;
   categoryId: number;
   isPopular: boolean;
+  iconUrl: string;
 };
 
 type ThemesResponse = {
@@ -37,6 +38,7 @@ export default function CallSelectors() {
   const navigate = useNavigate();
   const { chosenTopic, setChosenTopic } = useTopicStore();
   const { setChosenTopicId } = useIdTopicStore();
+  const { setChosenTopicUrl } = useTopicUrlStore();
   const [categories, setCategories] = useState<Category[]>([]);
   const [themesByCategory, setThemesByCategory] = useState<Record<number, ThemeItem[]>>({});
   const [loadingThemes, setLoadingThemes] = useState<Record<number, boolean>>({});
@@ -86,9 +88,10 @@ export default function CallSelectors() {
     });
   };
 
-  const handleThemeClick = (id: number, name: string) => {
+  const handleThemeClick = (id: number, name: string, url: string) => {
     setChosenTopic(name);
     setChosenTopicId(id);
+    setChosenTopicUrl(url);
   };
 
   const handleBack = () => navigate(-1);
@@ -152,8 +155,9 @@ export default function CallSelectors() {
                       <Theme
                         key={theme.id}
                         theme={theme.name}
+                        iconUrl={theme.iconUrl}
                         onClick={(nameFromChild: string) =>
-                          handleThemeClick(theme.id, nameFromChild)
+                          handleThemeClick(theme.id, nameFromChild, theme.iconUrl)
                         }
                         style={chosenTopic === theme.name ? { backgroundColor: "#EB9412" } : {}}
                       />

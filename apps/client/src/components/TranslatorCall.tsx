@@ -4,7 +4,14 @@ import type { TranslatorById } from "src/types";
 import { addLastChoosenThemes, createCall, getTranslatorsById } from "@shared/services/clientApi";
 import { useEffect, useState } from "react";
 import { useCall } from "@shared/components/webRtc/useCall";
-import { useIdTopicStore, useModalStore, useTranslatorStore } from "@shared/store/useStore";
+import { IoClose } from "react-icons/io5";
+import {
+  useIdTopicStore,
+  useModalStore,
+  useTranslatorStore,
+  useShowRating,
+} from "@shared/store/useStore";
+import CallRatingModal from "../components/CallRatingModal";
 
 export default function TranslatorCall() {
   const { loading } = useModalStore();
@@ -12,6 +19,7 @@ export default function TranslatorCall() {
   const [translatorCall, setTranslatorCall] = useState<TranslatorById | null>(null);
   const { chosenTopicId } = useIdTopicStore();
   const { markCalling } = useCall();
+  const { showRating } = useShowRating();
 
   useEffect(() => {
     let isMounted = true;
@@ -38,9 +46,10 @@ export default function TranslatorCall() {
         themeId: chosenTopicId,
       };
       const res = await createCall(payload);
+      sessionStorage.setItem("callId", res.data.callId);
       await addLastChoosenThemes({ id: chosenTopicId });
 
-      markCalling(res.data); // теперь статус станет "calling" до accept/reject
+      markCalling(res.data);
     } catch (error) {
       console.log(error);
     }
@@ -56,6 +65,13 @@ export default function TranslatorCall() {
       }}
     >
       <div className="translator-call-wrapper">
+        <button
+          className="modal-window-close-button"
+          type="button"
+          onClick={() => setSelectedTranslator(null)}
+        >
+          <IoClose />
+        </button>
         <div className="translator-call-header">
           <h3 className={translatorCall.isOnline ? "translator-online" : "translator-offline"}>
             Переводчик {translatorCall.firstName} {translatorCall.lastName}`
@@ -79,7 +95,7 @@ export default function TranslatorCall() {
               </p>
               <div className="translator-call-rating">
                 <img src="/assets/home/red-star.png" alt="star" />
-                <p>{translatorCall.rating}</p>
+                <p>{translatorCall.averageRating}</p>
               </div>
             </div>
           </div>
@@ -125,6 +141,7 @@ export default function TranslatorCall() {
           onClick={onCall}
         />
       </div>
+      {showRating && <CallRatingModal />}
     </div>
   );
 }

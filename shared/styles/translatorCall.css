@@ -3,6 +3,7 @@
   padding: 16px 24px;
   width: 100%;
   max-width: 430px;
+  position: relative;
 }
 
 .translator-call-header h3 {

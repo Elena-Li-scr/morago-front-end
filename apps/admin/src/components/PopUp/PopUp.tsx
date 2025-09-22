@@ -1,6 +1,9 @@
 import { useEffect, useState } from "react";
+import { IoClose } from "react-icons/io5";
 
 import "../../assets/style/popUp.css";
+import "@shared/styles/modals.css";
+
 import { usePopUp, type PopUpInfo } from "./usePopUp";
 import { useLocation, useNavigate } from "react-router-dom";
 import {
@@ -127,6 +130,13 @@ export default function PopUp() {
   return (
     <div className="pop-up-wrapper" onClick={() => setPopUpData(null)}>
       <div className="pop-up" onClick={(e) => e.stopPropagation()}>
+        <button
+          className="modal-window-close-button"
+          type="button"
+          onClick={() => setPopUpData(null)}
+        >
+          <IoClose />
+        </button>
         <div className="pop-up-header">
           <div className="pop-up-image">
             <FileUpload translatorAvatar={""}></FileUpload>

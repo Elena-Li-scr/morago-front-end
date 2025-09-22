@@ -1,0 +1,35 @@
+.call-page-rating {
+  background-color: #ffffff;
+  padding: 16px 24px;
+  width: 100%;
+  max-width: 430px;
+  position: absolute;
+  z-index: 100;
+}
+
+.rating-modal-title {
+  margin-bottom: 20px;
+}
+
+.rating-modal-star {
+  cursor: pointer;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 6px;
+  background: #fff;
+  color: #9ca3af;
+  transition: all 0.15s ease;
+}
+
+.rating-modal-star-filled {
+  color: #f59e0b;
+  border-color: #f59e0b;
+  background: #fff7ed;
+}
+
+.rating-modal-stars {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin: 8px 0 16px;
+}

@@ -5,6 +5,10 @@ interface TopicStore {
   chosenTopic: string;
   setChosenTopic: (topic: string) => void;
 }
+interface TopicStoreUrl {
+  chosenTopicUrl: string;
+  setChosenTopicUrl: (topic: string) => void;
+}
 interface TranslatorByTheme {
   id: string | number;
   nameWithInitials: string;
@@ -31,6 +35,11 @@ interface Balance {
   setLowBalance: (val: boolean) => void;
 }
 
+interface Rating {
+  showRating: boolean;
+  setShowRating: (val: boolean) => void;
+}
+
 interface FirstCallStore {
   isFirstCall: boolean;
   setIsFirstCall: (val: boolean) => void;
@@ -52,6 +61,20 @@ export const useModalStore = create<ModalState>((set) => ({
   setLoading: (val) => set({ loading: val }),
   setSuccess: (val) => set({ success: val }),
 }));
+
+export const useTopicUrlStore = create<TopicStoreUrl>()(
+  persist(
+    (set) => ({
+      chosenTopicUrl: "",
+      setChosenTopicUrl: (v) => set({ chosenTopicUrl: v }),
+    }),
+    {
+      name: "topic-url",
+      storage: createJSONStorage(() => sessionStorage),
+      partialize: (s) => ({ chosenTopicUrl: s.chosenTopicUrl }),
+    },
+  ),
+);
 
 export const useTopicStore = create<TopicStore>()(
   persist(
@@ -104,4 +127,9 @@ export const useFirstCall = create<FirstCallStore>((set) => ({
 export const useLowBalance = create<Balance>((set) => ({
   lowBalance: false,
   setLowBalance: (val) => set({ lowBalance: val }),
+}));
+
+export const useShowRating = create<Rating>((set) => ({
+  showRating: false,
+  setShowRating: (val) => set({ showRating: val }),
 }));

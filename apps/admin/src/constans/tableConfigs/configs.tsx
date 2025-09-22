@@ -47,7 +47,7 @@ export const translatorTableConfig: Column<Translator>[] = [
     title: "Email",
     width: "35%",
     render: (row) => {
-      return row.email ? row.email : "не указон";
+      return row.email ? row.email : "не указан";
     },
   },
   {
