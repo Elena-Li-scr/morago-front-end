@@ -1,0 +1,79 @@
+.list-contact-empty {
+    height: 240px;
+    width: 100%;
+    border: 1px solid #F3F3F3;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 20px;
+    color: #A7A9B7;
+}
+
+.call-card {
+    display: flex;
+    padding: 10px;
+    justify-content: space-between;
+    border: 1px solid #F3F3F3;
+    border-radius: 12px;
+
+}
+
+.call-user {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: end;
+}
+
+.call-time,
+.call-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 50%;
+}
+
+.call-time {
+    text-align: end;
+}
+
+
+.list-contact {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10.5px;
+    font-size: 14px;
+}
+
+.call-time-price,
+.call-info-username {
+    overflow-x: auto;
+    line-height: 130%;
+    font-weight: 500;
+}
+
+.call-info-topic,
+.call-time-time {
+    line-height: 180%;
+    color: #A7A9B7;
+}
+
+.all-user-avatar {
+    width: 50px;
+    margin-right: 10px;
+    border-radius: 10px;
+}
+
+@media (max-width: 270px) {
+    .call-card {
+        flex-direction: column;
+    }
+
+    .call-info,
+    .call-time {
+        margin-top: 10px;
+        width: 100%;
+    }
+}

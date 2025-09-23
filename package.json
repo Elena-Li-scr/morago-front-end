@@ -1,0 +1,67 @@
+{
+  "name": "moorage-frontend-may7",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "lint": "eslint .",
+    "preview": "vite preview",
+    "dev:client": "vite --config apps/client/vite.config.ts",
+    "build:client": "vite build --config apps/client/vite.config.ts",
+    "dev:translator": "vite --config apps/translator/vite.config.ts",
+    "build:translator": "vite build --config apps/translator/vite.config.ts",
+    "dev:admin": "vite --config apps/admin/vite.config.ts",
+    "build:admin": "vite build --config apps/admin/vite.config.ts"
+  },
+  "lint-staged": {
+    "*.{ts,tsx,js,jsx}": [
+      "eslint --fix --config eslint.config.js"
+    ],
+    "*.{ts,tsx,js,jsx,json,css,md}": [
+      "prettier --write"
+    ]
+  },
+  "dependencies": {
+    "@stomp/stompjs": "^7.1.1",
+    "axios": "^1.10.0",
+    "cleave.js": "^1.6.0",
+    "date-fns": "^4.1.0",
+    "lodash.debounce": "^4.0.8",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "react-hook-form": "^7.60.0",
+    "react-icons": "^5.5.0",
+    "react-router-dom": "^7.6.2",
+    "socket.io-client": "^4.8.1",
+    "sockjs-client": "^1.6.1",
+    "swiper": "^11.2.10",
+    "uniqid": "^5.4.0",
+    "uuid": "^13.0.0",
+    "zustand": "^5.0.6"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.25.0",
+    "@types/cleave.js": "^1.4.12",
+    "@types/lodash.debounce": "^4.0.9",
+    "@types/node": "^24.0.13",
+    "@types/react": "^19.1.2",
+    "@types/react-dom": "^19.1.2",
+    "@types/react-input-mask": "^3.0.6",
+    "@types/react-router-dom": "^5.3.3",
+    "@types/sockjs-client": "^1.5.4",
+    "@vitejs/plugin-react": "^4.4.1",
+    "eslint": "^9.32.0",
+    "eslint-plugin-react-hooks": "^5.2.0",
+    "eslint-plugin-react-refresh": "^0.4.19",
+    "globals": "^16.0.0",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.1.2",
+    "prettier": "^3.6.2",
+    "typescript": "~5.8.3",
+    "typescript-eslint": "^8.30.1",
+    "vite": "^6.3.5",
+    "vite-plugin-mock-dev-server": "^1.9.2"
+  }
+}

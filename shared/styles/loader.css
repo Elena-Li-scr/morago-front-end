@@ -1,0 +1,91 @@
+.logo-wrapper {
+  background: #015f76;
+  position: fixed;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+  top: 0;
+  height: 100%;
+  width: 100%;
+  margin: 0 auto;
+  z-index: 100;
+}
+
+.admin-logo-wrapper {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+  top: 0;
+  height: 50%;
+  width: 100%;
+  margin: 0 auto;
+  z-index: 100;
+}
+
+.square {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 3.7px;
+  width: 96.77px;
+  height: 96.77px;
+  background: white;
+  border-radius: 20px;
+}
+
+.circle {
+  width: 20.26px;
+  height: 20.26px;
+  border-radius: 50%;
+  animation: wave 1.5s ease-in-out infinite;
+  transform-origin: center;
+}
+
+.blue {
+  background: #1e90ff;
+  animation-delay: 0s;
+}
+
+.red {
+  background: #ff4d4d;
+  animation-delay: 0.2s;
+}
+
+.orange {
+  background: #ffa500;
+  animation-delay: 0.4s;
+}
+
+.brand-text {
+  line-height: 100%;
+  font-size: 24.02px;
+  font-family: "Segoe UI", sans-serif;
+  font-weight: 700;
+  color: #ffffff;
+  opacity: 0;
+  margin-top: 21.62px;
+  animation: fadeInText 0.5s ease forwards 0.5s;
+}
+
+@keyframes wave {
+
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+
+  50% {
+    transform: scale(1.5);
+    opacity: 0.5;
+  }
+}
+
+@keyframes fadeInText {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

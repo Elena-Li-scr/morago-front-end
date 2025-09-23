@@ -1,0 +1,304 @@
+import { useParams } from "react-router-dom";
+import { listsTableConfigs, topicTableConfigs } from "../constans/tableConfigs/tableConfigs";
+
+import Loader from "@shared/components/Loader";
+
+import FlexTable from "../components/FlexTable";
+import { Breadcrumbs } from "../components/Breadcrumbs";
+import { titleMapLists, titleMapTopics } from "../constans/titleMap/titleMap";
+import { IoSearch } from "react-icons/io5";
+import type { ListsType, TopicsType } from "../types/types";
+import {
+  getAdminCategories,
+  getAdminThemes,
+  getAdminTranslators,
+  getAdminUsers,
+  getCallHistoryid,
+  getCategoryById,
+  getDepositHistoryid,
+  getWithdrawHistoryid,
+} from "@shared/services/adminApi";
+import { useEffect, useState } from "react";
+import type { AxiosError } from "axios";
+import { useModalStore } from "@shared/store/useStore";
+import { useDebounce } from "../components/useDebounce";
+
+type Props = { section?: string };
+
+type TableRow = {
+  id: string;
+  firstName: string;
+  name?: string;
+  lastName?: string;
+  phone: string;
+  levelOfKorean: string;
+  email: string;
+  dateOfBirth: string;
+  hasWithdrawalRequest: string;
+  categoryId: number;
+  duration: number;
+  date?: string;
+  coins?: string;
+  balance?: string;
+  amount?: string;
+};
+
+type SortDir = "ASC" | "DESC" | "";
+
+export default function GenericTablePage({ section }: Props) {
+  const [rows, setRows] = useState<TableRow[]>([]);
+  const [page, setPage] = useState(0); // 0-based
+  const [size] = useState(5); // сколько на странице
+  const [totalPages, setTotalPages] = useState(0);
+  const [error, setError] = useState<string | null>(null);
+
+  const { loading } = useModalStore();
+
+  const { type } = useParams();
+  const [query, setQuery] = useState("");
+  const [sortDir, setSortDir] = useState<SortDir>();
+
+  const debouncedQuery = useDebounce(query, 600);
+
+  const isSearch =
+    type === "callHistory" || type === "depositHistory" || type === "withdrawHistory";
+
+  //  Sort Data List - ASC or DESC input
+  const sortByName = (list: TableRow[], dir: SortDir) => {
+    const collator = new Intl.Collator(["ru", "en"], {
+      sensitivity: "base",
+      ignorePunctuation: true,
+      numeric: true,
+    });
+
+    return [...list].sort((a, b) => {
+      const an = (a.name ?? "").trim();
+      const bn = (b.name ?? "").trim();
+      const cmp = collator.compare(an, bn);
+      return dir === "DESC" ? -cmp : cmp;
+    });
+  };
+
+  const handleSort = () => {
+    setRows((prev) => sortByName(prev, sortDir || ""));
+  };
+
+  // Define path for "Breadcrumbs"
+  const searchParams = new URLSearchParams(location.search);
+
+  const from = searchParams.get("from") || undefined;
+  const name = searchParams.get("name");
+  const userId = searchParams.get("id");
+  const userPhone = searchParams.get("phone");
+
+  const duration = (total: number) => {
+    const hours = Math.floor(total / 3600);
+    const minutes = Math.floor((total % 3600) / 60);
+    const seconds = total % 60;
+    const result: string[] = [];
+    if (hours > 0) result.push(`${hours} h`);
+    if (minutes > 0) result.push(`${minutes} min`);
+    if (seconds > 0) result.push(`${seconds} sec`);
+    return result.join(" ");
+  };
+
+  useEffect(() => {
+    const controller = new AbortController();
+    let ignore = false;
+
+    async function load() {
+      try {
+        let rows: any;
+        const searchParam = (debouncedQuery ?? "").trim();
+        if (section === "lists" && type === "user") {
+          const res = await getAdminUsers(page, size, searchParam, {
+            signal: controller.signal,
+          });
+          setTotalPages(res.data.totalPages);
+          rows = (res.data.content ?? []).map((u) => ({
+            ...u,
+            balance: u.balance?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, "."),
+            phone: u.phone.replace(/(\d{3})(\d{4})(\d{2})(\d{2})/, "$1 $2 $3 $4"),
+            name:
+              u.firstName || u.lastName
+                ? [u.firstName, u.lastName].filter(Boolean).join(" ").trim()
+                : "( Не указано )",
+          }));
+        }
+        if (section === "lists" && type === "translator") {
+          const res = await getAdminTranslators(page, size, searchParam);
+          setTotalPages(res.data.totalPages);
+          rows = (res.data.content ?? []).map((u) => ({
+            ...u,
+            phone: u.phone.replace(/(\d{3})(\d{4})(\d{2})(\d{2})/, "$1 $2 $3 $4"),
+            name: [u.firstName, u.lastName].filter(Boolean).join(" ").trim(),
+          }));
+        }
+        if (section === "lists" && type === "callHistory" && userId) {
+          const res = await getCallHistoryid(userId, page, size);
+          setTotalPages(res.data.totalPages);
+          rows = (res.data.content ?? []).map((u) => ({
+            ...u,
+            name: u.phone,
+            coins: u.coins?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, "."),
+            id: u.duration,
+            duration: duration(Number(u.duration)),
+          }));
+          console.log(rows);
+        }
+        if (section === "lists" && type === "depositHistory" && userId) {
+          const res = await getDepositHistoryid(userId, page, size);
+          setTotalPages(res.data.totalPages);
+          rows = (res.data.content ?? []).map((u) => ({
+            ...u,
+            amount: u.amount?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, "."),
+            name: userPhone,
+            id: userId,
+          }));
+        }
+        if (section === "lists" && type === "withdrawHistory" && userId) {
+          const res = await getWithdrawHistoryid(Number(userId), page, size);
+          setTotalPages(res.data.totalPages);
+          rows = (res.data.content ?? []).map((u) => ({
+            ...u,
+            amount: u.amount?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, "."),
+            name: name,
+            id: userId + u.date,
+            userId: userId,
+          }));
+        }
+        if (section === "topics" && type === "categories") {
+          const res = await getAdminCategories(page, size, searchParam, {
+            signal: controller.signal,
+          });
+          setTotalPages(res.data.totalPages);
+          rows = res.data.content ?? [];
+        }
+        if (section === "topics" && type === "themes") {
+          const res = await getAdminThemes(page, size, searchParam, {
+            signal: controller.signal,
+          });
+          setTotalPages(res.data.totalPages);
+          rows = await Promise.all(
+            res.data.content.map(async (u) => ({
+              ...u,
+              categories: await getCategoryById(u.categoryId),
+            })),
+          );
+        }
+        setRows(rows);
+      } catch (err) {
+        const axiosErr = err as AxiosError<{ error: string }>;
+        setError(axiosErr.message);
+      }
+    }
+    load();
+    return () => {
+      ignore = true;
+      controller.abort();
+    };
+  }, [section, type, page, size, debouncedQuery, userId]);
+
+  useEffect(() => {
+    setPage(0);
+  }, [type]);
+
+  if (!type) return <div>Not found</div>;
+
+  // Define the type for COLUMNS of Tables
+  const columns =
+    section === "lists"
+      ? listsTableConfigs[type as ListsType]
+      : topicTableConfigs[type as TopicsType];
+
+  // Define the TITLE for page
+  const title =
+    section === "lists" ? titleMapLists[type as ListsType] : titleMapTopics[type as TopicsType];
+
+  const prev = () => setPage((p) => Math.max(0, p - 1));
+  const next = () => setPage((p) => Math.min(totalPages - 1, p + 1));
+
+  return (
+    <div className="container">
+      <div className="generic-table-page">
+        <div className="page-header">
+          <div className="page-info page-block">
+            <h3 className="page-info-title">
+              {title} {name}
+            </h3>
+            <Breadcrumbs from={from} />
+          </div>
+          <div className="page-search page-block">
+            <div className="page-search-name">
+              <IoSearch className="search-icon" />
+              <input
+                type="text"
+                disabled={isSearch}
+                value={query}
+                placeholder="Search by name or company "
+                onChange={(e) => {
+                  const val = e.target.value;
+                  setQuery(val);
+                }}
+              ></input>
+            </div>
+            <div className="page-search-filter">
+              <input type="text" placeholder="Filter" />
+              <label>
+                Имя:
+                <select
+                  value={sortDir}
+                  onChange={(e) => setSortDir(e.target.value as SortDir)}
+                  className={`select ${sortDir !== undefined ? "select-asc" : ""}`}
+                >
+                  <option value="">Choose action</option>
+                  <option value="ASC">По возрастанию</option>
+                  <option value="DESC">По убыванию </option>
+                </select>
+              </label>
+              <button className="page-search-btn" onClick={handleSort}>
+                Apply
+              </button>
+            </div>
+          </div>
+        </div>
+        {!loading ? (
+          <>
+            <div className="generic-table-data">
+              <FlexTable
+                columns={columns}
+                data={rows}
+                rowKey={(row) => row.id}
+                tableType={type}
+                error={error}
+              />
+            </div>
+            <div className="pagination-row">
+              {rows.length >= 0 && (
+                <div className="pagination">
+                  <button onClick={prev} disabled={page === 0}>
+                    Prev
+                  </button>
+                  {Array.from({ length: totalPages }, (_, i) => (
+                    <button
+                      key={i}
+                      onClick={() => setPage(i)}
+                      className={i === page ? "active" : ""}
+                    >
+                      {i + 1}
+                    </button>
+                  ))}
+                  <button onClick={next} disabled={page + 1 >= totalPages}>
+                    Next
+                  </button>
+                </div>
+              )}
+            </div>
+          </>
+        ) : (
+          <Loader role="admin"></Loader>
+        )}
+      </div>
+    </div>
+  );
+}

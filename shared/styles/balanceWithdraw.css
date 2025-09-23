@@ -1,0 +1,126 @@
+.balance-withdraw-wrapper {
+  padding: 30px 22px 16px 22px;
+  width: 100%;
+  max-width: 430px;
+  margin: auto;
+}
+
+.balance-withdraw-header {
+  font-size: 30px;
+  font-weight: 600;
+  margin-top: 20px;
+}
+
+.balance-withdraw-text {
+  font-size: 14px;
+  color: #a7a9b7;
+  line-height: 180%;
+  margin: 20px 0px;
+}
+
+.balance-withdraw-wrapper h3 {
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.balance-withdraw-card {
+  background-color: #015f76;
+  border-radius: 12px;
+  border: 1px solid #015f76;
+  width: 100%;
+  height: 163px;
+  margin: 15px 0px;
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+}
+
+.balance-withdraw-card span:first-child {
+  font-size: 18px;
+  color: #ffffff;
+  font-weight: 500;
+}
+
+.balance-withdraw-copy {
+  font-size: 14px;
+  color: #a7a9b7;
+}
+
+.balance-withdraw-bank {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  color: #ffffff;
+  font-size: 14px;
+}
+
+.balance-withdraw-form label {
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.balance-withdraw-name {
+  position: relative;
+}
+
+.balance-withdraw-name img {
+  position: absolute;
+  left: 15px;
+  top: 35px;
+  width: 18px;
+  height: 20px;
+}
+
+.balance-withdraw-form input {
+  width: 100%;
+  height: 52px;
+  border: 1px solid #1d272f;
+  border-radius: 12px;
+  padding: 15px 15px 15px 45px;
+  margin: 20px 0px;
+  color: #191d31;
+  font-size: 14px;
+}
+
+.balance-withdraw-amounts button {
+  width: 100%;
+  height: 52px;
+  border-radius: 12px;
+  border: 1px solid #f3f3f3;
+  background-color: inherit;
+  cursor: pointer;
+  margin-top: 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 14px;
+  padding: 15px;
+}
+.balance-withdraw-amounts button div {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.balance-withdraw-amounts button.selected-amount {
+  border: 1px solid #1d272f;
+}
+
+.withdraw-support {
+  font-size: 14px;
+  background-color: inherit;
+  border: none;
+  color: #a7a9b7;
+  margin-left: 80px;
+  display: block;
+  width: 77px;
+  margin: auto;
+}
+
+@media screen and (min-width: 375px) {
+  .balance-withdraw-card span:first-child {
+    font-size: 21px;
+  }
+}

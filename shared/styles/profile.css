@@ -1,0 +1,124 @@
+.profile-header {
+  background-image: url("/assets/profile/profile-background.png");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  padding: 16px 24px;
+}
+
+.profile-header h2 {
+  font-size: 22px;
+  font-weight: 600;
+  margin-top: 20px;
+  color: #ffffff;
+}
+
+.profile-header-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 30px 0px 15px 0px;
+}
+
+.profile-header-info > div {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: #ffffff;
+}
+
+.profile-image {
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+.profile-name {
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.profile-phone {
+  font-size: 14px;
+  margin-top: 5px;
+}
+
+.profile-change-button {
+  width: 101px;
+  height: 34px;
+  border-radius: 40px;
+  background-color: #01728f;
+  border: none;
+  color: #ffffff;
+  font-size: 14px;
+  cursor: pointer;
+}
+.profile-main {
+  padding: 16px 24px;
+}
+
+.profile-main h3 {
+  font-size: 16px;
+  font-weight: 600;
+  margin: 20px 0px;
+}
+
+.profile-main-option {
+  background-color: inherit;
+  border: 1px solid #f3f3f3;
+  border-radius: 12px;
+  width: 100%;
+  font-size: 14px;
+  height: 46px;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 0px 15px;
+  margin-bottom: 15px;
+  cursor: pointer;
+}
+
+.profile-main-option img {
+  margin-right: 15px;
+}
+
+.change-profile-wrapper {
+  padding: 16px 24px;
+}
+
+.change-profile-header {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.change-profile-header h3 {
+  font-size: 16px;
+  font-weight: 600;
+  margin-left: 30px;
+}
+
+.change-profile-form {
+  margin: 30px 0px;
+}
+
+.change-profile-form > div {
+  margin-bottom: 150px;
+}
+
+.forgot-password {
+  background-color: inherit;
+  border: none;
+  cursor: pointer;
+  color: #a7a9b7;
+  font-size: 14px;
+  display: block;
+  margin-left: auto;
+}
+@media screen and (min-width: 375px) {
+  .change-profile-header h3 {
+    margin-left: 40px;
+  }
+}

@@ -1,0 +1,17 @@
+.simple-header {
+  width: 100%;
+  max-width: 430px;
+  height: 70px;
+  background-color: #015f76;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 16px 24px;
+}
+
+.back-button-simple {
+  background: inherit;
+  border: none;
+  margin-right: 30%;
+  cursor: pointer;
+}
